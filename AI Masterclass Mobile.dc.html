@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#070c1e;color:#0F1B2D;-webkit-font-smoothing:antialiased;}
+  a{color:#1E74E6;text-decoration:none;} a:hover{color:#0B4FB0;}
+  input,button,select,textarea{font-family:inherit;}
+  input:focus,textarea:focus,select:focus{outline:none;}
+  .mscreen::-webkit-scrollbar{width:0;height:0;}
+  .mscreen{scrollbar-width:none;}
+  @keyframes screenIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes pop{0%{transform:scale(.6);opacity:0;}60%{transform:scale(1.1);}100%{transform:scale(1);opacity:1;}}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes toastIn{from{opacity:0;transform:translate(-50%,16px);}to{opacity:1;transform:translateX(-50%);}}
+  @keyframes gridmove{from{background-position:0 0;}to{background-position:40px 40px;}}
+  @keyframes bootOut{from{opacity:1;}to{opacity:0;visibility:hidden;}}
+  @keyframes bootBar{0%{width:6%;}60%{width:74%;}100%{width:100%;}}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-12px) rotate(2deg);}}
+  @keyframes heroRise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+  @keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+  @keyframes loadslide{0%{transform:translateX(-110%);}100%{transform:translateX(360%);}}
+  .btnp{transition:transform .16s cubic-bezier(.2,.7,.3,1),box-shadow .2s,background .2s,color .2s,border-color .2s;}
+  .btnp:active{transform:scale(.97);}
+  .lift{transition:transform .2s,box-shadow .2s;}
+  .fq-ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s cubic-bezier(.3,.8,.4,1);}
+  .fq-ans.open{grid-template-rows:1fr;}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:radial-gradient(900px 700px at 50% 0%,#10203f,#070c1e 70%);display:flex;align-items:center;justify-content:center;padding:22px;font-family:'Plus Jakarta Sans',sans-serif;">
+  <div style="width:392px;max-width:100%;height:min(848px,94vh);position:relative;border-radius:52px;border:12px solid #0d1526;box-shadow:0 60px 120px -34px rgba(0,0,0,.75),0 0 0 2px #1e2c47;background:#F4F7FC;overflow:hidden;display:flex;flex-direction:column;">
+
+    <!-- status bar -->
+    <div style="flex-shrink:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:{{ statusBg }};color:{{ statusInk }};position:relative;z-index:40;transition:background .3s;">
+      <div style="font-family:'Sora';font-weight:700;font-size:14px;letter-spacing:.02em;">9:41</div>
+      <div style="position:absolute;left:50%;top:8px;transform:translateX(-50%);width:96px;height:26px;background:#0d1526;border-radius:0 0 16px 16px;"></div>
+      <div style="display:flex;align-items:center;gap:6px;">{{ statusSignal }}{{ statusWifi }}{{ statusBatt }}</div>
+    </div>
+
+    <!-- screen scroller -->
+    <div class="mscreen" style="flex:1;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch;">
+
+      <!-- ===== LANDING ===== -->
+      <sc-if value="{{ isLanding }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#F4F7FC;animation:fadeIn .4s ease both;">
+        <!-- top bar -->
+        <div id="m-landing-nav" style="position:sticky;top:0;z-index:20;background:#0a1430ee;backdrop-filter:blur(10px);display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid #ffffff14;transition:transform .32s cubic-bezier(.3,.8,.4,1);will-change:transform;">
+          <img src="assets/aiju-logo.png" alt="" style="height:30px;width:auto;">
+          <div style="line-height:1.02;"><div style="font-family:'Sora';font-weight:800;font-size:13px;color:#fff;">INFINITY BUDDY <span style="color:#4C9BFF;">AIJU</span></div><div style="font-family:'JetBrains Mono';font-size:7.5px;letter-spacing:.2em;color:#8fb6ff;">AI MASTERCLASS</div></div>
+          <div style="flex:1;"></div>
+          <div onClick="{{ openMenu }}" class="btnp" style="width:40px;height:40px;border-radius:12px;background:#ffffff14;display:flex;align-items:center;justify-content:center;cursor:pointer;">{{ menuIcon }}</div>
+        </div>
+
+        <!-- hero -->
+        <div style="position:relative;overflow:hidden;background:radial-gradient(560px 420px at 72% 2%,#16305f,#0a1430 58%,#070c1e);padding:34px 22px 40px;text-align:center;">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(#ffffff0d 1px,transparent 1px),linear-gradient(90deg,#ffffff0d 1px,transparent 1px);background-size:40px 40px;opacity:.55;animation:gridmove 4s linear infinite;mask-image:radial-gradient(400px 340px at 60% 20%,#000,transparent 78%);"></div>
+          <div style="position:relative;">
+            <img src="assets/mascot-2.png" alt="AIJU" style="height:170px;width:auto;filter:drop-shadow(0 24px 40px rgba(0,0,0,.5));animation:floaty 6s ease-in-out infinite;">
+            <h1 style="font-family:'Sora';font-weight:800;font-size:34px;line-height:1.04;letter-spacing:-.02em;color:#fff;margin:14px 0 14px;animation:heroRise .7s .05s both;">AI Se Dosti,<br><span style="background:linear-gradient(90deg,#4C9BFF,#F5A800);-webkit-background-clip:text;background-clip:text;color:transparent;">Aaj Se Shuru.</span></h1>
+            <p style="font-size:15px;line-height:1.55;color:#b9c6e2;margin:0 auto 24px;max-width:320px;animation:heroRise .7s .16s both;">The AI Masterclass that prepares your child for a world run by AI, safely and simply, guided by AIJU.</p>
+            <div style="display:flex;flex-direction:column;gap:12px;animation:heroRise .7s .26s both;">
+              <button onClick="{{ goRegister }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:16px;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 14px 34px -10px rgba(30,116,230,.7);display:flex;align-items:center;justify-content:center;gap:9px;">Enroll for ₹499 {{ arrowIcon }}</button>
+              <button onClick="{{ openTeaserModal }}" class="btnp" style="width:100%;background:#ffffff12;border:1px solid #ffffff2e;color:#fff;padding:15px;border-radius:14px;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;">{{ playIconSm }} Watch teaser</button>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:22px;">
+              <sc-for list="{{ heroChips }}" as="c" hint-placeholder-count="4">
+                <div style="display:inline-flex;align-items:center;gap:6px;background:#ffffff0d;border:1px solid #ffffff1f;padding:7px 12px;border-radius:999px;font-size:11.5px;font-weight:600;color:#c9d6f0;">{{ c.icon }}{{ c.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <!-- why -->
+        <div id="sec-why" style="padding:36px 20px;">
+          <div style="width:44px;height:4px;border-radius:2px;background:#1E74E6;margin-bottom:16px;"></div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;color:#0F1B2D;margin:0 0 12px;">AI isn't the future. It's your child's present.</h2>
+          <p style="font-size:14.5px;line-height:1.6;color:#5B6B85;margin:0 0 24px;">Kids already use AI for homework, art and answers. The question is whether they use it wisely. AI Masterclass turns curiosity into safe, real skill.</p>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="background:#fff;border:1px solid #E6ECF6;border-radius:20px;padding:24px;box-shadow:0 10px 30px -18px rgba(20,50,110,.2);">
+              <div style="width:48px;height:48px;border-radius:13px;background:#eaf2ff;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">{{ iconShield }}</div>
+              <div style="font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.14em;color:#1E74E6;margin-bottom:6px;">FOR PARENTS</div>
+              <h3 style="font-family:'Sora';font-weight:700;font-size:19px;color:#0F1B2D;margin:0 0 10px;">Peace of mind, not panic</h3>
+              <p style="font-size:14px;line-height:1.6;color:#5B6B85;margin:0 0 14px;">Know exactly what your child is learning, track progress, and trust that AI habits are safe and age-appropriate.</p>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <sc-for list="{{ parentPoints }}" as="p" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:9px;font-size:13.5px;color:#1B2A41;font-weight:500;">{{ checkIcon }}{{ p }}</div></sc-for>
+              </div>
+            </div>
+            <div style="position:relative;overflow:hidden;background:linear-gradient(160deg,#122a54,#0a1430);border-radius:20px;padding:24px;box-shadow:0 16px 40px -20px rgba(10,20,48,.6);">
+              <div style="position:absolute;right:-30px;top:-30px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#F5A80055,transparent 70%);"></div>
+              <div style="position:relative;width:48px;height:48px;border-radius:13px;background:#ffffff14;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">{{ iconSpark }}</div>
+              <div style="position:relative;font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.14em;color:#F5A800;margin-bottom:6px;">FOR STUDENTS</div>
+              <h3 style="position:relative;font-family:'Sora';font-weight:700;font-size:19px;color:#fff;margin:0 0 10px;">Superpowers, unlocked</h3>
+              <p style="position:relative;font-size:14px;line-height:1.6;color:#b9c6e2;margin:0 0 14px;">Write prompts, create art, study smarter and think critically, with AIJU cheering them on and a streak to keep them going.</p>
+              <div style="position:relative;display:flex;flex-direction:column;gap:9px;">
+                <sc-for list="{{ studentPoints }}" as="p" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:9px;font-size:13.5px;color:#dbe6fb;font-weight:500;">{{ checkIconGold }}{{ p }}</div></sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- curriculum -->
+        <div id="sec-curriculum" style="background:#fff;border-top:1px solid #EEF2F9;border-bottom:1px solid #EEF2F9;padding:36px 20px;">
+          <div style="width:44px;height:4px;border-radius:2px;background:#1E74E6;margin-bottom:16px;"></div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;color:#0F1B2D;margin:0 0 10px;">6 chapters. Zero jargon.</h2>
+          <p style="font-size:14px;line-height:1.6;color:#5B6B85;margin:0 0 22px;">Each chapter blends a guided video, a study guide and a quick quiz, so learning sticks.</p>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <sc-for list="{{ chapters }}" as="ch" hint-placeholder-count="6">
+              <div onClick="{{ goRegister }}" class="btnp" style="border:1px solid #E6ECF6;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 8px 24px -18px rgba(20,50,110,.2);cursor:pointer;display:flex;align-items:stretch;">
+                <div style="width:74px;flex-shrink:0;background:linear-gradient(150deg,{{ ch.c1 }},{{ ch.c2 }});position:relative;display:flex;align-items:center;justify-content:center;">
+                  <div style="position:absolute;inset:0;background-image:linear-gradient(#ffffff20 1px,transparent 1px),linear-gradient(90deg,#ffffff20 1px,transparent 1px);background-size:18px 18px;opacity:.5;"></div>
+                  <div style="position:relative;font-family:'Sora';font-weight:800;font-size:26px;color:#ffffffcc;">{{ ch.num }}</div>
+                </div>
+                <div style="flex:1;min-width:0;padding:14px 16px;">
+                  <div style="font-family:'JetBrains Mono';font-size:9px;letter-spacing:.1em;color:#8A99B5;margin-bottom:4px;">{{ ch.tag }}</div>
+                  <h3 style="font-family:'Sora';font-weight:700;font-size:15.5px;color:#0F1B2D;margin:0 0 4px;line-height:1.25;">{{ ch.title }}</h3>
+                  <div style="display:flex;align-items:center;gap:12px;font-size:11.5px;color:#8A99B5;font-weight:600;"><span style="display:inline-flex;align-items:center;gap:4px;">{{ clockIcon }}{{ ch.dur }}</span><span style="display:inline-flex;align-items:center;gap:4px;">{{ quizIcon }}5 MCQ</span></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- meet aiju -->
+        <div style="padding:36px 20px;">
+          <div style="border-radius:22px;overflow:hidden;background:linear-gradient(160deg,#eaf2ff,#f4f7fc);border:1px solid #E6ECF6;padding:8px;margin-bottom:22px;">
+            <img src="assets/mascot-5.png" alt="AIJU teaching" style="width:100%;height:auto;display:block;border-radius:16px;">
+          </div>
+          <div style="width:44px;height:4px;border-radius:2px;background:#1E74E6;margin-bottom:16px;"></div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:25px;line-height:1.12;letter-spacing:-.02em;color:#0F1B2D;margin:0 0 12px;">AIJU makes AI feel like a friend, not a mystery.</h2>
+          <p style="font-size:14.5px;line-height:1.6;color:#5B6B85;margin:0 0 20px;">AIJU walks beside every learner, explaining ideas simply, celebrating streaks and keeping everything safe.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <sc-for list="{{ aijuFeatures }}" as="f" hint-placeholder-count="4">
+              <div style="background:#fff;border:1px solid #E6ECF6;border-radius:15px;padding:15px;">
+                <div style="width:36px;height:36px;border-radius:10px;background:#eaf2ff;display:flex;align-items:center;justify-content:center;margin-bottom:9px;">{{ f.icon }}</div>
+                <div style="font-family:'Sora';font-weight:700;font-size:14px;color:#0F1B2D;margin-bottom:3px;">{{ f.title }}</div>
+                <div style="font-size:12px;line-height:1.45;color:#5B6B85;">{{ f.desc }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- how it works -->
+        <div style="background:radial-gradient(500px 360px at 50% 0%,#122a54,#0a1430);padding:36px 20px;">
+          <div style="width:44px;height:4px;border-radius:2px;background:#F5A800;margin-bottom:16px;"></div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:25px;line-height:1.12;letter-spacing:-.02em;color:#fff;margin:0 0 22px;">From sign-up to first skill in minutes</h2>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;gap:14px;align-items:flex-start;background:#ffffff0a;border:1px solid #ffffff1f;border-radius:16px;padding:18px;">
+                <div style="flex-shrink:0;font-family:'Sora';font-weight:800;font-size:14px;color:#0a1430;background:#F5A800;width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;">{{ s.n }}</div>
+                <div><div style="font-family:'Sora';font-weight:700;font-size:15.5px;color:#fff;margin-bottom:4px;">{{ s.title }}</div><div style="font-size:13px;line-height:1.55;color:#b9c6e2;">{{ s.desc }}</div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- pricing -->
+        <div id="sec-pricing" style="padding:36px 20px;">
+          <div style="position:relative;overflow:hidden;background:linear-gradient(165deg,#122a54,#0a1430);border-radius:24px;padding:30px 24px;text-align:center;box-shadow:0 24px 60px -28px rgba(10,20,48,.6);">
+            <div style="position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#1E74E655,transparent 70%);"></div>
+            <div style="position:relative;">
+              <div style="display:inline-flex;align-items:center;gap:6px;background:#F5A80022;border:1px solid #F5A80055;color:#F5A800;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px;">LAUNCH OFFER</div>
+              <div style="display:flex;align-items:flex-start;justify-content:center;gap:3px;color:#fff;"><span style="font-family:'Sora';font-weight:700;font-size:24px;margin-top:8px;">₹</span><span style="font-family:'Sora';font-weight:800;font-size:64px;line-height:1;">499</span></div>
+              <div style="color:#8fb6ff;font-size:13px;margin:6px 0 22px;">one-time · 3 months full access</div>
+              <div style="display:flex;flex-direction:column;gap:10px;text-align:left;margin-bottom:24px;">
+                <sc-for list="{{ priceIncludes }}" as="p" hint-placeholder-count="5"><div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#dbe6fb;font-weight:500;">{{ checkIconGold }}{{ p }}</div></sc-for>
+              </div>
+              <button onClick="{{ goRegister }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:16px;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 14px 34px -10px rgba(30,116,230,.7);">Enroll Now</button>
+              <div style="color:#6f7fa3;font-size:11.5px;margin-top:12px;">Secure UPI payment · Powered by Razorpay</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- testimonials -->
+        <div style="background:#fff;border-top:1px solid #EEF2F9;padding:36px 20px;">
+          <div style="width:44px;height:4px;border-radius:2px;background:#1E74E6;margin-bottom:16px;"></div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;color:#0F1B2D;margin:0 0 4px;">Parents relax. Kids light up.</h2>
+          <p style="font-size:13px;color:#8A99B5;margin:0 0 18px;">Swipe to read more →</p>
+          <div style="display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px;padding:2px 20px 8px;-webkit-overflow-scrolling:touch;" class="mscreen">
+            <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
+              <div style="flex:0 0 82%;scroll-snap-align:start;background:#F4F7FC;border:1px solid #E6ECF6;border-radius:18px;padding:22px;">
+                <div style="color:#F5A800;font-size:14px;letter-spacing:2px;margin-bottom:12px;">{{ t.stars }}</div>
+                <p style="font-size:14px;line-height:1.6;color:#1B2A41;margin:0 0 16px;">"{{ t.quote }}"</p>
+                <div style="display:flex;align-items:center;gap:11px;">
+                  <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,{{ t.c1 }},{{ t.c2 }});display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-family:'Sora';font-size:15px;flex-shrink:0;">{{ t.initial }}</div>
+                  <div><div style="font-weight:700;font-size:13.5px;color:#0F1B2D;">{{ t.name }}</div><div style="font-size:12px;color:#8A99B5;">{{ t.role }}</div></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- faq -->
+        <div id="sec-faq" style="padding:36px 20px;">
+          <div style="width:44px;height:4px;border-radius:2px;background:#1E74E6;margin-bottom:16px;"></div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:26px;letter-spacing:-.02em;color:#0F1B2D;margin:0 0 20px;">Good to know</h2>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5">
+              <div style="background:#fff;border:1px solid #E6ECF6;border-radius:15px;overflow:hidden;">
+                <div onClick="{{ f.toggle }}" style="padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;">
+                  <div style="flex:1;font-family:'Sora';font-weight:700;font-size:14.5px;color:#0F1B2D;line-height:1.3;">{{ f.q }}</div>
+                  <div style="font-size:20px;color:#1E74E6;font-weight:400;transform:{{ f.rot }};transition:transform .25s;">+</div>
+                </div>
+                <div class="fq-ans {{ f.openClass }}"><div style="overflow:hidden;"><div style="padding:0 18px 18px;font-size:13.5px;line-height:1.6;color:#5B6B85;">{{ f.a }}</div></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- footer CTA -->
+        <div style="background:radial-gradient(600px 400px at 50% 120%,#1E74E6,#0a1430 62%);padding:40px 22px 30px;text-align:center;">
+          <img src="assets/mascot-1.png" alt="" style="height:120px;width:auto;filter:drop-shadow(0 18px 26px rgba(0,0,0,.4));animation:floaty 6s ease-in-out infinite;">
+          <h2 style="font-family:'Sora';font-weight:800;font-size:28px;line-height:1.06;letter-spacing:-.02em;color:#fff;margin:6px 0 14px;">Let's begin the journey.</h2>
+          <p style="font-size:14.5px;color:#b9c6e2;margin:0 auto 22px;max-width:280px;">Give your child a head start that lasts a lifetime.</p>
+          <button onClick="{{ goRegister }}" class="btnp" style="width:100%;background:#fff;border:none;color:#0a1430;padding:16px;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 16px 40px -14px rgba(0,0,0,.5);">Get Started · ₹499</button>
+          <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 20px;margin:28px 0 18px;font-size:13px;">
+            <a onClick="{{ goWhy }}" style="color:#9fb0d0;cursor:pointer;">Why AI</a>
+            <a onClick="{{ goCurriculum }}" style="color:#9fb0d0;cursor:pointer;">Curriculum</a>
+            <a onClick="{{ goPricing }}" style="color:#9fb0d0;cursor:pointer;">Pricing</a>
+            <a onClick="{{ goFaq }}" style="color:#9fb0d0;cursor:pointer;">FAQ</a>
+            <a onClick="{{ noop }}" style="color:#9fb0d0;cursor:pointer;">Terms &amp; Conditions</a>
+            <a onClick="{{ noop }}" style="color:#9fb0d0;cursor:pointer;">Privacy Policy</a>
+          </div>
+          <div style="border-top:1px solid #ffffff1a;padding-top:16px;font-size:12px;color:#6f7fa3;">© 2026 Infinity Buddy AIJU · Made in India</div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== AUTH ===== -->
+      <sc-if value="{{ isAuth }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height:100%;background:#F4F7FC;animation:screenIn .4s ease both;">
+        <div style="position:relative;height:190px;overflow:hidden;background:radial-gradient(400px 300px at 70% 10%,#16305f,#0a1430 60%);">
+          <video src="assets/teaser.mp4" playsInline ref="{{ authVideoRef }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:{{ authVidOpacity }};transition:opacity 1s ease;"></video>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:radial-gradient(400px 300px at 70% 10%,#16305f,#0a1430 60%);opacity:{{ authVidPlaceholderOpacity }};transition:opacity .8s ease;pointer-events:none;">
+            <img src="assets/mascot-4.png" alt="AIJU" style="height:96px;width:auto;filter:drop-shadow(0 16px 26px rgba(0,0,0,.5));animation:floaty 6s ease-in-out infinite;">
+            <div style="width:110px;height:5px;border-radius:3px;background:#ffffff1f;overflow:hidden;"><div style="width:40%;height:100%;border-radius:3px;background:linear-gradient(90deg,#2A86F5,#37E0A0);animation:loadslide 1.3s ease-in-out infinite;"></div></div>
+          </div>
+          <div onClick="{{ backHome }}" class="btnp" style="position:absolute;left:16px;top:16px;z-index:3;width:38px;height:38px;border-radius:11px;background:#0a1430aa;backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;cursor:pointer;">{{ xIconW }}</div>
+        </div>
+
+        <div style="position:relative;margin-top:-30px;background:#F4F7FC;border-radius:30px 30px 0 0;padding:30px 20px 40px;min-height:400px;">
+          <sc-if value="{{ authEmailStep }}" hint-placeholder-val="{{ true }}">
+          <div style="animation:fadeIn .35s;">
+            <h1 style="font-family:'Sora';font-weight:800;font-size:26px;color:#0F1B2D;margin:0 0 6px;letter-spacing:-.01em;">{{ authTitle }}</h1>
+            <p style="font-size:14px;color:#5B6B85;margin:0 0 22px;">{{ authSub }}</p>
+            <button onClick="{{ socialGoogle }}" class="btnp" style="width:100%;background:#fff;border:1.5px solid #E6ECF6;color:#1B2A41;padding:14px;border-radius:14px;font-weight:700;font-size:14.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;">{{ gGoogle }} Continue with Google</button>
+            <button onClick="{{ socialApple }}" class="btnp" style="width:100%;background:#0F1B2D;border:1.5px solid #0F1B2D;color:#fff;padding:14px;border-radius:14px;font-weight:700;font-size:14.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px;">{{ gApple }} Continue with Apple</button>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><div style="flex:1;height:1px;background:#E6ECF6;"></div><div style="font-size:11.5px;color:#8A99B5;font-weight:600;">or with email</div><div style="flex:1;height:1px;background:#E6ECF6;"></div></div>
+            <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Email address</label>
+            <div style="position:relative;margin-bottom:6px;"><div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);">{{ gMail }}</div><input value="{{ email }}" onInput="{{ onEmail }}" inputmode="email" placeholder="you@example.com" style="width:100%;padding:14px 14px 14px 42px;border:1.5px solid #E6ECF6;border-radius:14px;font-size:15px;color:#0F1B2D;background:#fff;"></div>
+            <sc-if value="{{ otpErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#E5484D;font-weight:600;margin-bottom:6px;">{{ otpErr }}</div></sc-if>
+            <button onClick="{{ sendOtpBtn }}" class="btnp" style="width:100%;margin-top:14px;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:15px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);display:flex;align-items:center;justify-content:center;gap:9px;"><sc-if value="{{ sending }}" hint-placeholder-val="{{ false }}"><span style="width:16px;height:16px;border:2px solid #ffffff66;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;"></span></sc-if>{{ sendLabel }}</button>
+          </div>
+          </sc-if>
+          <sc-if value="{{ authOtpStep }}" hint-placeholder-val="{{ false }}">
+          <div style="animation:fadeIn .35s;">
+            <button onClick="{{ backToEmail }}" class="btnp" style="background:none;border:none;color:#8A99B5;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:16px;">‹ Back</button>
+            <h1 style="font-family:'Sora';font-weight:800;font-size:24px;color:#0F1B2D;margin:0 0 6px;">Verify it's you</h1>
+            <p style="font-size:14px;color:#5B6B85;margin:0 0 6px;">We sent a 5-digit code to<br><b style="color:#1B2A41;">{{ maskedEmail }}</b></p>
+            <div style="display:inline-flex;align-items:center;gap:6px;background:#eaf2ff;border:1px dashed #9cc2ff;color:#1E74E6;font-size:12px;font-weight:700;padding:6px 11px;border-radius:9px;margin:8px 0 20px;font-family:'JetBrains Mono';">Demo code: 1 2 3 4 5</div>
+            <div style="display:flex;gap:9px;margin-bottom:8px;">
+              <sc-for list="{{ otpBoxes }}" as="o" hint-placeholder-count="5"><input id="{{ o.id }}" value="{{ o.val }}" onInput="{{ o.onInput }}" onKeyDown="{{ o.onKey }}" maxlength="1" inputmode="numeric" style="width:100%;aspect-ratio:1;text-align:center;font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;border:1.5px solid #E6ECF6;border-radius:13px;background:#fff;"></sc-for>
+            </div>
+            <sc-if value="{{ otpErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#E5484D;font-weight:600;margin-bottom:6px;">{{ otpErr }}</div></sc-if>
+            <button onClick="{{ verifyOtpBtn }}" class="btnp" style="width:100%;margin-top:14px;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:15px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);display:flex;align-items:center;justify-content:center;gap:9px;">Verify & Continue {{ gArrowW }}</button>
+            <div style="text-align:center;font-size:13px;color:#8A99B5;margin-top:14px;">Didn't get it? <a onClick="{{ sendOtpBtn }}" style="font-weight:700;cursor:pointer;">Resend code</a></div>
+          </div>
+          </sc-if>
+          <div style="margin-top:24px;text-align:center;font-size:13px;color:#8A99B5;">
+            <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ true }}"><span>Already have an account? <a onClick="{{ toLogin }}" style="font-weight:700;cursor:pointer;">Log in</a></span></sc-if>
+            <sc-if value="{{ isLoginMode }}" hint-placeholder-val="{{ false }}"><span>New here? <a onClick="{{ toRegister }}" style="font-weight:700;cursor:pointer;">Create an account</a></span></sc-if>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== TEASER ===== -->
+      <sc-if value="{{ isTeaser }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height:100%;background:#F4F7FC;animation:screenIn .4s ease both;display:flex;flex-direction:column;">
+        <div style="background:#fff;border-bottom:1px solid #E6ECF6;padding:12px 18px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10;">
+          <img src="assets/aiju-logo.png" alt="" style="height:28px;width:auto;"><div style="font-family:'Sora';font-weight:800;font-size:13px;color:#0F1B2D;">AI Masterclass</div><div style="flex:1;"></div><div style="font-size:10.5px;font-weight:700;color:#8A99B5;font-family:'JetBrains Mono';"><span style="color:#1E74E6;">01</span> · 02 · 03</div>
+        </div>
+        <div style="padding:22px 18px 20px;">
+          <div style="text-align:center;margin-bottom:18px;">
+            <div style="display:inline-flex;align-items:center;gap:8px;background:#eaf2ff;color:#1E74E6;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:12px;">WELCOME TO AI MASTERCLASS</div>
+            <h1 style="font-family:'Sora';font-weight:800;font-size:26px;line-height:1.1;letter-spacing:-.02em;color:#0F1B2D;margin:0 0 8px;">Here's a taste of what's inside</h1>
+            <p style="font-size:14px;color:#5B6B85;margin:0;">Watch the teaser, then unlock the full journey for ₹499.</p>
+          </div>
+          <div style="border-radius:18px;overflow:hidden;box-shadow:0 20px 50px -26px rgba(20,50,110,.45);border:1px solid #E6ECF6;background:#000;margin-bottom:28px;">
+            <video src="assets/teaser.mp4" playsInline ref="{{ ctrlVideoRef }}" style="display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#000;"></video>
+          </div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:19px;color:#0F1B2D;margin:0 0 14px;">What your child will learn</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;">
+            <sc-for list="{{ teaserLearn }}" as="l" hint-placeholder-count="4">
+              <div style="background:#fff;border:1px solid #E6ECF6;border-radius:15px;padding:16px;box-shadow:0 8px 24px -18px rgba(20,50,110,.2);"><div style="width:40px;height:40px;border-radius:11px;background:#eaf2ff;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">{{ l.icon }}</div><div style="font-family:'Sora';font-weight:700;font-size:14px;color:#0F1B2D;margin-bottom:4px;">{{ l.t }}</div><div style="font-size:12px;line-height:1.45;color:#5B6B85;">{{ l.d }}</div></div>
+            </sc-for>
+          </div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:19px;color:#0F1B2D;margin:0 0 14px;">A glimpse of the app</h2>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ teaserGlimpses }}" as="g" hint-placeholder-count="3">
+              <div style="border-radius:15px;overflow:hidden;border:1px solid #E6ECF6;background:#fff;box-shadow:0 8px 24px -18px rgba(20,50,110,.2);"><div style="aspect-ratio:16/9;background-image:url('{{ g.img }}');background-size:cover;background-position:center;background-color:#eaf2ff;"></div><div style="padding:12px 14px;font-family:'Sora';font-weight:700;font-size:13.5px;color:#0F1B2D;">{{ g.cap }}</div></div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="position:sticky;bottom:0;z-index:10;background:#ffffffee;backdrop-filter:blur(12px);border-top:1px solid #E6ECF6;box-shadow:0 -10px 30px -18px rgba(20,50,110,.3);padding:12px 18px;display:flex;align-items:center;gap:12px;margin-top:auto;">
+          <div><div style="font-family:'Sora';font-weight:800;font-size:17px;color:#0F1B2D;">₹499</div><div style="font-size:10.5px;color:#8A99B5;">one-time · 3 months</div></div>
+          <button onClick="{{ teaserContinue }}" class="btnp" style="flex:1;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:14.5px;cursor:pointer;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);display:flex;align-items:center;justify-content:center;gap:8px;">Continue {{ gArrowW }}</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== PAYMENT ===== -->
+      <sc-if value="{{ isPayment }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height:100%;background:radial-gradient(500px 400px at 80% 0%,#eaf2ff,#f4f7fc 55%);animation:screenIn .4s ease both;">
+        <div style="background:#fff;border-bottom:1px solid #E6ECF6;padding:12px 18px;display:flex;align-items:center;gap:10px;">
+          <img src="assets/aiju-logo.png" alt="" style="height:28px;width:auto;"><div style="font-family:'Sora';font-weight:800;font-size:13px;color:#0F1B2D;">AI Masterclass</div><div style="flex:1;"></div><div style="font-size:10.5px;font-weight:700;color:#8A99B5;font-family:'JetBrains Mono';">01 · <span style="color:#1E74E6;">02</span> · 03</div>
+        </div>
+        <div style="padding:20px 18px 36px;">
+          <sc-if value="{{ paySummary }}" hint-placeholder-val="{{ true }}">
+          <div style="animation:fadeIn .3s;">
+            <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 10px 30px -20px rgba(20,50,110,.25);margin-bottom:16px;">
+              <div style="font-family:'JetBrains Mono';font-size:10px;letter-spacing:.14em;color:#8A99B5;margin-bottom:14px;">ORDER SUMMARY</div>
+              <div style="display:flex;gap:12px;align-items:center;padding-bottom:16px;border-bottom:1px solid #EEF2F9;"><div style="width:50px;height:50px;border-radius:13px;background:linear-gradient(135deg,#1E74E6,#0B4FB0);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/aiju-logo.png" style="height:26px;"></div><div><div style="font-family:'Sora';font-weight:700;font-size:15px;color:#0F1B2D;">AI Masterclass</div><div style="font-size:12px;color:#8A99B5;">6 chapters · 3 months</div></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;"><span style="font-weight:700;color:#0F1B2D;">Total</span><span style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;">₹499</span></div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:14px;background:#e6f6ef;border-radius:11px;padding:11px;font-size:12px;color:#0f7a52;font-weight:600;">{{ shieldSm }} 100% secure · powered by Razorpay</div>
+            </div>
+            <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 10px 30px -20px rgba(20,50,110,.25);">
+              <div style="font-family:'Sora';font-weight:800;font-size:17px;color:#0F1B2D;margin-bottom:14px;">Payment method</div>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+                <div onClick="{{ setUpiM }}" class="btnp" style="border:1.5px solid {{ upiBorder }};background:{{ upiBg }};border-radius:13px;padding:14px;display:flex;align-items:center;gap:11px;cursor:pointer;"><div style="width:20px;height:20px;border-radius:50%;border:2px solid {{ upiDot }};display:flex;align-items:center;justify-content:center;"><div style="width:10px;height:10px;border-radius:50%;background:{{ upiDotFill }};"></div></div><div style="flex:1;"><div style="font-weight:700;font-size:14.5px;color:#0F1B2D;">UPI</div><div style="font-size:12px;color:#8A99B5;">GPay, PhonePe, Paytm</div></div><div style="font-family:'Sora';font-weight:800;font-size:11px;color:#1E74E6;">Recommended</div></div>
+                <div onClick="{{ setCardM }}" class="btnp" style="border:1.5px solid {{ cardBorder }};background:{{ cardBg }};border-radius:13px;padding:14px;display:flex;align-items:center;gap:11px;cursor:pointer;"><div style="width:20px;height:20px;border-radius:50%;border:2px solid {{ cardDot }};display:flex;align-items:center;justify-content:center;"><div style="width:10px;height:10px;border-radius:50%;background:{{ cardDotFill }};"></div></div><div style="flex:1;"><div style="font-weight:700;font-size:14.5px;color:#0F1B2D;">Card</div><div style="font-size:12px;color:#8A99B5;">Debit / Credit</div></div></div>
+                <div onClick="{{ setNbM }}" class="btnp" style="border:1.5px solid {{ nbBorder }};background:{{ nbBg }};border-radius:13px;padding:14px;display:flex;align-items:center;gap:11px;cursor:pointer;"><div style="width:20px;height:20px;border-radius:50%;border:2px solid {{ nbDot }};display:flex;align-items:center;justify-content:center;"><div style="width:10px;height:10px;border-radius:50%;background:{{ nbDotFill }};"></div></div><div style="flex:1;"><div style="font-weight:700;font-size:14.5px;color:#0F1B2D;">Net Banking</div><div style="font-size:12px;color:#8A99B5;">All major banks</div></div></div>
+              </div>
+              <sc-if value="{{ isUpi }}" hint-placeholder-val="{{ true }}"><div style="animation:fadeIn .3s;margin-bottom:18px;"><label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Your UPI ID</label><input value="{{ upiId }}" onInput="{{ onUpi }}" placeholder="yourname@upi" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:15px;color:#0F1B2D;background:#F8FAFE;margin-bottom:10px;"><div style="display:flex;gap:7px;flex-wrap:wrap;"><sc-for list="{{ upiApps }}" as="a" hint-placeholder-count="4"><div style="flex:1;min-width:60px;text-align:center;padding:9px;border:1px solid #E6ECF6;border-radius:10px;font-size:11.5px;font-weight:700;color:#5B6B85;background:#F8FAFE;">{{ a }}</div></sc-for></div></div></sc-if>
+              <button onClick="{{ payNow }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:15px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);display:flex;align-items:center;justify-content:center;gap:9px;"><sc-if value="{{ payProcessing }}" hint-placeholder-val="{{ false }}"><span style="width:17px;height:17px;border:2px solid #ffffff66;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;"></span></sc-if>{{ payBtnLabel }}</button>
+              <div style="text-align:center;font-size:11px;color:#8A99B5;margin-top:12px;">By paying you agree to our Terms & Refund Policy</div>
+            </div>
+          </div>
+          </sc-if>
+          <sc-if value="{{ paySuccess }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;border:1px solid #E6ECF6;border-radius:22px;padding:32px 24px;text-align:center;box-shadow:0 20px 50px -30px rgba(20,50,110,.3);animation:screenIn .4s;margin-top:16px;">
+            <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1FA971,#37E0A0);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:pop .5s cubic-bezier(.2,.8,.3,1) both;box-shadow:0 16px 36px -10px rgba(31,169,113,.5);">{{ checkBig }}</div>
+            <h1 style="font-family:'Sora';font-weight:800;font-size:24px;color:#0F1B2D;margin:0 0 8px;">Payment successful!</h1>
+            <p style="font-size:14px;color:#5B6B85;margin:0 0 18px;">Welcome to AI Masterclass. Your access is active for 3 months.</p>
+            <div style="background:#F8FAFE;border-radius:12px;padding:14px;text-align:left;margin-bottom:22px;"><div style="display:flex;justify-content:space-between;font-size:12.5px;color:#5B6B85;padding:4px 0;"><span>Order ID</span><span style="font-weight:700;color:#0F1B2D;font-family:'JetBrains Mono';">#AIJU-4417</span></div><div style="display:flex;justify-content:space-between;font-size:12.5px;color:#5B6B85;padding:4px 0;"><span>Amount</span><span style="font-weight:700;color:#0F1B2D;">₹499.00</span></div><div style="display:flex;justify-content:space-between;font-size:12.5px;color:#5B6B85;padding:4px 0;"><span>Valid till</span><span style="font-weight:700;color:#0F1B2D;">09 Oct 2026</span></div></div>
+            <button onClick="{{ paymentDone }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:15px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);display:flex;align-items:center;justify-content:center;gap:9px;">Complete your profile {{ gArrowW }}</button>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== PROFILE COMPLETE ===== -->
+      <sc-if value="{{ isProfileComplete }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height:100%;background:#F4F7FC;animation:screenIn .4s ease both;padding:18px 18px 36px;">
+        <div style="position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#122a54,#0a1430);border-radius:20px;padding:18px 20px;margin-bottom:18px;">
+          <div style="position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#1E74E655,transparent 70%);"></div>
+          <img src="assets/mascot-1.png" alt="AIJU" style="height:70px;width:auto;flex-shrink:0;position:relative;">
+          <div style="position:relative;"><h1 style="font-family:'Sora';font-weight:800;font-size:20px;color:#fff;margin:0 0 4px;">One quick step!</h1><p style="font-size:12.5px;color:#b9c6e2;margin:0;">Help AIJU personalise the journey. All fields required.</p></div>
+        </div>
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:20px;padding:20px;box-shadow:0 10px 30px -22px rgba(20,50,110,.25);">
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div><label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Parent's phone number *</label>
+              <div style="display:flex;align-items:stretch;border:1.5px solid #E6ECF6;border-radius:12px;background:#F8FAFE;overflow:hidden;"><div style="display:flex;align-items:center;gap:7px;padding:0 11px;border-right:1px solid #E6ECF6;background:#eef2f9;flex-shrink:0;"><span style="width:20px;height:14px;border-radius:2px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 0 1px #d5dced;"><span style="flex:1;background:#FF9933;"></span><span style="flex:1;background:#fff;display:flex;align-items:center;justify-content:center;"><span style="width:4px;height:4px;border-radius:50%;border:1.2px solid #0A3A8B;"></span></span><span style="flex:1;background:#138808;"></span></span><span style="font-weight:700;font-size:14px;color:#0F1B2D;">+91</span></div><input value="{{ p.phone }}" onInput="{{ setPhone }}" inputmode="numeric" maxlength="10" placeholder="98765 43210" style="flex:1;min-width:0;padding:13px;border:none;font-size:15px;background:transparent;color:#0F1B2D;"></div>
+            </div>
+            <div><label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Child's name *</label><input value="{{ p.childName }}" onInput="{{ setChildName }}" placeholder="e.g. Aarav Sharma" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:15px;background:#F8FAFE;color:#0F1B2D;"></div>
+            <div style="display:flex;gap:12px;">
+              <div style="flex:1;"><label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Age *</label><input value="{{ p.childAge }}" onInput="{{ setChildAge }}" inputmode="numeric" maxlength="2" placeholder="11" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:15px;background:#F8FAFE;color:#0F1B2D;"></div>
+              <div style="flex:1;"><label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Class *</label><select value="{{ p.klass }}" onChange="{{ setKlass }}" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:14.5px;background:#F8FAFE;color:#0F1B2D;"><option value="">Select</option><sc-for list="{{ classOpts }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for></select></div>
+            </div>
+            <div><label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">School *</label><select value="{{ p.school }}" onChange="{{ setSchool }}" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:14.5px;background:#F8FAFE;color:#0F1B2D;"><option value="">Select school</option><sc-for list="{{ schoolOpts }}" as="s" hint-placeholder-count="4"><option value="{{ s }}">{{ s }}</option></sc-for></select></div>
+            <div style="display:flex;gap:12px;">
+              <div style="flex:1;"><label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Section *</label><input value="{{ p.section }}" onInput="{{ setSection }}" maxlength="2" placeholder="B" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:15px;background:#F8FAFE;color:#0F1B2D;text-transform:uppercase;"></div>
+              <div style="flex:1;"><label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Roll no. *</label><input value="{{ p.roll }}" onInput="{{ setRoll }}" inputmode="numeric" placeholder="24" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:15px;background:#F8FAFE;color:#0F1B2D;"></div>
+            </div>
+          </div>
+          <div style="margin-top:20px;">
+            <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:10px;">Child's interests * <span style="color:#8A99B5;font-weight:500;">(pick a few)</span></label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <sc-for list="{{ interestOpts }}" as="it" hint-placeholder-count="12"><div onClick="{{ it.toggle }}" class="btnp" style="cursor:pointer;padding:9px 13px;border-radius:999px;font-size:12.5px;font-weight:600;border:1.5px solid {{ it.bc }};background:{{ it.bg }};color:{{ it.fg }};display:flex;align-items:center;gap:5px;">{{ it.tick }}{{ it.label }}</div></sc-for>
+            </div>
+          </div>
+          <button onClick="{{ saveProfile }}" class="btnp" style="width:100%;margin-top:24px;background:{{ saveBg }};border:none;color:#fff;padding:16px;border-radius:14px;font-weight:800;font-size:15.5px;cursor:pointer;box-shadow:{{ saveShadow }};opacity:{{ saveOpacity }};display:flex;align-items:center;justify-content:center;gap:9px;">Save & enter my course {{ gArrowW }}</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== HOME ===== -->
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:18px 16px 26px;animation:screenIn .4s ease both;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+          <div style="flex:1;"><div style="font-size:13px;color:#8A99B5;font-weight:600;">Namaste,</div><h1 style="font-family:'Sora';font-weight:800;font-size:26px;color:#0F1B2D;margin:2px 0 0;letter-spacing:-.01em;">{{ greetName }}</h1></div>
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#1E74E6,#0B4FB0);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Sora';font-weight:800;font-size:17px;">{{ avatarInitial }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div style="grid-column:span 2;background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:18px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);display:flex;align-items:center;gap:14px;">
+            <div style="width:60px;height:60px;border-radius:50%;background:conic-gradient(#1E74E6 {{ overallDeg }}, #eaf0f9 0);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:800;font-size:14px;color:#0F1B2D;">{{ overallPct }}%</div></div>
+            <div><div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;">Course progress</div><div style="font-size:12px;color:#8A99B5;margin-top:2px;">Keep it going!</div></div>
+          </div>
+          <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:16px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);"><div style="width:36px;height:36px;border-radius:10px;background:#e6f6ef;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">{{ trophyIcon }}</div><div style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;line-height:1;">{{ doneCount }}<span style="font-size:13px;color:#8A99B5;">/6</span></div><div style="font-size:12px;color:#8A99B5;margin-top:3px;">Chapters done</div></div>
+          <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:16px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);"><div style="width:36px;height:36px;border-radius:10px;background:#fff7e6;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">{{ flameBig }}</div><div style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;line-height:1;">{{ streakDays }}<span style="font-size:13px;color:#8A99B5;"> days</span></div><div style="font-size:12px;color:#8A99B5;margin-top:3px;">Current streak</div></div>
+        </div>
+        <div style="position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(140deg,#16305f,#0a1430);box-shadow:0 18px 44px -24px rgba(10,20,48,.6);margin-bottom:16px;">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(#ffffff10 1px,transparent 1px),linear-gradient(90deg,#ffffff10 1px,transparent 1px);background-size:30px 30px;opacity:.5;mask-image:radial-gradient(300px 220px at 85% 20%,#000,transparent 75%);"></div>
+          <img src="assets/mascot-4.png" alt="" style="position:absolute;right:-14px;bottom:-14px;height:140px;width:auto;opacity:.9;">
+          <div style="position:relative;padding:22px;">
+            <div style="display:inline-flex;align-items:center;gap:6px;background:#F5A80022;border:1px solid #F5A80055;color:#F5A800;font-family:'JetBrains Mono';font-size:9.5px;letter-spacing:.1em;padding:5px 10px;border-radius:999px;margin-bottom:12px;">{{ pulseIcon }} CONTINUE</div>
+            <div style="font-family:'JetBrains Mono';font-size:11px;color:#8fb6ff;margin-bottom:4px;">CHAPTER {{ nextChPad }}</div>
+            <h2 style="font-family:'Sora';font-weight:800;font-size:19px;color:#fff;margin:0 0 14px;line-height:1.15;max-width:200px;">{{ nextCh.title }}</h2>
+            <button onClick="{{ resumeNext }}" class="btnp" style="background:#fff;border:none;color:#0a1430;padding:12px 20px;border-radius:11px;font-weight:800;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 12px 28px -12px rgba(0,0,0,.5);">{{ resumeIcon }} Resume</button>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">{{ flameBig }}<div><div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;">Daily streak</div><div style="font-size:11.5px;color:#8A99B5;">Best: {{ streakBest }} days</div></div></div>
+          <div style="display:flex;gap:7px;">
+            <sc-for list="{{ weekDays }}" as="w" hint-placeholder-count="7"><div style="flex:1;text-align:center;"><div style="aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;background:{{ w.bg }};border:{{ w.border }};margin-bottom:5px;">{{ w.mark }}</div><div style="font-size:10px;font-weight:700;color:{{ w.labelColor }};">{{ w.d }}</div></div></sc-for>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:48px;height:48px;border-radius:13px;background:linear-gradient(135deg,#1E74E6,#0B4FB0);display:flex;align-items:center;justify-content:center;">{{ bookIconW }}</div><div><h3 style="font-family:'Sora';font-weight:800;font-size:16px;color:#0F1B2D;margin:0 0 2px;">AI Masterclass</h3><p style="font-size:12px;color:#5B6B85;margin:0;">6 chapters · videos, guides & quizzes</p></div></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;"><div style="flex:1;height:7px;border-radius:4px;background:#eaf0f9;overflow:hidden;"><div style="width:{{ overallPct }}%;height:100%;background:linear-gradient(90deg,#1E74E6,#37E0A0);border-radius:4px;"></div></div><div style="font-weight:800;font-size:13px;color:#1E74E6;">{{ overallPct }}%</div></div>
+          <button onClick="{{ openCourseBtn }}" class="btnp" style="width:100%;background:#eaf2ff;border:none;color:#1E74E6;padding:13px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">Open course {{ chevBlue }}</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== COURSE ===== -->
+      <sc-if value="{{ isCourse }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:16px 16px 26px;animation:screenIn .4s ease both;">
+        <div onClick="{{ backHomeBtn }}" class="btnp" style="display:inline-flex;align-items:center;gap:6px;color:#5B6B85;font-weight:600;font-size:13px;cursor:pointer;margin-bottom:14px;">{{ backIcon }} Home</div>
+        <div style="position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(135deg,#16305f,#0a1430);box-shadow:0 18px 44px -26px rgba(10,20,48,.6);margin-bottom:20px;padding:22px;">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(#ffffff10 1px,transparent 1px),linear-gradient(90deg,#ffffff10 1px,transparent 1px);background-size:30px 30px;opacity:.5;mask-image:radial-gradient(300px 200px at 85% 10%,#000,transparent 75%);"></div>
+          <div style="position:relative;display:flex;align-items:center;gap:16px;">
+            <div style="flex:1;"><div style="display:inline-flex;align-items:center;gap:6px;background:#ffffff14;border:1px solid #ffffff26;color:#8fb6ff;font-family:'JetBrains Mono';font-size:9.5px;letter-spacing:.1em;padding:5px 10px;border-radius:999px;margin-bottom:10px;">6 CHAPTERS</div><h1 style="font-family:'Sora';font-weight:800;font-size:20px;color:#fff;margin:0 0 10px;">Your AI journey</h1><div style="display:flex;gap:16px;"><div><div style="font-family:'Sora';font-weight:800;font-size:18px;color:#fff;">{{ courseHeroDone }}/6</div><div style="font-size:10.5px;color:#8fb6ff;">Done</div></div><div><div style="font-family:'Sora';font-weight:800;font-size:18px;color:#fff;">{{ courseTotalTime }}</div><div style="font-size:10.5px;color:#8fb6ff;">Content</div></div></div></div>
+            <div style="width:76px;height:76px;border-radius:50%;background:conic-gradient(#37E0A0 {{ overallDeg }}, #ffffff1f 0);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:60px;height:60px;border-radius:50%;background:#0a1430;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div style="font-family:'Sora';font-weight:800;font-size:17px;color:#fff;">{{ overallPct }}%</div></div></div>
+          </div>
+        </div>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:17px;color:#0F1B2D;margin:0 0 14px;">Chapters &amp; materials</h2>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ courseChapters }}" as="ch" hint-placeholder-count="6">
+            <div style="background:{{ ch.rowBg }};border:1px solid #E6ECF6;border-radius:16px;overflow:hidden;box-shadow:0 6px 20px -18px rgba(20,50,110,.3);">
+              <div onClick="{{ ch.toggle }}" class="btnp" style="padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;">
+                <div style="width:42px;height:42px;border-radius:12px;background:{{ ch.numBg }};display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:800;font-size:14px;color:{{ ch.numColor }};flex-shrink:0;">{{ ch.numContent }}</div>
+                <div style="flex:1;min-width:0;"><div style="font-family:'JetBrains Mono';font-size:9px;letter-spacing:.1em;color:#8A99B5;margin-bottom:2px;">CH {{ ch.numPad }} · {{ ch.tag }}</div><div style="font-family:'Sora';font-weight:700;font-size:14.5px;color:#0F1B2D;line-height:1.2;">{{ ch.title }}</div></div>
+                <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><div style="font-size:11px;font-weight:700;color:{{ ch.statusColor }};white-space:nowrap;">{{ ch.statusText }}</div><div style="transform:{{ ch.chevRot }};transition:transform .25s;">{{ ch.chevIcon }}</div></div>
+              </div>
+              <sc-if value="{{ ch.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 14px 14px;animation:fadeIn .3s;"><div style="border-top:1px dashed #E6ECF6;padding-top:12px;display:flex;flex-direction:column;gap:8px;">
+                  <sc-for list="{{ ch.materials }}" as="m" hint-placeholder-count="3">
+                    <div onClick="{{ m.open }}" class="btnp" style="display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:12px;cursor:pointer;background:#fff;border:1px solid #EEF2F9;"><div style="width:34px;height:34px;border-radius:10px;background:{{ m.ib }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ m.icon }}</div><div style="flex:1;min-width:0;"><div style="font-weight:700;font-size:13.5px;color:#0F1B2D;">{{ m.label }}</div><div style="font-size:11px;color:#8A99B5;">{{ m.meta }}</div></div><div style="font-size:11px;font-weight:700;color:#1E74E6;white-space:nowrap;">{{ m.status }}</div>{{ m.chev }}</div>
+                  </sc-for>
+                </div></div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== VIDEO ===== -->
+      <sc-if value="{{ isVideo }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:16px 16px 26px;animation:screenIn .4s ease both;">
+        <div onClick="{{ backCourseBtn }}" class="btnp" style="display:inline-flex;align-items:center;gap:6px;color:#5B6B85;font-weight:600;font-size:13px;cursor:pointer;margin-bottom:14px;">{{ backIcon }} Course</div>
+        <div style="border-radius:16px;overflow:hidden;background:#000;box-shadow:0 20px 50px -28px rgba(10,20,48,.6);margin-bottom:16px;"><video src="assets/teaser.mp4" playsInline ref="{{ lessonVideoRef }}" style="display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#000;"></video></div>
+        <div style="font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:#8A99B5;margin-bottom:5px;">CHAPTER {{ vidChPad }} · {{ vidTag }}</div>
+        <h1 style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;margin:0 0 18px;letter-spacing:-.01em;line-height:1.15;">{{ vidTitle }}</h1>
+        <div style="border-top:1px solid #EEF2F9;padding-top:20px;">
+          <h2 style="font-family:'Sora';font-weight:800;font-size:18px;color:#0F1B2D;margin:0 0 10px;">Study material</h2>
+          <p style="font-size:15px;line-height:1.65;color:#1B2A41;margin:0 0 22px;font-weight:500;">{{ matIntro }}</p>
+          <div style="display:flex;flex-direction:column;gap:22px;">
+            <sc-for list="{{ matSections }}" as="s" hint-placeholder-count="3">
+              <div><h3 style="font-family:'Sora';font-weight:700;font-size:16.5px;color:#0F1B2D;margin:0 0 10px;">{{ s.h }}</h3><div style="border-radius:13px;overflow:hidden;border:1px solid #E6ECF6;margin-bottom:12px;aspect-ratio:16/8;background-image:repeating-linear-gradient(135deg,#f4f7fc,#f4f7fc 12px,#eef3fb 12px,#eef3fb 24px);display:flex;align-items:center;justify-content:center;"><div style="font-family:'JetBrains Mono';font-size:11px;color:#9aa8c4;background:#ffffffcc;padding:5px 10px;border-radius:7px;text-align:center;">{{ s.cap }}</div></div><p style="font-size:14.5px;line-height:1.7;color:#3a4863;margin:0;">{{ s.p }}</p></div>
+            </sc-for>
+          </div>
+          <div style="margin-top:24px;position:relative;overflow:hidden;background:linear-gradient(135deg,#122a54,#0a1430);border-radius:18px;padding:22px;">
+            <div style="position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,#F5A80033,transparent 70%);"></div>
+            <div style="position:relative;font-family:'Sora';font-weight:800;font-size:16px;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:9px;">{{ keyIconGold }} Key points</div>
+            <div style="position:relative;display:flex;flex-direction:column;gap:11px;"><sc-for list="{{ matKeys }}" as="k" hint-placeholder-count="5"><div style="display:flex;align-items:flex-start;gap:11px;"><span style="width:20px;height:20px;border-radius:6px;background:#F5A80022;color:#F5A800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">{{ keyIcon }}</span><span style="font-size:13.5px;line-height:1.5;color:#dbe6fb;">{{ k }}</span></div></sc-for></div>
+          </div>
+          <div style="margin-top:20px;background:#fff;border:1px solid #E6ECF6;border-radius:16px;padding:18px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);">
+            <div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;margin-bottom:3px;">Finished the lesson?</div><div style="font-size:12.5px;color:#5B6B85;margin-bottom:14px;">Test what you learned with a quick quiz.</div>
+            <button onClick="{{ matToAssignment }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:14px;border-radius:12px;font-weight:800;font-size:14.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);">Attempt assignment {{ gArrowW }}</button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== STUDY MATERIAL ===== -->
+      <sc-if value="{{ isMaterial }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:16px 16px 26px;animation:screenIn .4s ease both;">
+        <div onClick="{{ backCourseBtn }}" class="btnp" style="display:inline-flex;align-items:center;gap:6px;color:#5B6B85;font-weight:600;font-size:13px;cursor:pointer;margin-bottom:14px;">{{ backIcon }} Course</div>
+        <div style="font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:#8A99B5;margin-bottom:6px;">CHAPTER {{ matChPad }} · STUDY MATERIAL</div>
+        <h1 style="font-family:'Sora';font-weight:800;font-size:24px;color:#0F1B2D;margin:0 0 12px;line-height:1.15;letter-spacing:-.01em;">{{ matTitle }}</h1>
+        <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:20px;"><div style="display:inline-flex;align-items:center;gap:6px;background:#f2ecfe;color:#7C3AED;font-size:11.5px;font-weight:700;padding:6px 11px;border-radius:999px;">{{ docIconPurple }} {{ matRead }}</div><div style="display:inline-flex;align-items:center;gap:6px;background:#eaf2ff;color:#1E74E6;font-size:11.5px;font-weight:700;padding:6px 11px;border-radius:999px;">{{ pulseIconBlue }} Reading: {{ matReadTime }}</div></div>
+        <p style="font-size:15.5px;line-height:1.7;color:#1B2A41;margin:0 0 24px;font-weight:500;">{{ matIntro }}</p>
+        <div style="display:flex;flex-direction:column;gap:24px;">
+          <sc-for list="{{ matSections }}" as="s" hint-placeholder-count="3">
+            <div><h2 style="font-family:'Sora';font-weight:700;font-size:18px;color:#0F1B2D;margin:0 0 10px;">{{ s.h }}</h2><div style="border-radius:13px;overflow:hidden;border:1px solid #E6ECF6;margin-bottom:12px;aspect-ratio:16/8;background-image:repeating-linear-gradient(135deg,#f4f7fc,#f4f7fc 12px,#eef3fb 12px,#eef3fb 24px);display:flex;align-items:center;justify-content:center;"><div style="font-family:'JetBrains Mono';font-size:11px;color:#9aa8c4;background:#ffffffcc;padding:5px 10px;border-radius:7px;text-align:center;">{{ s.cap }}</div></div><p style="font-size:14.5px;line-height:1.7;color:#3a4863;margin:0;">{{ s.p }}</p></div>
+          </sc-for>
+        </div>
+        <div style="margin-top:26px;position:relative;overflow:hidden;background:linear-gradient(135deg,#122a54,#0a1430);border-radius:18px;padding:22px;">
+          <div style="position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,#F5A80033,transparent 70%);"></div>
+          <div style="position:relative;font-family:'Sora';font-weight:800;font-size:16px;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:9px;">{{ keyIconGold }} Key points to remember</div>
+          <div style="position:relative;display:flex;flex-direction:column;gap:11px;"><sc-for list="{{ matKeys }}" as="k" hint-placeholder-count="5"><div style="display:flex;align-items:flex-start;gap:11px;"><span style="width:20px;height:20px;border-radius:6px;background:#F5A80022;color:#F5A800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">{{ keyIcon }}</span><span style="font-size:13.5px;line-height:1.5;color:#dbe6fb;">{{ k }}</span></div></sc-for></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:22px;">
+          <button onClick="{{ markReadBtn }}" class="btnp" style="width:100%;background:{{ markReadBg }};border:1.5px solid {{ markReadBorder }};color:{{ markReadColor }};padding:14px;border-radius:13px;font-weight:800;font-size:14.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">{{ markReadIcon }} {{ markReadLabel }}</button>
+          <button onClick="{{ matToAssignment }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:14.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">Take the assignment {{ gArrowW }}</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== ASSIGNMENT ===== -->
+      <sc-if value="{{ isAssignment }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:16px 16px 26px;animation:screenIn .4s ease both;">
+        <div onClick="{{ backCourseBtn }}" class="btnp" style="display:inline-flex;align-items:center;gap:6px;color:#5B6B85;font-weight:600;font-size:13px;cursor:pointer;margin-bottom:14px;">{{ backIcon }} Course</div>
+        <sc-if value="{{ asgQuizActive }}" hint-placeholder-val="{{ true }}">
+        <div style="animation:fadeIn .3s;">
+          <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px;"><div style="width:38px;height:38px;border-radius:11px;background:#fff5e2;display:flex;align-items:center;justify-content:center;">{{ quizIconGold }}</div><div><div style="font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:#8A99B5;">CH {{ asgChPad }} · ASSIGNMENT</div><div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;">Quick quiz · 5 questions</div></div></div>
+          <div style="display:flex;gap:6px;margin-bottom:18px;"><sc-for list="{{ asgDots }}" as="d" hint-placeholder-count="5"><div onClick="{{ d.goto }}" style="flex:1;max-width:40px;height:8px;border-radius:5px;background:{{ d.bg }};cursor:pointer;transition:background .2s;"></div></sc-for></div>
+          <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:22px;box-shadow:0 12px 34px -26px rgba(20,50,110,.3);">
+            <div style="font-family:'JetBrains Mono';font-size:11px;color:#8A99B5;margin-bottom:9px;">QUESTION {{ asgIdx1 }} OF {{ asgTotal }}</div>
+            <div style="font-family:'Sora';font-weight:700;font-size:19px;color:#0F1B2D;margin-bottom:18px;line-height:1.3;">{{ asgCurText }}</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <sc-for list="{{ asgCurOpts }}" as="o" hint-placeholder-count="4"><div onClick="{{ o.pick }}" class="btnp" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:13px;border:1.5px solid {{ o.bc }};background:{{ o.bg }};cursor:pointer;"><div style="width:28px;height:28px;border-radius:8px;background:{{ o.letterBg }};color:{{ o.letterC }};display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:800;font-size:12px;flex-shrink:0;">{{ o.letter }}</div><div style="font-size:14px;font-weight:600;color:#1B2A41;">{{ o.text }}</div></div></sc-for>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button onClick="{{ asgPrevBtn }}" class="btnp" style="background:#fff;border:1.5px solid #E6ECF6;color:#5B6B85;padding:13px 18px;border-radius:13px;font-weight:700;font-size:14px;cursor:pointer;opacity:{{ asgPrevOpacity }};">Previous</button>
+            <div style="flex:1;"></div>
+            <sc-if value="{{ asgShowNext }}" hint-placeholder-val="{{ true }}"><button onClick="{{ asgNextBtn }}" class="btnp" style="background:#0F1B2D;border:none;color:#fff;padding:13px 24px;border-radius:13px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;">Next {{ gArrowW }}</button></sc-if>
+            <sc-if value="{{ asgShowSubmit }}" hint-placeholder-val="{{ false }}"><button onClick="{{ submitAsgBtn }}" class="btnp" style="background:{{ asgSubmitBg }};border:none;color:#fff;padding:13px 26px;border-radius:13px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:{{ asgSubmitShadow }};">Submit {{ clipIcon }}</button></sc-if>
+          </div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ asgSubmitted }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:screenIn .4s;">
+          <div style="text-align:center;background:#fff;border:1px solid #E6ECF6;border-radius:20px;padding:30px;box-shadow:0 14px 40px -28px rgba(20,50,110,.3);margin-bottom:18px;">
+            <div style="width:88px;height:88px;border-radius:50%;background:conic-gradient(#F5A800 {{ asgScoreDeg }}, #eef2f9 0);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation:pop .5s cubic-bezier(.2,.8,.3,1) both;"><div style="width:70px;height:70px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;"><div style="font-family:'Sora';font-weight:800;font-size:24px;color:#0F1B2D;">{{ asgScore }}<span style="font-size:14px;color:#8A99B5;">/5</span></div></div></div>
+            <h1 style="font-family:'Sora';font-weight:800;font-size:23px;color:#0F1B2D;margin:0 0 8px;">{{ asgResultTitle }}</h1>
+            <p style="font-size:14px;color:#5B6B85;margin:0;">{{ asgResultMsg }}</p>
+          </div>
+          <div style="font-family:'Sora';font-weight:800;font-size:16px;color:#0F1B2D;margin:0 0 12px;">Review answers</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ asgReview }}" as="r" hint-placeholder-count="5">
+              <div style="background:#fff;border:1px solid #E6ECF6;border-radius:15px;padding:16px;">
+                <div style="display:flex;gap:9px;align-items:flex-start;margin-bottom:10px;"><div style="flex-shrink:0;margin-top:1px;">{{ r.mark }}</div><div style="font-family:'Sora';font-weight:700;font-size:14px;color:#0F1B2D;line-height:1.35;">{{ r.n }}. {{ r.q }}</div></div>
+                <div style="display:flex;flex-direction:column;gap:6px;"><sc-for list="{{ r.opts }}" as="o" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:9px;border:1.5px solid {{ o.bc }};background:{{ o.bg }};color:{{ o.fg }};font-size:12.5px;font-weight:600;"><div style="flex:1;">{{ o.text }}</div>{{ o.badge }}</div></sc-for></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:20px;">
+            <button onClick="{{ retryAsgBtn }}" class="btnp" style="flex:1;background:#F4F7FC;border:1.5px solid #E6ECF6;color:#1B2A41;padding:14px;border-radius:13px;font-weight:800;font-size:14px;cursor:pointer;">Try again</button>
+            <button onClick="{{ asgBackCourse }}" class="btnp" style="flex:1;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">Course {{ gArrowW }}</button>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!-- ===== PROFILE ===== -->
+      <sc-if value="{{ isProfileScreen }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:16px 16px 26px;animation:screenIn .4s ease both;">
+        <div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#16305f,#0a1430);border-radius:20px;padding:20px;margin-bottom:16px;">
+          <div style="position:absolute;right:-24px;top:-24px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#1E74E655,transparent 70%);"></div>
+          <div style="position:relative;display:flex;align-items:center;gap:14px;margin-bottom:14px;"><div style="width:60px;height:60px;border-radius:18px;background:linear-gradient(135deg,#2A86F5,#0B4FB0);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Sora';font-weight:800;font-size:26px;flex-shrink:0;">{{ profAvatar }}</div><div style="flex:1;min-width:0;"><h1 style="font-family:'Sora';font-weight:800;font-size:20px;color:#fff;margin:0 0 4px;">{{ childFull }}</h1><div style="font-size:12px;color:#8fb6ff;">{{ childMeta }}</div><div style="font-size:11.5px;color:#b9c6e2;margin-top:2px;">{{ childSchool }}</div></div></div>
+          <sc-if value="{{ viewMode }}" hint-placeholder-val="{{ true }}"><button onClick="{{ startEditBtn }}" class="btnp" style="position:relative;width:100%;background:#fff;border:none;color:#0a1430;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">{{ editIconDark }} Edit profile</button></sc-if>
+          <sc-if value="{{ editMode }}" hint-placeholder-val="{{ false }}"><div style="position:relative;display:flex;gap:10px;"><button onClick="{{ cancelEditBtn }}" class="btnp" style="flex:1;background:#ffffff1a;border:1px solid #ffffff33;color:#fff;padding:12px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;">Cancel</button><button onClick="{{ saveEditBtn }}" class="btnp" style="flex:1;background:#fff;border:none;color:#0a1430;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;">Save</button></div></sc-if>
+        </div>
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);margin-bottom:14px;">
+          <div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;margin-bottom:2px;">Account &amp; security</div><div style="font-size:11.5px;color:#8A99B5;margin-bottom:14px;">Email and phone can't be changed.</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;padding:12px;background:#F8FAFE;border-radius:11px;"><div style="flex:1;min-width:0;"><div style="font-size:11px;color:#8A99B5;font-weight:600;margin-bottom:2px;">Primary email</div><div style="font-weight:700;font-size:13.5px;color:#0F1B2D;overflow:hidden;text-overflow:ellipsis;">{{ accountEmail }}</div></div><div style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:#B0BBD0;font-weight:600;">{{ lockBadge }}Locked</div></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px;background:#F8FAFE;border-radius:11px;"><div style="flex:1;"><div style="font-size:11px;color:#8A99B5;font-weight:600;margin-bottom:2px;">Primary phone</div><div style="font-weight:700;font-size:13.5px;color:#0F1B2D;">{{ phoneDisplay }}</div></div><div style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:#B0BBD0;font-weight:600;">{{ lockBadge }}Locked</div></div>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);margin-bottom:14px;">
+          <div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;margin-bottom:14px;">Learner details</div>
+          <sc-if value="{{ viewMode }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div><div style="font-size:11px;color:#8A99B5;font-weight:600;margin-bottom:3px;">Name</div><div style="font-weight:700;font-size:13.5px;color:#0F1B2D;">{{ pv.childName }}</div></div>
+              <div><div style="font-size:11px;color:#8A99B5;font-weight:600;margin-bottom:3px;">Age</div><div style="font-weight:700;font-size:13.5px;color:#0F1B2D;">{{ pv.childAge }} yrs</div></div>
+              <div style="grid-column:span 2;"><div style="font-size:11px;color:#8A99B5;font-weight:600;margin-bottom:3px;">School</div><div style="font-weight:700;font-size:13.5px;color:#0F1B2D;">{{ pv.school }}</div></div>
+              <div><div style="font-size:11px;color:#8A99B5;font-weight:600;margin-bottom:3px;">Class &amp; section</div><div style="font-weight:700;font-size:13.5px;color:#0F1B2D;">{{ pv.klass }} · {{ pv.section }}</div></div>
+              <div><div style="font-size:11px;color:#8A99B5;font-weight:600;margin-bottom:3px;">Roll</div><div style="font-weight:700;font-size:13.5px;color:#0F1B2D;">{{ pv.roll }}</div></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ editMode }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div><label style="display:block;font-size:11.5px;font-weight:600;color:#1B2A41;margin-bottom:5px;">Name</label><input value="{{ eb.childName }}" onInput="{{ editName }}" style="width:100%;padding:11px;border:1.5px solid #E6ECF6;border-radius:10px;font-size:14px;background:#F8FAFE;color:#0F1B2D;"></div>
+              <div style="display:flex;gap:10px;"><div style="flex:1;"><label style="display:block;font-size:11.5px;font-weight:600;color:#1B2A41;margin-bottom:5px;">Age</label><input value="{{ eb.childAge }}" onInput="{{ editAge }}" inputmode="numeric" maxlength="2" style="width:100%;padding:11px;border:1.5px solid #E6ECF6;border-radius:10px;font-size:14px;background:#F8FAFE;color:#0F1B2D;"></div><div style="flex:1;"><label style="display:block;font-size:11.5px;font-weight:600;color:#1B2A41;margin-bottom:5px;">Class</label><select value="{{ eb.klass }}" onChange="{{ editKlass }}" style="width:100%;padding:11px;border:1.5px solid #E6ECF6;border-radius:10px;font-size:13.5px;background:#F8FAFE;color:#0F1B2D;"><sc-for list="{{ classOpts }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for></select></div></div>
+              <div><label style="display:block;font-size:11.5px;font-weight:600;color:#1B2A41;margin-bottom:5px;">School</label><div style="display:flex;align-items:center;gap:8px;padding:11px;border:1.5px solid #E6ECF6;border-radius:10px;background:#eef2f9;"><div style="flex:1;font-size:13px;font-weight:600;color:#5B6B85;">{{ eb.school }}</div><div style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:#B0BBD0;font-weight:600;">{{ lockBadge }}Locked</div></div></div>
+              <div style="display:flex;gap:10px;"><div style="flex:1;"><label style="display:block;font-size:11.5px;font-weight:600;color:#1B2A41;margin-bottom:5px;">Section</label><input value="{{ eb.section }}" onInput="{{ editSection }}" maxlength="2" style="width:100%;padding:11px;border:1.5px solid #E6ECF6;border-radius:10px;font-size:14px;background:#F8FAFE;color:#0F1B2D;text-transform:uppercase;"></div><div style="flex:1;"><label style="display:block;font-size:11.5px;font-weight:600;color:#1B2A41;margin-bottom:5px;">Roll</label><input value="{{ eb.roll }}" onInput="{{ editRoll }}" inputmode="numeric" style="width:100%;padding:11px;border:1.5px solid #E6ECF6;border-radius:10px;font-size:14px;background:#F8FAFE;color:#0F1B2D;"></div></div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);margin-bottom:14px;">
+          <div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;margin-bottom:12px;">Interests</div>
+          <sc-if value="{{ viewMode }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-wrap:wrap;gap:7px;"><sc-for list="{{ profInterestChips }}" as="c" hint-placeholder-count="4"><div style="padding:7px 13px;border-radius:999px;background:#eaf2ff;color:#1E74E6;font-size:12.5px;font-weight:700;">{{ c.label }}</div></sc-for></div></sc-if>
+          <sc-if value="{{ editMode }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-wrap:wrap;gap:7px;"><sc-for list="{{ editInterestOpts }}" as="it" hint-placeholder-count="12"><div onClick="{{ it.toggle }}" class="btnp" style="cursor:pointer;padding:7px 12px;border-radius:999px;font-size:12.5px;font-weight:600;border:1.5px solid {{ it.bc }};background:{{ it.bg }};color:{{ it.fg }};display:flex;align-items:center;gap:5px;">{{ it.tick }}{{ it.label }}</div></sc-for></div></sc-if>
+        </div>
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);">
+          <div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;margin-bottom:2px;">Performance report</div><div style="font-size:11.5px;color:#8A99B5;margin-bottom:14px;">A snapshot of learning so far.</div>
+          <div style="display:flex;flex-direction:column;margin-bottom:16px;"><sc-for list="{{ reportRows }}" as="r" hint-placeholder-count="6"><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #F0F3F9;"><span style="font-size:13px;color:#5B6B85;">{{ r.label }}</span><span style="font-family:'Sora';font-weight:800;font-size:13.5px;color:#0F1B2D;">{{ r.val }}</span></div></sc-for></div>
+          <button onClick="{{ downloadReportBtn }}" class="btnp" style="width:100%;background:#eaf2ff;border:none;color:#1E74E6;padding:13px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">{{ dlIcon }} Download full report</button>
+        </div>
+        <div onClick="{{ logoutBtn }}" class="btnp" style="text-align:center;margin-top:18px;color:#8A99B5;font-weight:700;font-size:13.5px;cursor:pointer;">Log out</div>
+      </div>
+      </sc-if>
+
+      <!-- ===== HELP ===== -->
+      <sc-if value="{{ isHelp }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:16px 16px 26px;animation:screenIn .4s ease both;">
+        <div style="position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#16305f,#0a1430);border-radius:20px;padding:18px;margin-bottom:16px;">
+          <div style="position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#1E74E655,transparent 70%);"></div>
+          <img src="assets/mascot-1.png" alt="AIJU" style="height:64px;width:auto;flex-shrink:0;position:relative;"><div style="position:relative;"><h1 style="font-family:'Sora';font-weight:800;font-size:19px;color:#fff;margin:0 0 4px;">AIJU's got you.</h1><p style="font-size:12.5px;color:#b9c6e2;margin:0;">Tell us what's up and we'll email a support ticket.</p></div>
+        </div>
+        <sc-if value="{{ helpFormActive }}" hint-placeholder-val="{{ true }}">
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);margin-bottom:14px;">
+          <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">What's it about?</label><select value="{{ helpCategory }}" onChange="{{ onHelpCategory }}" style="width:100%;padding:12px;border:1.5px solid #E6ECF6;border-radius:11px;font-size:14px;background:#F8FAFE;color:#0F1B2D;margin-bottom:14px;"><sc-for list="{{ helpCategories }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for></select>
+          <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Subject</label><input value="{{ helpSubject }}" onInput="{{ onHelpSubject }}" placeholder="Brief summary" style="width:100%;padding:12px;border:1.5px solid #E6ECF6;border-radius:11px;font-size:14px;background:#F8FAFE;color:#0F1B2D;margin-bottom:14px;">
+          <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Describe your issue</label><textarea value="{{ helpMsg }}" onInput="{{ onHelpMsg }}" placeholder="Tell us what happened…" rows="4" style="width:100%;padding:12px;border:1.5px solid #E6ECF6;border-radius:11px;font-size:14px;background:#F8FAFE;color:#0F1B2D;resize:vertical;font-family:inherit;margin-bottom:16px;"></textarea>
+          <button onClick="{{ submitHelpBtn }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:14.5px;cursor:pointer;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);">Create support ticket</button>
+        </div>
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);">
+          <div style="font-family:'Sora';font-weight:800;font-size:14px;color:#0F1B2D;margin-bottom:12px;">Quick answers</div>
+          <div style="display:flex;flex-direction:column;gap:12px;"><sc-for list="{{ helpQuick }}" as="q" hint-placeholder-count="3"><div><div style="font-weight:700;font-size:13px;color:#1B2A41;margin-bottom:3px;">{{ q.q }}</div><div style="font-size:12px;color:#8A99B5;line-height:1.45;">{{ q.a }}</div></div></sc-for></div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ helpSubmitted }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:20px;padding:32px 24px;text-align:center;box-shadow:0 12px 34px -26px rgba(20,50,110,.3);animation:screenIn .4s;">
+          <div style="width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,#1FA971,#37E0A0);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:pop .5s cubic-bezier(.2,.8,.3,1) both;">{{ checkBigG }}</div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;margin:0 0 8px;">Ticket created!</h2><p style="font-size:14px;color:#5B6B85;margin:0 0 16px;">Our team will reply within 24 hours.</p>
+          <div style="display:inline-flex;flex-direction:column;gap:5px;background:#F8FAFE;border-radius:12px;padding:14px 22px;margin-bottom:20px;"><div style="font-size:10.5px;color:#8A99B5;font-weight:600;letter-spacing:.05em;">YOUR TICKET ID</div><div style="font-family:'JetBrains Mono';font-weight:700;font-size:18px;color:#1E74E6;">{{ helpTicket }}</div></div>
+          <div><button onClick="{{ resetHelpBtn }}" class="btnp" style="background:#F4F7FC;border:1.5px solid #E6ECF6;color:#1B2A41;padding:12px 24px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;">Raise another ticket</button></div>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!-- ===== FEEDBACK ===== -->
+      <sc-if value="{{ isFeedback }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:16px 16px 26px;animation:screenIn .4s ease both;">
+        <sc-if value="{{ fbFormActive }}" hint-placeholder-val="{{ true }}">
+        <div style="text-align:center;margin-bottom:18px;"><h1 style="font-family:'Sora';font-weight:800;font-size:24px;color:#0F1B2D;margin:0 0 6px;">We'd love your feedback</h1><p style="font-size:13.5px;color:#5B6B85;margin:0;">Tell us how we're doing, it only takes a moment.</p></div>
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:20px;padding:24px;box-shadow:0 12px 34px -26px rgba(20,50,110,.3);">
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:12px;">Rate your experience</div>
+            <div style="display:flex;justify-content:center;gap:9px;margin-bottom:6px;"><sc-for list="{{ fbStars }}" as="s" hint-placeholder-count="5"><div onClick="{{ s.set }}" class="btnp" style="cursor:pointer;">{{ s.icon }}</div></sc-for></div>
+            <div style="height:18px;font-family:'Sora';font-weight:700;font-size:14px;color:#F5A800;">{{ fbRatingLabel }}</div>
+          </div>
+          <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">What's this about?</label><select value="{{ fbCategory }}" onChange="{{ onFbCategory }}" style="width:100%;padding:12px;border:1.5px solid #E6ECF6;border-radius:11px;font-size:14px;background:#F8FAFE;color:#0F1B2D;margin-bottom:14px;"><sc-for list="{{ fbCategories }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for></select>
+          <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Your thoughts <span style="color:#8A99B5;">(optional)</span></label><textarea value="{{ fbMsg }}" onInput="{{ onFbMsg }}" placeholder="What you loved or what we could improve…" rows="4" style="width:100%;padding:12px;border:1.5px solid #E6ECF6;border-radius:11px;font-size:14px;background:#F8FAFE;color:#0F1B2D;resize:vertical;font-family:inherit;margin-bottom:16px;"></textarea>
+          <button onClick="{{ submitFbBtn }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:14.5px;cursor:pointer;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);">Submit feedback</button>
+        </div>
+        </sc-if>
+        <sc-if value="{{ fbSubmitted }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #E6ECF6;border-radius:22px;padding:36px 24px;text-align:center;box-shadow:0 12px 34px -26px rgba(20,50,110,.3);animation:screenIn .4s;margin-top:20px;">
+          <img src="assets/mascot-3.png" alt="AIJU" style="height:110px;width:auto;animation:floaty 5s ease-in-out infinite;">
+          <h2 style="font-family:'Sora';font-weight:800;font-size:23px;color:#0F1B2D;margin:8px 0 10px;">Thank you!</h2><p style="font-size:14px;color:#5B6B85;margin:0 0 20px;">Your feedback helps AIJU make AI Masterclass better for every learner.</p>
+          <button onClick="{{ backHomeBtn }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:14.5px;cursor:pointer;">Back to home</button>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!--APPEND-SCREENS-->
+
+    </div>
+
+    <!-- BOTTOM TAB NAV -->
+    <sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
+    <div style="flex-shrink:0;display:flex;background:#ffffff;border-top:1px solid #E6ECF6;padding:8px 4px 6px;position:relative;z-index:30;">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+        <div onClick="{{ n.go }}" class="btnp" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 2px;cursor:pointer;color:{{ n.fg }};">{{ n.icon }}<span style="font-size:9.5px;font-weight:700;">{{ n.label }}</span></div>
+      </sc-for>
+    </div>
+    </sc-if>
+
+    <!-- home indicator -->
+    <div style="flex-shrink:0;height:20px;display:flex;align-items:center;justify-content:center;background:{{ homeBarBg }};position:relative;z-index:30;"><div style="width:120px;height:5px;border-radius:3px;background:{{ homeBarColor }};"></div></div>
+
+    <!-- ===== MENU SHEET ===== -->
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeMenu }}" style="position:absolute;inset:0;z-index:80;background:#0a1430cc;backdrop-filter:blur(4px);animation:fadeIn .25s;"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;z-index:81;background:#fff;border-radius:26px 26px 0 0;padding:14px 18px calc(20px + env(safe-area-inset-bottom));box-shadow:0 -20px 50px -20px rgba(0,0,0,.4);animation:sheetUp .3s cubic-bezier(.2,.8,.3,1) both;">
+      <div style="width:44px;height:4px;border-radius:3px;background:#E6ECF6;margin:0 auto 16px;"></div>
+      <div style="display:flex;align-items:center;gap:11px;padding:0 2px 16px;border-bottom:1px solid #F0F3F9;margin-bottom:12px;">
+        <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#16305f,#0a1430);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/aiju-logo.png" alt="" style="height:26px;width:auto;"></div>
+        <div style="flex:1;line-height:1.1;"><div style="font-family:'Sora';font-weight:800;font-size:14px;color:#0F1B2D;">Infinity Buddy AIJU</div><div style="font-size:11px;color:#8A99B5;">AI Masterclass</div></div>
+        <div onClick="{{ closeMenu }}" class="btnp" style="width:36px;height:36px;border-radius:10px;background:#F4F7FC;display:flex;align-items:center;justify-content:center;cursor:pointer;">{{ menuXIcon }}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:16px;">
+        <sc-for list="{{ menuItems }}" as="m" hint-placeholder-count="4">
+          <div onClick="{{ m.go }}" class="btnp" style="display:flex;align-items:center;gap:13px;padding:11px 10px;border-radius:13px;cursor:pointer;">
+            <div style="width:40px;height:40px;border-radius:11px;background:#eaf2ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ m.icon }}</div>
+            <div style="flex:1;min-width:0;"><div style="font-family:'Sora';font-weight:700;font-size:15px;color:#0F1B2D;">{{ m.label }}</div><div style="font-size:11.5px;color:#8A99B5;">{{ m.desc }}</div></div>
+            {{ m.chev }}
+          </div>
+        </sc-for>
+      </div>
+      <button onClick="{{ goRegister }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:15px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 28px -10px rgba(30,116,230,.6);margin-bottom:10px;">Enroll for ₹499</button>
+      <button onClick="{{ goLogin }}" class="btnp" style="width:100%;background:#fff;border:1.5px solid #E6ECF6;color:#1B2A41;padding:13px;border-radius:13px;font-weight:800;font-size:14.5px;cursor:pointer;">Log in to your account</button>
+    </div>
+    </sc-if>
+
+    <!-- ===== TEASER MODAL ===== -->
+    <sc-if value="{{ showTeaserModal }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeTeaserModal }}" style="position:absolute;inset:0;z-index:90;background:#050914ee;backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:18px;animation:fadeIn .3s;">
+      <div onClick="{{ stopProp }}" style="width:100%;background:#0a1430;border-radius:20px;overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.7);border:1px solid #ffffff1f;animation:pop .35s cubic-bezier(.2,.8,.3,1) both;">
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #ffffff14;">
+          <img src="assets/aiju-logo.png" alt="" style="height:26px;width:auto;">
+          <div style="font-family:'Sora';font-weight:800;font-size:13px;color:#fff;">Teaser</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{ closeTeaserModal }}" class="btnp" style="width:32px;height:32px;border-radius:9px;background:#ffffff14;display:flex;align-items:center;justify-content:center;cursor:pointer;">{{ xIconW }}</div>
+        </div>
+        <video src="assets/teaser.mp4" playsInline ref="{{ modalVideoRef }}" style="display:block;width:100%;aspect-ratio:16/9;background:#000;"></video>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===== WALKTHROUGH ===== -->
+    <sc-if value="{{ wtShow }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:88;background:#0a1430dd;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:22px;animation:fadeIn .3s;">
+      <div style="width:100%;background:#fff;border-radius:24px;padding:28px 24px;text-align:center;box-shadow:0 30px 80px -30px rgba(0,0,0,.5);animation:pop .35s cubic-bezier(.2,.8,.3,1) both;">
+        <img src="assets/mascot-2.png" alt="AIJU" style="height:110px;width:auto;animation:floaty 5s ease-in-out infinite;">
+        <div style="font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.14em;color:#1E74E6;margin:8px 0 8px;">STEP {{ wtStep }} OF {{ wtTotal }}</div>
+        <h2 style="font-family:'Sora';font-weight:800;font-size:21px;color:#0F1B2D;margin:0 0 10px;">{{ wtTitle }}</h2>
+        <p style="font-size:14px;line-height:1.55;color:#5B6B85;margin:0 0 20px;">{{ wtBody }}</p>
+        <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:20px;">
+          <sc-for list="{{ wtDots }}" as="d" hint-placeholder-count="4"><div style="width:{{ d.w }};height:7px;border-radius:4px;background:{{ d.bg }};transition:all .3s;"></div></sc-for>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button onClick="{{ wtClose }}" class="btnp" style="flex:0 0 auto;background:#F4F7FC;border:none;color:#5B6B85;padding:14px 18px;border-radius:13px;font-weight:700;font-size:14px;cursor:pointer;">Skip</button>
+          <button onClick="{{ wtNext }}" class="btnp" style="flex:1;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 28px -10px rgba(30,116,230,.6);">{{ wtNextLabel }}</button>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===== TOAST ===== -->
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:50%;bottom:96px;transform:translateX(-50%);z-index:95;background:#0F1B2D;color:#fff;padding:12px 18px;border-radius:13px;box-shadow:0 16px 40px -10px rgba(0,0,0,.5);display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;animation:toastIn .3s ease both;max-width:88%;">
+        <span style="width:20px;height:20px;border-radius:50%;background:#37E0A0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ toastCheck }}</span>{{ toast }}
+      </div>
+    </sc-if>
+
+    <!-- ===== SPLASH ===== -->
+    <sc-if value="{{ booting }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;inset:0;z-index:100;background:radial-gradient(600px 500px at 50% 34%,#16305f,#0a1024 72%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;animation:{{ bootAnim }};">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(#ffffff0d 1px,transparent 1px),linear-gradient(90deg,#ffffff0d 1px,transparent 1px);background-size:40px 40px;opacity:.55;animation:gridmove 4s linear infinite;mask-image:radial-gradient(360px 320px at 50% 42%,#000,transparent 76%);"></div>
+      <img src="assets/mascot-2.png" alt="AIJU" style="position:relative;height:150px;width:auto;filter:drop-shadow(0 22px 40px rgba(0,0,0,.55));animation:bob 2.4s ease-in-out infinite;">
+      <div style="position:relative;text-align:center;padding:0 24px;">
+        <div style="font-family:'Sora';font-weight:800;font-size:22px;color:#fff;margin-bottom:8px;">AIJU is getting ready…</div>
+        <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.16em;color:#8fb6ff;">LOADING YOUR AI ADVENTURE</div>
+      </div>
+      <div style="position:relative;width:190px;height:6px;border-radius:4px;background:#ffffff1f;overflow:hidden;"><div style="height:100%;border-radius:4px;background:linear-gradient(90deg,#2A86F5,#37E0A0);animation:bootBar 1.9s ease-out forwards;"></div></div>
+    </div>
+    </sc-if>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:460,&quot;height&quot;:900}}">
+const B='#1E74E6', GOLD='#F5A800', INK='#0F1B2D';
+const R=React;
+const svg=(paths,o={})=>R.createElement('svg',{width:o.s||18,height:o.s||18,viewBox:'0 0 24 24',fill:'none',stroke:o.c||'currentColor','stroke-width':o.w||2,'stroke-linecap':'round','stroke-linejoin':'round',style:o.style},paths.map((d,i)=>R.createElement('path',{key:i,d})));
+const ic={
+  arrow:['M5 12h14','M13 6l6 6-6 6'],
+  play:['M6 4l14 8-14 8V4z'],
+  check:['M20 6L9 17l-5-5'],
+  shield:['M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z','M9 12l2 2 4-4'],
+  spark:['M12 3v4','M12 17v4','M3 12h4','M17 12h4','M6 6l2.5 2.5','M15.5 15.5L18 18','M18 6l-2.5 2.5','M8.5 15.5L6 18'],
+  clock:['M12 8v4l3 2','M12 3a9 9 0 100 18 9 9 0 000-18z'],
+  doc:['M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z','M14 3v5h5','M9 13h6','M9 17h4'],
+  quiz:['M9.5 9a2.5 2.5 0 113 2.4c-.9.3-1.5 1-1.5 2.1','M12 17h.01','M12 3a9 9 0 100 18 9 9 0 000-18z'],
+  heart:['M20.8 5.6a5 5 0 00-7.1 0L12 7.3l-1.7-1.7a5 5 0 10-7.1 7.1l1.7 1.7L12 21l7.1-7.6 1.7-1.7a5 5 0 000-6.1z'],
+  compass:['M12 3a9 9 0 100 18 9 9 0 000-18z','M15.5 8.5l-2 5-5 2 2-5 5-2z'],
+  bell:['M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8','M13.7 21a2 2 0 01-3.4 0'],
+  book:['M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2V5z','M9 3v14'],
+  flame:['M12 3c0 3 3 4 3 7a3 3 0 01-6 0c0-1 .4-1.7.8-2.2C10 6 12 5 12 3z','M12 21a6 6 0 006-6c0-4-3-6-4-8 0 4-3 4.5-3 7 0-1.2-.8-2-1.5-2.5C8 13 6 15 6 15a6 6 0 006 6z'],
+  grid:['M4 4h7v7H4z','M13 4h7v7h-7z','M13 13h7v7h-7z','M4 13h7v7H4z'],
+  user:['M12 12a4 4 0 100-8 4 4 0 000 8z','M5 21a7 7 0 0114 0'],
+  life:['M12 3a9 9 0 100 18 9 9 0 000-18z','M12 9a3 3 0 100 6 3 3 0 000-6z','M5 5l4.5 4.5','M14.5 14.5L19 19','M19 5l-4.5 4.5','M9.5 14.5L5 19'],
+  chat:['M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z'],
+  logout:['M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4','M16 17l5-5-5-5','M21 12H9'],
+  menu:['M3 6h18','M3 12h18','M3 18h18'],
+  x:['M6 6l12 12','M18 6L6 18'],
+  chev:['M9 6l6 6-6 6'],
+  chevd:['M6 9l6 6 6-6'],
+  lock:['M6 10V8a6 6 0 0112 0v2','M5 10h14v11H5z'],
+  checkc:['M12 3a9 9 0 100 18 9 9 0 000-18z','M8.5 12l2.5 2.5 4.5-5'],
+  download:['M12 3v12','M8 11l4 4 4-4','M4 19h16'],
+  edit:['M12 20h9','M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z'],
+  star:['M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6.1L12 17.8 6.6 19.9l1.2-6.1L3.3 9.4l6.1-.8z'],
+  bolt:['M13 2L4 14h7l-1 8 9-12h-7z'],
+  arrowL:['M19 12H5','M11 18l-6-6 6-6'],
+  target:['M12 3a9 9 0 100 18 9 9 0 000-18z','M12 8a4 4 0 100 8 4 4 0 000-8z','M12 12h.01'],
+  trophy:['M8 21h8','M12 17v4','M7 4h10v5a5 5 0 01-10 0z','M7 6H4v2a3 3 0 003 3','M17 6h3v2a3 3 0 01-3 3'],
+  clip:['M9 5h6a1 1 0 011 1v1H8V6a1 1 0 011-1z','M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-2','M9 12h6','M9 16h4'],
+  bat:['M3 8h15a2 2 0 012 2v4a2 2 0 01-2 2H3z','M21 11v2'],
+  wifi:['M5 12.5a10 10 0 0114 0','M8.5 15.8a5 5 0 017 0','M12 19h.01'],
+  sig:['M4 20v-4','M9 20v-8','M14 20v-12','M19 20V4'],
+};
+const I=(k,o)=>svg(ic[k],o);
+
+class Component extends DCLogic {
+  state={
+    screen:'landing', booting:true, bootLeaving:false, menuOpen:false,
+    faqOpen:{}, toast:null,
+    authMode:'register', authStep:'email', email:'', otp:['','','','',''], otpErr:'', sending:false,
+    session:{authed:false, paid:false, profileDone:false},
+    profile:{phone:'',childName:'',childAge:'',school:'',klass:'',section:'',roll:'',interests:[],altEmail:'',altPhone:''},
+    showTeaserModal:false, authVidReady:false,
+    payStep:'summary', payMethod:'upi', upiId:'', payProcessing:false,
+    activeCh:null, openCh:{},
+    video:{playing:false, t:0, dur:0, chId:null, speed:1},
+    asg:{chId:null, idx:0, answers:{}, submitted:false},
+    editProfile:false, editBuf:null,
+    help:{category:'Technical issue', subject:'', msg:'', submitted:false, ticket:''},
+    fb:{rating:0, msg:'', category:'Course content', submitted:false},
+    wt:{show:false, step:0},
+    prog:{},
+    streak:{current:5, best:12, week:[true,true,true,true,true,false,false]},
+    analytics:[],
+  };
+  componentDidMount(){
+    this._lastY=0;
+    this._navScroll=()=>{
+      const bar=document.getElementById('m-landing-nav'); if(!bar) return;
+      const sc=document.querySelector('.mscreen'); if(!sc) return;
+      const y=sc.scrollTop;
+      if(y>this._lastY && y>90){ bar.style.transform='translateY(-115%)'; }
+      else { bar.style.transform='translateY(0)'; }
+      this._lastY=y<=0?0:y;
+    };
+    setTimeout(()=>{ const sc=document.querySelector('.mscreen'); if(sc) sc.addEventListener('scroll',this._navScroll,{passive:true}); },60);
+    this._boot1=setTimeout(()=>this.setState({bootLeaving:true}),1650);
+    this._boot2=setTimeout(()=>this.setState({booting:false}),2200);
+    this._tick=setInterval(()=>{
+      const s=this.state;
+      if(s.screen==='material' && s.activeCh){ this.setProg(s.activeCh,{readSec:((s.prog[s.activeCh]&&s.prog[s.activeCh].readSec)||0)+1}); }
+    },1000);
+  }
+  componentWillUnmount(){ if(this._tt)clearTimeout(this._tt); if(this._boot1)clearTimeout(this._boot1); if(this._boot2)clearTimeout(this._boot2); if(this._tick)clearInterval(this._tick); }
+  go(s){ this.setState({screen:s, menuOpen:false}); setTimeout(()=>{ const sc=document.querySelector('.mscreen'); if(sc) sc.scrollTop=0; },30); }
+  toast(msg){ this.setState({toast:msg}); if(this._tt)clearTimeout(this._tt); this._tt=setTimeout(()=>this.setState({toast:null}),2600); }
+  toggleFaq(i){ this.setState(s=>({faqOpen:{...s.faqOpen,[i]:!s.faqOpen[i]}})); }
+  toggleMenu(){ this.setState(s=>({menuOpen:!s.menuOpen})); }
+  scrollToSection(id){ this.setState({menuOpen:false}); setTimeout(()=>{ const el=document.getElementById(id); const sc=document.querySelector('.mscreen'); if(!el||!sc)return; const y=el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 6; sc.scrollTo({top:y,behavior:'smooth'}); },40); }
+  track(event, meta){ const e={t:Date.now(), event, meta:meta||null}; this.setState(s=>({analytics:[e, ...s.analytics].slice(0,60)})); }
+
+  setAuthMode(m){ this.setState({authMode:m, authStep:'email', otp:['','','','',''], otpErr:''}); }
+  setEmail(v){ this.setState({email:v}); }
+  sendOtp(){ const em=this.state.email.trim(); if(!/^\S+@\S+\.\S+$/.test(em)){ this.setState({otpErr:'Please enter a valid email address.'}); return; } this.setState({sending:true, otpErr:''}); this.track('otp_requested',{email:em}); setTimeout(()=>this.setState({sending:false, authStep:'otp'}),750); }
+  setOtp(i,v){ if(!/^\d?$/.test(v)) return; const otp=[...this.state.otp]; otp[i]=v; this.setState({otp, otpErr:''}); if(v && i<4){ const el=document.getElementById('motp-'+(i+1)); if(el) el.focus(); } }
+  otpKey(i,e){ if(e.key==='Backspace' && !this.state.otp[i] && i>0){ const el=document.getElementById('motp-'+(i-1)); if(el) el.focus(); } }
+  backToEmail(){ this.setState({authStep:'email', otp:['','','','','']}); }
+  verifyOtp(){ const code=this.state.otp.join(''); if(code.length<5){ this.setState({otpErr:'Enter the 5-digit code (demo: 12345).'}); return; } this.track('otp_verified',{}); this.afterAuth(); }
+  social(p){ this.track('social_auth',{provider:p}); if(!this.state.email) this.setState({email:'aarav.parent@gmail.com'}); this.toast('Signed in with '+p); this.afterAuth(); }
+  afterAuth(){
+    if(this.state.authMode==='login'){ this.seedReturning(); this.setState({session:{authed:true,paid:true,profileDone:true}}, ()=>this.go('home')); }
+    else { this.setState({session:{authed:true,paid:false,profileDone:false}}, ()=>this.go('teaser')); }
+  }
+  seedReturning(){ this.setState(s=>({ profile:{...s.profile, phone:'9876543210', childName:'Aarav Sharma', childAge:'11', school:'Delhi Public School, R.K. Puram', klass:'Class 6', section:'B', roll:'24', interests:['Robots','Space','Art & Drawing','Games'], altEmail:'', altPhone:''}, prog:{1:{video:100,material:100,readSec:340,asgScore:5,done:true}, 2:{video:55,material:40,readSec:120,asgScore:null,done:false}} })); }
+
+  openTeaserModal(){ this.setState({showTeaserModal:true}); this.track('teaser_modal_open',{}); }
+  closeTeaserModal(){ this.setState({showTeaserModal:false}); }
+  teaserContinue(){ this.track('teaser_to_payment',{}); this.go('payment'); }
+
+  setPayMethod(m){ this.setState({payMethod:m}); }
+  setUpi(v){ this.setState({upiId:v}); }
+  payNow(){ this.setState({payProcessing:true}); this.track('payment_started',{amount:499}); setTimeout(()=>{ this.setState(s=>({payProcessing:false, payStep:'success', session:{...s.session, paid:true}})); this.track('payment_success',{amount:499}); },1800); }
+  paymentDone(){ this.toast('Confirmation email sent'); if(this.state.session.profileDone){ this.go('home'); } else { this.go('profile-complete'); } }
+
+  setP(f,v){ this.setState(s=>({profile:{...s.profile,[f]:v}})); }
+  toggleInterest(x){ this.setState(s=>{ const has=s.profile.interests.includes(x); return {profile:{...s.profile, interests: has? s.profile.interests.filter(i=>i!==x):[...s.profile.interests,x]}}; }); }
+  profileValid(){ const p=this.state.profile; return p.phone.trim() && p.childName.trim() && p.childAge && p.school && p.klass && p.section.trim() && p.roll.trim() && p.interests.length>0; }
+  saveProfileComplete(){ if(!this.profileValid()){ this.toast('Please fill all required fields'); return; } this.track('profile_completed',{}); this.setState(s=>({session:{...s.session, profileDone:true}}), ()=>{ this.startWt(); this.go('home'); }); }
+
+  openCourse(){ this.track('open_course',{}); this.go('course'); }
+  toggleChapter(id){ if(this.isLocked(id)){ this.toast('Complete previous chapters to unlock'); return; } this.setState(s=>({openCh:{...s.openCh,[id]:!s.openCh[id]}})); }
+  isLocked(id){ if(id<=2) return false; const prev=this.state.prog[id-1]; return !(prev && prev.done); }
+  openVideo(chId){ this.track('video_open',{chId}); const c=COURSE.find(x=>x.num===chId); const dur=this.durSec(c.dur); const cur=(this.state.prog[chId]&&this.state.prog[chId].video)||0; this.setState({activeCh:chId, video:{playing:false, t:Math.round(dur*cur/100), dur, chId, speed:1}}); this.go('video'); }
+  durSec(s){ const m=parseInt(s); return m*60; }
+  openMaterial(chId){ this.track('material_open',{chId}); this.setState({activeCh:chId}); this.go('material'); }
+  openAssignment(chId){ this.track('assignment_open',{chId}); this.setState({asg:{chId, idx:0, answers:{}, submitted:false}}); this.go('assignment'); }
+
+  pickAnswer(qi,oi){ this.setState(s=>({asg:{...s.asg, answers:{...s.asg.answers,[qi]:oi}}})); }
+  asgNext(){ this.setState(s=>({asg:{...s.asg, idx:Math.min(4,s.asg.idx+1)}})); }
+  asgPrev(){ this.setState(s=>({asg:{...s.asg, idx:Math.max(0,s.asg.idx-1)}})); }
+  asgGoto(i){ this.setState(s=>({asg:{...s.asg, idx:i}})); }
+  submitAsg(){ const a=this.state.asg; const q=MCQ[a.chId]||MCQ[1]; if(!q.every((_,i)=>a.answers[i]!=null)){ this.toast('Please answer all 5 questions'); return; } let score=0; q.forEach((qq,i)=>{ if(a.answers[i]===qq.correct) score++; }); this.setState(s=>({asg:{...s.asg, submitted:true, score}})); this.setProg(a.chId,{asgScore:score}); this.track('assignment_submitted',{chId:a.chId, score}); const sc=document.querySelector('.mscreen'); if(sc)sc.scrollTop=0; }
+  retryAsg(){ this.setState(s=>({asg:{...s.asg, idx:0, answers:{}, submitted:false}})); }
+
+  setProg(chId,patch){ this.setState(s=>{ const cur=s.prog[chId]||{video:0,material:0,readSec:0,asgScore:null,done:false}; const nx={...cur,...patch}; if((nx.video>=90)&&(nx.material>=90)&&(nx.asgScore!=null)) nx.done=true; return {prog:{...s.prog,[chId]:nx}}; }); }
+
+  startEdit(){ this.setState(s=>({editProfile:true, editBuf:{...s.profile}})); }
+  setEdit(f,v){ this.setState(s=>({editBuf:{...s.editBuf,[f]:v}})); }
+  cancelEdit(){ this.setState({editProfile:false, editBuf:null}); }
+  saveEdit(){ this.setState(s=>({profile:{...s.editBuf}, editProfile:false, editBuf:null})); this.track('profile_edited',{}); this.toast('Profile updated'); }
+  toggleEditInterest(x){ this.setState(s=>{ const has=s.editBuf.interests.includes(x); return {editBuf:{...s.editBuf, interests: has? s.editBuf.interests.filter(i=>i!==x):[...s.editBuf.interests,x]}}; }); }
+  downloadReport(){ this.track('report_download',{}); this.toast('Performance report downloaded'); }
+
+  setHelp(f,v){ this.setState(s=>({help:{...s.help,[f]:v}})); }
+  submitHelp(){ const h=this.state.help; if(!h.subject.trim()||!h.msg.trim()){ this.toast('Please fill subject and message'); return; } const ticket='AIJU-'+Math.floor(100000+Math.random()*900000); this.setState(s=>({help:{...s.help, submitted:true, ticket}})); this.track('support_ticket',{ticket}); }
+  resetHelp(){ this.setState({help:{category:'Technical issue', subject:'', msg:'', submitted:false, ticket:''}}); }
+  setFb(f,v){ this.setState(s=>({fb:{...s.fb,[f]:v}})); }
+  setRating(r){ this.setState(s=>({fb:{...s.fb, rating:r}})); }
+  submitFb(){ if(!this.state.fb.rating){ this.toast('Please pick a rating'); return; } this.setState(s=>({fb:{...s.fb, submitted:true}})); this.track('feedback_submitted',{rating:this.state.fb.rating}); }
+
+  startWt(){ this.setState({wt:{show:true, step:0}}); }
+  wtNext(){ this.setState(s=>{ if(s.wt.step>=WT.length-1) return {wt:{show:false,step:0}}; return {wt:{show:true, step:s.wt.step+1}}; }); }
+  wtClose(){ this.setState({wt:{show:false,step:0}}); }
+
+  renderVals(){
+    const st=this.state;
+    const faqs=[
+      {q:'Who is AI Masterclass for?',a:'Students from class 4 to 12, and the parents who want to guide them. No coding or prior AI knowledge needed.'},
+      {q:'How long do we get access?',a:'A one-time payment of ₹499 gives full access to every chapter, video, study guide and quiz for 3 months.'},
+      {q:'Is it safe for my child?',a:'Yes. Every lesson is age-appropriate, moderated, and focuses on safe, responsible use of AI. Parents can track all progress.'},
+      {q:'What will my child learn?',a:'Practical AI skills: writing great prompts, using ChatGPT/Gemini/Claude safely, creating with AI and thinking critically.'},
+      {q:'How do I pay?',a:'Securely via UPI through Razorpay. It takes under a minute, and you get an instant email confirmation.'},
+    ].map((f,i)=>({...f,open:!!st.faqOpen[i],openClass:st.faqOpen[i]?'open':'',toggle:()=>this.toggleFaq(i),rot:st.faqOpen[i]?'rotate(45deg)':'none'}));
+
+    const otpBoxes=st.otp.map((d,i)=>({val:d, id:'motp-'+i, onInput:(e)=>this.setOtp(i,e.target.value), onKey:(e)=>this.otpKey(i,e)}));
+    const prog=st.prog;
+    const cv=COURSE.map(c=>{ const p=prog[c.num]||{video:0,material:0,readSec:0,asgScore:null,done:false}; const pct=Math.round((Math.min(100,p.video)+Math.min(100,p.material)+(p.asgScore!=null?100:0))/3); const locked=this.isLocked(c.num); return {num:c.num, numPad:String(c.num).padStart(2,'0'), title:c.title, tag:c.tag, dur:c.dur, blurb:c.blurb, c1:c.c1, c2:c.c2, pct, pctStr:pct+'%', done:p.done, video:p.video||0, material:p.material||0, asgScore:p.asgScore, locked}; });
+    const overall=Math.round(cv.reduce((a,c)=>a+c.pct,0)/cv.length);
+    const nextCh=cv.find(c=>!c.done && !c.locked) || cv[0];
+    const aq=MCQ[st.asg.chId]||MCQ[1];
+    const dark=st.screen==='landing'||st.screen==='auth';
+
+    return {
+      isLanding: st.screen==='landing',
+      statusBg: dark?'#0a1430':'#ffffff', statusInk: dark?'#fff':'#0F1B2D',
+      statusSignal: I('sig',{s:15,c:dark?'#fff':'#0F1B2D',w:2.4}), statusWifi: I('wifi',{s:15,c:dark?'#fff':'#0F1B2D'}), statusBatt: I('bat',{s:20,c:dark?'#fff':'#0F1B2D'}),
+      homeBarBg: (st.screen==='landing')?'#0a1430':'#ffffff', homeBarColor:(st.screen==='landing')?'#3a4a6a':'#0F1B2D',
+      booting: st.booting, bootAnim: st.bootLeaving?'bootOut .5s ease forwards':'none',
+      menuOpen: st.menuOpen, openMenu:()=>this.toggleMenu(), closeMenu:()=>this.setState({menuOpen:false}),
+      menuIcon: I('menu',{s:20,c:'#fff'}),
+      menuXIcon: I('x',{s:18,c:'#5B6B85'}),
+      menuItems:[
+        {label:'Why AI', desc:'Why it matters now', icon:I('spark',{s:18,c:B}), go:()=>this.scrollToSection('sec-why')},
+        {label:'Curriculum', desc:'6 chapters, zero jargon', icon:I('book',{s:18,c:B}), go:()=>this.scrollToSection('sec-curriculum')},
+        {label:'Pricing', desc:'One-time ₹499', icon:I('bolt',{s:18,c:B}), go:()=>this.scrollToSection('sec-pricing')},
+        {label:'FAQ', desc:'Good to know', icon:I('life',{s:18,c:B}), go:()=>this.scrollToSection('sec-faq')},
+      ].map(m=>({...m, chev:I('chev',{s:15,c:'#C7D2E6'})})),
+      noop:()=>{},
+      // nav actions
+      goRegister:()=>{ this.setAuthMode('register'); this.go('auth'); },
+      goLogin:()=>{ this.setAuthMode('login'); this.go('auth'); },
+      goWhy:()=>this.scrollToSection('sec-why'), goCurriculum:()=>this.scrollToSection('sec-curriculum'), goPricing:()=>this.scrollToSection('sec-pricing'), goFaq:()=>this.scrollToSection('sec-faq'),
+      openTeaserModal:()=>this.openTeaserModal(), closeTeaserModal:()=>this.closeTeaserModal(), showTeaserModal: st.showTeaserModal,
+      stopProp:(e)=>{ if(e&&e.stopPropagation)e.stopPropagation(); },
+      xIconW: I('x',{s:16,c:'#fff'}),
+      modalVideoRef:(el)=>{ if(!el)return; try{el.controls=true;el.playsInline=true; const p=el.play(); if(p&&p.catch)p.catch(()=>{});}catch(_){} },
+      // icons/content
+      arrowIcon:I('arrow',{s:17,c:'#fff'}), playIconSm:I('play',{s:15,c:'#fff',w:0,style:{fill:'#fff'}}),
+      iconShield:I('shield',{s:22,c:B}), iconSpark:I('spark',{s:22,c:GOLD}),
+      clockIcon:I('clock',{s:13,c:'#8A99B5'}), docIcon:I('doc',{s:13,c:'#8A99B5'}), quizIcon:I('quiz',{s:13,c:'#8A99B5'}),
+      checkIcon:R.createElement('span',{style:{width:19,height:19,borderRadius:'50%',background:'#e6f6ef',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},I('check',{s:11,c:'#1FA971',w:3})),
+      checkIconGold:R.createElement('span',{style:{width:19,height:19,borderRadius:'50%',background:'#ffffff1a',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},I('check',{s:11,c:GOLD,w:3})),
+      heroChips:[{icon:I('spark',{s:13,c:'#8fb6ff'}),label:'Beginner friendly'},{icon:I('shield',{s:13,c:'#8fb6ff'}),label:'Safe & guided'},{icon:I('clock',{s:13,c:'#8fb6ff'}),label:'Learn at your pace'},{icon:I('heart',{s:13,c:'#8fb6ff'}),label:'3 months access'}],
+      parentPoints:['See every lesson your child completes','Track real progress, not screen time','Downloadable performance reports'],
+      studentPoints:['Daily streaks that build a habit','Fun quizzes after every chapter','AIJU explains anything, anytime'],
+      chapters: COURSE.map(c=>({num:String(c.num).padStart(2,'0'),title:c.title,tag:c.tag,dur:c.dur,c1:c.c1,c2:c.c2})),
+      aijuFeatures:[{icon:I('compass',{s:18,c:B}),title:'Guides',desc:'Walks you through every step'},{icon:I('spark',{s:18,c:B}),title:'Explains',desc:'Big ideas in simple words'},{icon:I('bell',{s:18,c:B}),title:'Reminds',desc:'Nudges you to keep your streak'},{icon:I('heart',{s:18,c:B}),title:'Encourages',desc:'Celebrates every small win'}],
+      steps:[{n:'1',title:'Sign up in seconds',desc:'Email OTP, Google or Apple, whatever is fastest.'},{n:'2',title:'Watch the teaser',desc:'See what your child will learn before you pay.'},{n:'3',title:'Pay ₹499 once',desc:'Secure UPI via Razorpay. Instant access.'},{n:'4',title:'Start learning',desc:'Complete the profile and dive into Chapter 1.'}],
+      priceIncludes:['All 6 chapters, video + guide + quiz','Progress tracking & daily streaks','Downloadable performance reports','AIJU as your personal guide','Help & support anytime'],
+      testimonials:[
+        {stars:'★★★★★',quote:'Mujhe khud AI theek se samajh nahi aata tha. Ab beta jo seekhta aur banata hai wo mujhe dikhata hai, isse mujhe bhi AI samajhne mein madad mili hai.',name:'Sunita Verma',role:'Parent of Aarav, Class 6',initial:'S',c1:'#1E74E6',c2:'#4C9BFF'},
+        {stars:'★★★★★',quote:'Har din ki report se pata chal jaata hai beti ne kya seekha. Bina kuch kahe wo roz khud padhne baith jaati hai.',name:'Rakesh Gupta',role:'Parent of Diya, Class 5',initial:'R',c1:'#F5A800',c2:'#FDB92E'},
+        {stars:'★★★★★',quote:'As a parent who never understood AI, this helped me understand it too. The daily report shows exactly what my daughter learned.',name:'Meena Iyer',role:'Parent of Ananya, Class 7',initial:'M',c1:'#1FA971',c2:'#37E0A0'},
+      ],
+      faqs,
+      // walkthrough
+      wtShow: st.wt.show, wtStep: st.wt.step+1, wtTotal: WT.length,
+      wtTitle: WT[st.wt.step]?WT[st.wt.step].title:'', wtBody: WT[st.wt.step]?WT[st.wt.step].body:'',
+      wtDots: WT.map((w,i)=>({w:i===st.wt.step?'20px':'7px', bg:i===st.wt.step?'#1E74E6':'#dbe3ef'})),
+      wtNext:()=>this.wtNext(), wtClose:()=>this.wtClose(), wtNextLabel: st.wt.step>=WT.length-1?'Got it!':'Next',
+      // toast
+      toast: st.toast, toastCheck: I('check',{s:12,c:'#0F1B2D',w:3}),
+      // ---- AUTH ----
+      isRegister: st.authMode==='register', isLoginMode: st.authMode==='login',
+      authEmailStep: st.authStep==='email', authOtpStep: st.authStep==='otp',
+      authTitle: st.authMode==='register'?'Create your account':'Welcome back',
+      authSub: st.authMode==='register'?'Start your AI journey with AIJU today.':'Log in to continue learning.',
+      sendLabel: st.sending?'Sending…':'Send verification code', sending: st.sending,
+      email: st.email, onEmail:(e)=>this.setEmail(e.target.value), otpErr: st.otpErr, otpBoxes,
+      maskedEmail: st.email||'your email',
+      sendOtpBtn:()=>this.sendOtp(), verifyOtpBtn:()=>this.verifyOtp(), backToEmail:()=>this.backToEmail(),
+      toRegister:()=>this.setAuthMode('register'), toLogin:()=>this.setAuthMode('login'),
+      socialGoogle:()=>this.social('Google'), socialApple:()=>this.social('Apple'), backHome:()=>this.go('landing'),
+      gMail: svg(['M4 6h16v12H4z','M4 7l8 6 8-6'],{s:17,c:'#8A99B5'}), gArrowW: I('arrow',{s:17,c:'#fff'}),
+      gGoogle: R.createElement('svg',{width:18,height:18,viewBox:'0 0 48 48'},[
+        R.createElement('path',{key:1,fill:'#FFC107',d:'M43.6 20.5H42V20H24v8h11.3C33.7 32.5 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z'}),
+        R.createElement('path',{key:2,fill:'#FF3D00',d:'M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.6 4 24 4 16.3 4 9.7 8.3 6.3 14.7z'}),
+        R.createElement('path',{key:3,fill:'#4CAF50',d:'M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3C29.2 35 26.7 36 24 36c-5.3 0-9.7-3.4-11.3-8.1l-6.5 5C9.5 39.6 16.2 44 24 44z'}),
+        R.createElement('path',{key:4,fill:'#1976D2',d:'M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4 5.5l6.3 5.3C41.4 36.3 44 30.7 44 24c0-1.3-.1-2.3-.4-3.5z'}),
+      ]),
+      gApple: svg(['M16.3 12.3c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9s-2-.9-3.4-.9C6 6.4 4.5 7.4 3.7 9c-1.7 2.9-.4 7.2 1.2 9.6.8 1.2 1.7 2.5 3 2.4 1.2-.1 1.6-.8 3.1-.8s1.9.8 3.2.8 2.1-1.2 2.9-2.3c.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.5-1-2.5-3.7z','M13.9 4.7c.7-.8 1.1-2 1-3.2-1 .1-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.5 2.9-1.3'],{s:18,c:INK,w:0,style:{fill:INK}}),
+      authVidOpacity: st.authVidReady?'1':'0', authVidPlaceholderOpacity: st.authVidReady?'0':'1',
+      authVideoRef:(el)=>{ if(!el||el._wired)return; el._wired=1; try{el.muted=true;el.loop=true;}catch(_){} const ok=()=>{ try{const p=el.play(); if(p&&p.catch)p.catch(()=>{});}catch(_){} if(!this.state.authVidReady) this.setState({authVidReady:true}); }; el.addEventListener('loadeddata',ok); el.addEventListener('canplay',ok); el.addEventListener('ended',()=>{try{el.currentTime=0;el.play();}catch(_){}}); if(el.readyState>=2) ok(); },
+      // ---- TEASER ----
+      teaserContinue:()=>this.teaserContinue(),
+      ctrlVideoRef:(el)=>{ if(!el)return; try{el.controls=true;el.playsInline=true;}catch(_){} },
+      teaserLearn:[
+        {icon:I('spark',{s:19,c:B}),t:'What AI really is',d:'Demystified in plain, simple language.'},
+        {icon:I('doc',{s:19,c:B}),t:'Prompting that works',d:'The recipe for great AI questions.'},
+        {icon:I('shield',{s:19,c:B}),t:'Staying safe online',d:'Privacy and responsible use.'},
+        {icon:I('compass',{s:19,c:B}),t:'The top AI tools',d:'ChatGPT, Gemini, Claude, hands-on.'},
+      ],
+      teaserGlimpses:[{img:'assets/chapter1-thumb.png',cap:'Guided video lessons'},{img:'assets/mascot-5.png',cap:'AIJU explains everything'},{img:'assets/activities.png',cap:'Fun quizzes & activities'}],
+      // ---- PAYMENT ----
+      paySummary: st.payStep==='summary', paySuccess: st.payStep==='success',
+      payMethod: st.payMethod, isUpi: st.payMethod==='upi',
+      setUpiM:()=>this.setPayMethod('upi'), setCardM:()=>this.setPayMethod('card'), setNbM:()=>this.setPayMethod('netbanking'),
+      upiId: st.upiId, onUpi:(e)=>this.setUpi(e.target.value), payProcessing: st.payProcessing,
+      payBtnLabel: st.payProcessing?'Processing…':'Pay ₹499 securely', payNow:()=>this.payNow(), paymentDone:()=>this.paymentDone(),
+      upiBorder: st.payMethod==='upi'?'#1E74E6':'#E6ECF6', upiBg: st.payMethod==='upi'?'#eaf2ff':'#fff', upiDot: st.payMethod==='upi'?'#1E74E6':'#C7D2E6', upiDotFill: st.payMethod==='upi'?'#1E74E6':'transparent',
+      cardBorder: st.payMethod==='card'?'#1E74E6':'#E6ECF6', cardBg: st.payMethod==='card'?'#eaf2ff':'#fff', cardDot: st.payMethod==='card'?'#1E74E6':'#C7D2E6', cardDotFill: st.payMethod==='card'?'#1E74E6':'transparent',
+      nbBorder: st.payMethod==='netbanking'?'#1E74E6':'#E6ECF6', nbBg: st.payMethod==='netbanking'?'#eaf2ff':'#fff', nbDot: st.payMethod==='netbanking'?'#1E74E6':'#C7D2E6', nbDotFill: st.payMethod==='netbanking'?'#1E74E6':'transparent',
+      upiApps:['GPay','PhonePe','Paytm','BHIM'],
+      checkBig: svg(['M20 6L9 17l-5-5'],{s:40,c:'#fff',w:2.5}), shieldSm: svg(['M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z','M9 12l2 2 4-4'],{s:14,c:'#1FA971'}),
+      // ---- PROFILE COMPLETE ----
+      p: st.profile,
+      setPhone:(e)=>this.setP('phone',e.target.value.replace(/\D/g,'').slice(0,10)),
+      setChildName:(e)=>this.setP('childName',e.target.value),
+      setChildAge:(e)=>this.setP('childAge',e.target.value.replace(/\D/g,'').slice(0,2)),
+      setSchool:(e)=>this.setP('school',e.target.value),
+      setKlass:(e)=>this.setP('klass',e.target.value),
+      setSection:(e)=>this.setP('section',e.target.value.replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,2)),
+      setRoll:(e)=>this.setP('roll',e.target.value.replace(/\D/g,'').slice(0,3)),
+      interestOpts: INTERESTS.map(x=>{ const on=st.profile.interests.includes(x); return {label:x, toggle:()=>this.toggleInterest(x), bc:on?'#1E74E6':'#E6ECF6', bg:on?'#eaf2ff':'#F8FAFE', fg:on?'#1E74E6':'#5B6B85', tick:on?I('check',{s:12,c:'#1E74E6',w:3}):null}; }),
+      schoolOpts: SCHOOLS, classOpts: CLASSES, ageOpts: AGES,
+      saveProfile:()=>this.saveProfileComplete(),
+      saveBg: this.profileValid()?'linear-gradient(180deg,#2A86F5,#1E74E6)':'#C7D2E6',
+      saveShadow: this.profileValid()?'0 14px 34px -10px rgba(30,116,230,.6)':'none',
+      saveOpacity: this.profileValid()?'1':'.85',
+      // ==== screen flags (templates appended later) ====
+      isApp: ['home','course','video','material','assignment','profile','help','feedback'].includes(st.screen),
+      isAuth: st.screen==='auth', isTeaser: st.screen==='teaser', isPayment: st.screen==='payment', isProfileComplete: st.screen==='profile-complete',
+      isHome: st.screen==='home', isCourse: st.screen==='course', isVideo: st.screen==='video', isMaterial: st.screen==='material', isAssignment: st.screen==='assignment', isProfileScreen: st.screen==='profile', isHelp: st.screen==='help', isFeedback: st.screen==='feedback',
+      // bottom nav
+      navItems: [{id:'home',label:'Home',icon:'grid'},{id:'course',label:'Course',icon:'book'},{id:'profile',label:'Profile',icon:'user'},{id:'help',label:'Help',icon:'life'},{id:'feedback',label:'Feedback',icon:'chat'}].map(n=>{ const on=st.screen===n.id||(n.id==='course'&&['video','material','assignment'].includes(st.screen)); return {label:n.label, go:()=>this.go(n.id), icon:I(n.icon,{s:21,c:on?'#1E74E6':'#8A99B5'}), fg:on?'#1E74E6':'#8A99B5'}; }),
+      // shared computed for app screens
+      cv, overallPct:overall, overallDeg:(overall*3.6)+'deg', nextCh, streakDays:st.streak.current, streakBest:st.streak.best,
+      greetName:(st.profile.childName||'Learner').split(' ')[0], avatarInitial:(st.profile.childName||'L').charAt(0).toUpperCase(),
+      logoutBtn:()=>{ this.setState({session:{authed:false,paid:false,profileDone:false}}); this.go('landing'); },
+      // ---- HOME ----
+      nextChPad: String(nextCh.num).padStart(2,'0'),
+      openCourseBtn:()=>this.openCourse(),
+      resumeNext:()=>{ const c=nextCh; if((st.prog[c.num]&&st.prog[c.num].video>=100)){ this.openMaterial(c.num); } else { this.openVideo(c.num); } },
+      doneCount: cv.filter(c=>c.done).length, inProgressCount: cv.filter(c=>!c.done && c.pct>0).length,
+      weekDays: ['M','T','W','T','F','S','S'].map((d,i)=>{ const on=st.streak.week[i]; const today=i===4; return {d, bg:on?'linear-gradient(140deg,#1E74E6,#0B4FB0)':'#F4F7FC', border:today&&!on?'2px solid #1E74E6':'1px solid #E6ECF6', mark:on?I('check',{s:14,c:'#fff',w:3}):(today?R.createElement('span',{style:{width:7,height:7,borderRadius:'50%',background:'#1E74E6'}}):null), labelColor:on?'#1E74E6':'#8A99B5'}; }),
+      trophyIcon: I('trophy',{s:18,c:'#1FA971'}), targetIcon: I('target',{s:18,c:'#1E74E6'}), flameBig: I('flame',{s:20,c:'#F5A800'}),
+      resumeIcon: svg(['M8 5l12 7-12 7V5z'],{s:14,c:'#0a1430',w:0,style:{fill:'#0a1430'}}),
+      bookIconW: I('book',{s:22,c:'#fff'}), chevBlue: I('chev',{s:15,c:'#1E74E6'}), pulseIcon: I('bolt',{s:15,c:'#fff'}),
+      // ---- COURSE ----
+      backHomeBtn:()=>this.go('home'), backIcon: I('arrowL',{s:17,c:'#5B6B85'}), backCourseBtn:()=>this.openCourse(),
+      courseHeroDone: cv.filter(c=>c.done).length, courseTotalTime:'81 min',
+      courseChapters: cv.map(c=>{
+        const open=!!st.openCh[c.num] && !c.locked;
+        return {
+          num:c.num, numPad:c.numPad, title:c.title, tag:c.tag, dur:c.dur, pct:c.pct, pctStr:c.pctStr, locked:c.locked, done:c.done, open,
+          numBg: c.done?'linear-gradient(135deg,#1FA971,#37E0A0)':(c.locked?'#eef2f9':'linear-gradient(135deg,'+c.c1+','+c.c2+')'),
+          numColor: c.locked?'#B0BBD0':'#fff',
+          numContent: c.done?I('check',{s:18,c:'#fff',w:3}):(c.locked?I('lock',{s:15,c:'#B0BBD0'}):c.numPad),
+          chevRot: open?'rotate(180deg)':'none', chevIcon: I('chevd',{s:18,c:'#8A99B5'}),
+          rowBg: open?'#F8FAFE':'#fff',
+          statusColor: c.done?'#1FA971':(c.pct>0?'#1E74E6':'#8A99B5'),
+          statusText: c.locked?'Locked':(c.done?'Done':(c.pct>0?c.pctStr:'Start')),
+          toggle:()=>this.toggleChapter(c.num),
+          materials:[
+            {icon:I('play',{s:15,c:'#1E74E6',w:0,style:{fill:'#1E74E6'}}), ib:'#eaf2ff', label:'Chapter video', meta:c.dur, status:c.video>=100?'Done':(c.video>0?c.video+'%':'Watch'), open:()=>this.openVideo(c.num)},
+            {icon:I('doc',{s:15,c:'#7C3AED'}), ib:'#f2ecfe', label:'Study material', meta:(MATERIAL[c.num]||MATERIAL[1]).read, status:c.material>=100?'Done':(c.material>0?'…':'Read'), open:()=>this.openMaterial(c.num)},
+            {icon:I('quiz',{s:15,c:'#F5A800'}), ib:'#fff5e2', label:'Assignment', meta:'5 MCQs', status:c.asgScore!=null?(c.asgScore+'/5'):'Attempt', open:()=>this.openAssignment(c.num)},
+          ].map(m=>({...m, chev:I('chev',{s:14,c:'#B0BBD0'})})),
+        };
+      }),
+      // ---- VIDEO ----
+      vidChPad: String(st.video.chId||1).padStart(2,'0'), vidTag:(COURSE[(st.video.chId||1)-1]||COURSE[0]).tag, vidTitle:(COURSE[(st.video.chId||1)-1]||COURSE[0]).title,
+      lessonVideoRef:(el)=>{ if(!el||el._wired)return; el._wired=1; try{el.controls=true;el.playsInline=true;}catch(_){} el.addEventListener('timeupdate',()=>{ if(el.duration){ const chId=this.state.video.chId||this.state.activeCh; const pct=Math.round(el.currentTime/el.duration*100); const prev=(this.state.prog[chId]&&this.state.prog[chId].video)||0; if(pct>prev) this.setProg(chId,{video:pct}); } }); el.addEventListener('ended',()=>{ const chId=this.state.video.chId||this.state.activeCh; this.setProg(chId,{video:100}); }); },
+      matToAssignment:()=>this.openAssignment(st.activeCh),
+      keyIcon: I('bolt',{s:13,c:'#F5A800'}), keyIconGold: I('bolt',{s:17,c:'#F5A800'}),
+      // ---- MATERIAL ----
+      matTitle:(COURSE[(st.activeCh||1)-1]||COURSE[0]).title, matChPad: String(st.activeCh||1).padStart(2,'0'),
+      matIntro:(MATERIAL[st.activeCh]||MATERIAL[1]).intro, matRead:(MATERIAL[st.activeCh]||MATERIAL[1]).read,
+      matSections:(MATERIAL[st.activeCh]||MATERIAL[1]).sections.map(s=>({h:s.h,p:s.p,cap:s.img})),
+      matKeys:(MATERIAL[st.activeCh]||MATERIAL[1]).keys,
+      matReadTime:(()=>{ const rs=(st.prog[st.activeCh]&&st.prog[st.activeCh].readSec)||0; return Math.floor(rs/60)+'m '+(rs%60)+'s'; })(),
+      markReadBtn:()=>{ this.setProg(st.activeCh,{material:100}); this.track('material_completed',{chId:st.activeCh}); this.toast('Study material marked complete'); },
+      markReadBg:(st.prog[st.activeCh]&&st.prog[st.activeCh].material>=100)?'#e6f6ef':'#fff',
+      markReadBorder:(st.prog[st.activeCh]&&st.prog[st.activeCh].material>=100)?'#1FA971':'#1E74E6',
+      markReadColor:(st.prog[st.activeCh]&&st.prog[st.activeCh].material>=100)?'#0f7a52':'#1E74E6',
+      markReadLabel:(st.prog[st.activeCh]&&st.prog[st.activeCh].material>=100)?'Completed':'Mark as read',
+      markReadIcon:(st.prog[st.activeCh]&&st.prog[st.activeCh].material>=100)?I('checkc',{s:15,c:'#1FA971'}):I('book',{s:15,c:'#1E74E6'}),
+      docIconPurple: I('doc',{s:13,c:'#7C3AED'}), pulseIconBlue: I('bolt',{s:13,c:'#1E74E6'}),
+      // ---- ASSIGNMENT ----
+      asgSubmitted: st.asg.submitted, asgQuizActive: !st.asg.submitted, asgIdx1: st.asg.idx+1, asgTotal:5, asgChPad: String(st.asg.chId||1).padStart(2,'0'),
+      asgCurText:(aq[st.asg.idx]||aq[0]).q,
+      asgCurOpts:(aq[st.asg.idx]||aq[0]).opts.map((o,oi)=>{ const sel=st.asg.answers[st.asg.idx]===oi; return {text:o, pick:()=>this.pickAnswer(st.asg.idx,oi), bc:sel?'#1E74E6':'#E6ECF6', bg:sel?'#eaf2ff':'#fff', letterBg:sel?'#1E74E6':'#eef2f9', letterC:sel?'#fff':'#8A99B5', letter:String.fromCharCode(65+oi)}; }),
+      asgDots: aq.map((_,i)=>({goto:()=>this.asgGoto(i), bg:i===st.asg.idx?'#1E74E6':(st.asg.answers[i]!=null?'#c3ddff':'#e6ecf6'), w:i===st.asg.idx?'22px':'9px'})),
+      asgShowNext: st.asg.idx<4, asgShowSubmit: st.asg.idx===4, asgPrevOpacity: st.asg.idx===0?'.4':'1',
+      asgNextBtn:()=>this.asgNext(), asgPrevBtn:()=>this.asgPrev(), submitAsgBtn:()=>this.submitAsg(), retryAsgBtn:()=>this.retryAsg(), asgBackCourse:()=>this.openCourse(),
+      asgScore: st.asg.score, asgScoreDeg:((st.asg.score||0)/5*360)+'deg',
+      asgResultTitle:(st.asg.score||0)>=4?'Brilliant work!':((st.asg.score||0)>=3?'Well done!':'Good try!'),
+      asgResultMsg:(st.asg.score||0)>=3?'You\'ve got a solid grasp of this chapter. Keep it going!':'Review the study material and give it another go.',
+      asgReview: aq.map((qq,i)=>{ const chosen=st.asg.answers[i]; const right=chosen===qq.correct; return {n:i+1, q:qq.q, opts:qq.opts.map((o,oi)=>({text:o, bc:oi===qq.correct?'#1FA971':(oi===chosen?'#E5484D':'#E6ECF6'), bg:oi===qq.correct?'#e6f6ef':(oi===chosen?'#fdecec':'#fff'), fg:oi===qq.correct?'#0f7a52':(oi===chosen?'#b02a2e':'#5B6B85'), badge:oi===qq.correct?I('check',{s:12,c:'#1FA971',w:3}):(oi===chosen?I('x',{s:12,c:'#E5484D',w:3}):null)})), mark: right?I('checkc',{s:18,c:'#1FA971'}):I('x',{s:16,c:'#E5484D',w:2.5}) }; }),
+      quizIconGold: I('quiz',{s:19,c:'#F5A800'}), clipIcon: I('clip',{s:14,c:'#fff'}),
+      asgSubmitBg: aq.every((_,i)=>st.asg.answers[i]!=null)?'linear-gradient(180deg,#22b17a,#1FA971)':'#C7D2E6',
+      asgSubmitShadow: aq.every((_,i)=>st.asg.answers[i]!=null)?'0 12px 30px -10px rgba(31,169,113,.55)':'none',
+      // ---- PROFILE ----
+      accountEmail: st.email||'aarav.parent@gmail.com',
+      phoneDisplay: st.profile.phone?('+91 '+st.profile.phone):'-',
+      pv: st.profile, editMode: st.editProfile, viewMode: !st.editProfile,
+      editIconDark: I('edit',{s:14,c:'#0a1430'}), lockBadge: I('lock',{s:12,c:'#B0BBD0'}), dlIcon: I('download',{s:16,c:'#1E74E6'}),
+      altEmailDisp: st.profile.altEmail||'Not added', altEmailColor: st.profile.altEmail?'#0F1B2D':'#B0BBD0',
+      altPhoneDisp: st.profile.altPhone||'Not added', altPhoneColor: st.profile.altPhone?'#0F1B2D':'#B0BBD0',
+      eb: st.editBuf||st.profile,
+      childFull: st.profile.childName||'Learner',
+      childMeta:(st.profile.klass||'Class 6')+' · Sec '+(st.profile.section||'B')+' · Roll '+(st.profile.roll||'-'),
+      childSchool: st.profile.school||'-', profAvatar:(st.profile.childName||'L').charAt(0).toUpperCase(),
+      startEditBtn:()=>this.startEdit(), cancelEditBtn:()=>this.cancelEdit(), saveEditBtn:()=>this.saveEdit(), downloadReportBtn:()=>this.downloadReport(),
+      editName:(e)=>this.setEdit('childName',e.target.value),
+      editAge:(e)=>this.setEdit('childAge',e.target.value.replace(/\D/g,'').slice(0,2)),
+      editKlass:(e)=>this.setEdit('klass',e.target.value),
+      editSection:(e)=>this.setEdit('section',e.target.value.replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,2)),
+      editRoll:(e)=>this.setEdit('roll',e.target.value.replace(/\D/g,'').slice(0,3)),
+      editAltEmail:(e)=>this.setEdit('altEmail',e.target.value),
+      editAltPhone:(e)=>this.setEdit('altPhone',e.target.value),
+      editInterestOpts: INTERESTS.map(x=>{ const on=(st.editBuf||st.profile).interests.includes(x); return {label:x, toggle:()=>this.toggleEditInterest(x), bc:on?'#1E74E6':'#E6ECF6', bg:on?'#eaf2ff':'#F8FAFE', fg:on?'#1E74E6':'#5B6B85', tick:on?I('check',{s:11,c:'#1E74E6',w:3}):null}; }),
+      reportRows:[{label:'Chapters completed',val:cv.filter(c=>c.done).length+' / 6'},{label:'Overall progress',val:overall+'%'},{label:'Current streak',val:st.streak.current+' days'},{label:'Total watch time',val:'42 min'},{label:'Total reading time',val:'18 min'},{label:'Avg. quiz score',val:'4.2 / 5'}],
+      profInterestChips: st.profile.interests.map(x=>({label:x})),
+      // ---- HELP ----
+      helpCategory: st.help.category, onHelpCategory:(e)=>this.setHelp('category',e.target.value),
+      helpSubject: st.help.subject, onHelpSubject:(e)=>this.setHelp('subject',e.target.value),
+      helpMsg: st.help.msg, onHelpMsg:(e)=>this.setHelp('msg',e.target.value),
+      helpSubmitted: st.help.submitted, helpFormActive: !st.help.submitted, helpTicket: st.help.ticket,
+      submitHelpBtn:()=>this.submitHelp(), resetHelpBtn:()=>this.resetHelp(),
+      helpCategories:['Technical issue','Payment & billing','Course content','Account & login','Other'],
+      helpQuick:[{q:'When does access expire?',a:'3 months from your payment date.'},{q:'Can I use this on mobile?',a:'Yes, on any device.'},{q:'How do streaks work?',a:'Just log in and learn daily.'}],
+      checkBigG: svg(['M20 6L9 17l-5-5'],{s:36,c:'#fff',w:2.5}),
+      // ---- FEEDBACK ----
+      fbStars: [1,2,3,4,5].map(n=>({set:()=>this.setRating(n), icon:I('star',{s:32,c:n<=st.fb.rating?'#F5A800':'#dbe3ef',w:1.5, style:{fill:n<=st.fb.rating?'#F5A800':'none'}})})),
+      fbCategory: st.fb.category, onFbCategory:(e)=>this.setFb('category',e.target.value),
+      fbMsg: st.fb.msg, onFbMsg:(e)=>this.setFb('msg',e.target.value),
+      fbSubmitted: st.fb.submitted, fbFormActive: !st.fb.submitted, submitFbBtn:()=>this.submitFb(),
+      fbCategories:['Course content','App experience','AIJU the mascot','Suggestions','Something else'],
+      fbRatingLabel:['','Poor','Fair','Good','Great','Loved it!'][st.fb.rating],
+    };
+  }
+}
+
+const COURSE=[
+  {num:1,title:'ChatGPT Se Pehli Mulaqat',tag:'AI FOR EVERYONE',dur:'14 min',c1:'#1E74E6',c2:'#0B4FB0',blurb:'What AI really is, and your very first, safe conversation with ChatGPT.'},
+  {num:2,title:'Prompt Likhna Seekho',tag:'PROMPTING 101',dur:'12 min',c1:'#7C3AED',c2:'#4C1D95',blurb:'The simple recipe for asking AI questions that get brilliant answers.'},
+  {num:3,title:'AI Se Padhai, Smart Tarike Se',tag:'STUDY SMARTER',dur:'15 min',c1:'#0EA5A5',c2:'#0F766E',blurb:'Use AI as a study buddy: summaries, doubts and revision made easy.'},
+  {num:4,title:'AI Art & Imagination',tag:'CREATE WITH AI',dur:'13 min',c1:'#F5A800',c2:'#C2410C',blurb:'Turn ideas into images and stories, and learn where creativity meets AI.'},
+  {num:5,title:'Safe & Smart AI',tag:'STAY SAFE',dur:'11 min',c1:'#E5484D',c2:'#991B1B',blurb:'Privacy, misinformation and the golden rules of using AI responsibly.'},
+  {num:6,title:'AI Tools Ki Duniya',tag:'TOOLS TOUR',dur:'16 min',c1:'#2563EB',c2:'#1E3A8A',blurb:'A guided tour of Gemini, Claude and Perplexity, and when to use each.'},
+];
+const INTERESTS=['Robots','Space','Art & Drawing','Games','Science','Music','Stories','Coding','Sports','Nature','Maths','Movies'];
+const SCHOOLS=['Delhi Public School, R.K. Puram','Kendriya Vidyalaya','St. Xavier\'s High School','Ryan International School'];
+const CLASSES=['Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Class 11','Class 12'];
+const AGES=['8','9','10','11','12','13','14','15','16','17'];
+const WT=[
+  {title:'Your daily streak', body:'Log in and learn a little every day to grow your streak. AIJU will cheer you on!'},
+  {title:'Pick up where you left off', body:'Your home always takes you straight to your next lesson, no searching needed.'},
+  {title:'Track your journey', body:'Watch your course progress climb as you finish videos, guides and quizzes.'},
+  {title:'Everything in one place', body:'Jump to your course, profile, help and feedback from the bottom bar anytime.'},
+];
+const MCQ={
+  1:[
+    {q:'What does "AI" stand for?', opts:['Automatic Internet','Artificial Intelligence','Advanced Information','Applied Innovation'], correct:1},
+    {q:'ChatGPT is best described as a…', opts:['Search engine like a library index','Conversational AI you can chat with','Video game','Calculator'], correct:1},
+    {q:'What is the safest first step when using ChatGPT?', opts:['Share your home address','Ask a simple, clear question','Believe every answer fully','Use it without a parent nearby'], correct:1},
+    {q:'AI answers are…', opts:['Always 100% correct','Sometimes wrong and worth checking','Written by a human each time','Never useful for study'], correct:1},
+    {q:'A good reason to learn AI early is to…', opts:['Copy homework faster','Use it wisely and safely','Avoid reading books','Skip school'], correct:1},
+  ],
+  2:[
+    {q:'A "prompt" is…', opts:['The AI\'s answer','The instruction you give the AI','A type of computer','An error message'], correct:1},
+    {q:'Which prompt is clearer?', opts:['"stuff about space"','"Explain the solar system to a 10-year-old in 3 points"','"space???"','"tell me everything"'], correct:1},
+    {q:'Adding context to a prompt usually makes answers…', opts:['Worse','More relevant and useful','Longer but useless','Disappear'], correct:1},
+    {q:'If an answer is not what you wanted, you should…', opts:['Give up','Refine your prompt and try again','Blame the AI','Type in ALL CAPS'], correct:1},
+    {q:'Asking the AI to "act as a teacher" is an example of…', opts:['A role in your prompt','A password','A bug','A game cheat'], correct:0},
+  ],
+  3:[
+    {q:'A great study use of AI is to…', opts:['Write your exam for you','Summarise a chapter into key points','Do nothing','Delete your notes'], correct:1},
+    {q:'When AI explains a doubt, you should…', opts:['Memorise blindly','Understand and verify it','Ignore it','Print it out only'], correct:1},
+    {q:'AI can help create…', opts:['Practice questions','Only pictures','Nothing for study','Just games'], correct:0},
+    {q:'The best mindset with an AI study buddy is…', opts:['Let it think for me','Use it to learn, not to cheat','Trust it blindly','Use it once'], correct:1},
+    {q:'To revise fast, ask AI for…', opts:['A long boring essay','A short quiz or flashcards','Random facts','Its opinion only'], correct:1},
+  ],
+  4:[
+    {q:'AI image tools turn ____ into pictures.', opts:['Money','Text descriptions','Sounds only','Nothing'], correct:1},
+    {q:'When creating AI art, imagination is…', opts:['Useless','Your most powerful tool','Not allowed','A mistake'], correct:1},
+    {q:'AI-made images should be…', opts:['Passed off as your own','Credited honestly when shared','Hidden forever','Sold secretly'], correct:1},
+    {q:'A detailed art prompt gives you…', opts:['Random results','More control over the result','An error','A refund'], correct:1},
+    {q:'Creativity + AI works best when you…', opts:['Copy others','Add your own ideas','Do nothing','Only use presets'], correct:1},
+  ],
+  5:[
+    {q:'You should never share with AI your…', opts:['Favourite colour','Home address & passwords','Favourite subject','A maths question'], correct:1},
+    {q:'"Misinformation" means…', opts:['Correct facts','False or misleading information','A type of AI','A safe website'], correct:1},
+    {q:'If AI says something that sounds wrong, you should…', opts:['Believe it anyway','Check it with a trusted source','Share it fast','Panic'], correct:1},
+    {q:'A golden rule of safe AI use is…', opts:['Use it alone secretly','Keep a parent or teacher informed','Never ask questions','Share everything'], correct:1},
+    {q:'Being kind and responsible online is…', opts:['Optional','Always important','Only for adults','A waste of time'], correct:1},
+  ],
+  6:[
+    {q:'Gemini, Claude and Perplexity are all…', opts:['Games','AI tools','Schools','Robots at home'], correct:1},
+    {q:'Perplexity is especially good at…', opts:['Cooking','Answering with sources you can check','Playing music','Drawing only'], correct:1},
+    {q:'Trying different AI tools helps you…', opts:['Waste time','Find the best one for each task','Get confused only','Break your device'], correct:1},
+    {q:'The right tool depends on…', opts:['The colour you like','What you are trying to do','The time of day','Nothing'], correct:1},
+    {q:'The smartest AI user is one who…', opts:['Uses only one tool ever','Knows which tool fits the job','Never learns','Avoids all tools'], correct:1},
+  ],
+};
+const MATERIAL={
+  1:{ read:'6 min read', intro:'Before you type your very first message to ChatGPT, let\'s understand what you are actually talking to, and how to make the most of it, safely.',
+    sections:[
+      {h:'So… what exactly is AI?',img:'concept illustration, friendly robot brain',p:'AI, or Artificial Intelligence, is a computer program that learns from huge amounts of information and then helps you with tasks: answering questions, writing, drawing and more. It is not alive and does not "know" things the way you do; it makes very smart guesses based on patterns.'},
+      {h:'Meet ChatGPT',img:'ChatGPT chat screen',p:'ChatGPT is a conversational AI. You can talk to it in plain language, just like texting a friend, and it replies. Ask it to explain a topic, help with a story, or answer a doubt. The clearer your question, the better its answer.'},
+      {h:'Your first safe conversation',img:'student and AIJU chatting',p:'Start simple, like "Explain what a rainbow is in 3 short points." Always keep a parent or teacher in the loop, and never share private details like your address, school ID or passwords.'},
+    ],
+    keys:['AI = a smart pattern-matching helper, not a living brain.','ChatGPT is conversational: talk to it in plain language.','Clear questions get clear answers.','Never share private information with any AI.','Always double-check important answers.'],
+  },
+};
+['2','3','4','5','6'].forEach(k=>{ const c=COURSE[+k-1]; MATERIAL[k]={read:'5 min read',intro:'A quick, friendly guide to the key ideas from "'+c.title+'". Read along with the video for the best results.',sections:[{h:'The big idea',img:'concept illustration',p:'This chapter builds on what you learned before. Watch the video first, then use this guide to lock in the main points and try the examples yourself.'},{h:'Why it matters',img:'real-world example',p:'Everything here connects to how you\'ll actually use AI in daily life, for school, creativity and curiosity. Go slow, and ask AIJU if anything is unclear.'}],keys:['Watch the video, then read this guide.','Try each idea yourself as you go.','Take the quiz to check your understanding.','Ask AIJU whenever you\'re stuck.']}; });
+</script>
+</body>
+</html>
