@@ -68,11 +68,7 @@
   <div style="position:sticky;top:0;z-index:50;background:{{ navBg }};backdrop-filter:blur(12px);border-bottom:1px solid {{ navBorder }};transition:background .3s,border-color .3s;">
     <div style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:20px;">
       <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onClick="{{ goTop }}">
-        <img src="assets/aiju-logo.png" alt="" style="height:36px;width:auto;display:block;">
-        <div style="line-height:1.05;">
-          <div style="font-family:'Sora';font-weight:800;font-size:15px;letter-spacing:.01em;color:{{ navInk }};">INFINITY BUDDY <span style="color:#1E74E6;">AIJU</span></div>
-          <div style="font-family:'JetBrains Mono';font-size:8.5px;letter-spacing:.22em;color:{{ navMuted }};margin-top:2px;">AI MASTERCLASS</div>
-        </div>
+        <dc-import name="CoBrand" size="30" fs="15" ink="{{ navInk }}" muted="{{ navMuted }}" hint-size="300px,42px"></dc-import>
       </div>
       <div style="flex:1;"></div>
       <div style="display:flex;align-items:center;gap:26px;font-size:14px;font-weight:600;color:{{ navMuted }};" data-nav-links>
@@ -320,11 +316,10 @@
         <div style="display:flex;flex-wrap:wrap;gap:40px 56px;margin-bottom:44px;">
           <div style="flex:2 1 300px;min-width:260px;">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-              <img src="assets/aiju-logo.png" alt="" style="height:34px;width:auto;">
-              <div style="font-family:'Sora';font-weight:800;font-size:15px;color:#fff;">INFINITY BUDDY <span style="color:#4C9BFF;">AIJU</span></div>
+              <dc-import name="CoBrand" size="32" fs="15" ink="#fff" muted="#9fb0d0" hint-size="300px,44px"></dc-import>
             </div>
             <p style="font-size:14px;line-height:1.65;color:#9fb0d0;max-width:340px;margin:0 0 18px;">Helping every Indian child grow up confident, curious and safe in a world powered by AI. Guided by AIJU.</p>
-            <div style="display:inline-flex;align-items:center;gap:8px;background:#ffffff10;border:1px solid #ffffff1f;padding:8px 14px;border-radius:999px;font-size:12.5px;font-weight:600;color:#c9d6f0;">Made in India · support@infinitybuddy.in</div>
+            <div style="display:inline-flex;align-items:center;gap:8px;background:#ffffff10;border:1px solid #ffffff1f;padding:8px 14px;border-radius:999px;font-size:12.5px;font-weight:600;color:#c9d6f0;">Made in India · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="11626461617e636551787f77787f78656873647575683f787f">[email&#160;protected]</a></div>
           </div>
           <div style="flex:1 1 150px;min-width:140px;">
             <div style="font-family:'Sora';font-weight:700;font-size:13px;color:#fff;margin-bottom:16px;">Explore</div>
@@ -354,7 +349,7 @@
           </div>
         </div>
         <div style="border-top:1px solid #ffffff14;padding-top:22px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
-          <div style="font-size:13px;color:#6f7fa3;">© 2026 Infinity Buddy AIJU · AI Masterclass</div>
+          <div style="font-size:13px;color:#6f7fa3;">© 2026 SIS × BeInfinityBuddy · AI Masterclass</div>
           <div style="flex:1;"></div>
           <div style="display:flex;gap:22px;font-size:13px;">
             <a class="navlink" style="color:#6f7fa3;cursor:pointer;" onClick="{{ noop }}">Terms</a>
@@ -375,8 +370,7 @@
     <!-- form -->
     <div style="flex:1 1 460px;padding:clamp(28px,4vw,52px);display:flex;flex-direction:column;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:auto;cursor:pointer;" onClick="{{ backHome }}">
-        <img src="assets/aiju-logo.png" alt="" style="height:34px;width:auto;">
-        <div style="font-family:'Sora';font-weight:800;font-size:14px;color:#0F1B2D;">INFINITY BUDDY <span style="color:#1E74E6;">AIJU</span></div>
+        <dc-import name="CoBrand" size="30" fs="14" ink="#0F1B2D" muted="#8A99B5" hint-size="280px,40px"></dc-import>
       </div>
 
       <div style="margin:36px 0;">
@@ -456,8 +450,7 @@
 <div style="height:100vh;display:flex;flex-direction:column;background:#F4F7FC;animation:screenIn .45s ease both;">
   <div style="background:#fff;border-bottom:1px solid #E6ECF6;z-index:20;flex-shrink:0;">
     <div style="max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;">
-      <img src="assets/aiju-logo.png" alt="" style="height:32px;width:auto;">
-      <div style="font-family:'Sora';font-weight:800;font-size:14px;color:#0F1B2D;">AI Masterclass</div>
+      <dc-import name="CoBrand" size="28" fs="13" ink="#0F1B2D" muted="#8A99B5" hint-size="260px,40px"></dc-import>
       <div style="flex:1;"></div>
       <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#8A99B5;font-family:'JetBrains Mono';">
         <span style="color:#1E74E6;">01 PREVIEW</span><span>·</span><span>02 PAY</span><span>·</span><span>03 PROFILE</span>
@@ -526,8 +519,7 @@
 <div style="min-height:100vh;background:radial-gradient(900px 600px at 80% 0%,#eaf2ff,#f4f7fc 55%);animation:screenIn .45s ease both;">
   <div style="background:#fff;border-bottom:1px solid #E6ECF6;">
     <div style="max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;">
-      <img src="assets/aiju-logo.png" alt="" style="height:32px;width:auto;">
-      <div style="font-family:'Sora';font-weight:800;font-size:14px;color:#0F1B2D;">AI Masterclass</div>
+      <dc-import name="CoBrand" size="28" fs="13" ink="#0F1B2D" muted="#8A99B5" hint-size="260px,40px"></dc-import>
       <div style="flex:1;"></div>
       <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#8A99B5;font-family:'JetBrains Mono';">
         <span>01 PREVIEW</span><span>·</span><span style="color:#1E74E6;">02 PAY</span><span>·</span><span>03 PROFILE</span>
@@ -614,8 +606,7 @@
 <div style="min-height:100vh;background:#F4F7FC;animation:screenIn .45s ease both;">
   <div style="background:#fff;border-bottom:1px solid #E6ECF6;">
     <div style="max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;">
-      <img src="assets/aiju-logo.png" alt="" style="height:32px;width:auto;">
-      <div style="font-family:'Sora';font-weight:800;font-size:14px;color:#0F1B2D;">AI Masterclass</div>
+      <dc-import name="CoBrand" size="28" fs="13" ink="#0F1B2D" muted="#8A99B5" hint-size="260px,40px"></dc-import>
       <div style="flex:1;"></div>
       <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#8A99B5;font-family:'JetBrains Mono';">
         <span>01 PREVIEW</span><span>·</span><span>02 PAY</span><span>·</span><span style="color:#1E74E6;">03 PROFILE</span>
@@ -647,10 +638,7 @@
         <div><label style="display:block;font-size:13px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Child's name *</label><input value="{{ p.childName }}" onInput="{{ setChildName }}" placeholder="e.g. Aarav Sharma" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:14.5px;background:#F8FAFE;color:#0F1B2D;"></div>
         <div><label style="display:block;font-size:13px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Child's age *</label><input value="{{ p.childAge }}" onInput="{{ setChildAge }}" inputmode="numeric" maxlength="2" placeholder="e.g. 11" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:14.5px;background:#F8FAFE;color:#0F1B2D;"></div>
         <div><label style="display:block;font-size:13px;font-weight:600;color:#1B2A41;margin-bottom:7px;">School *</label>
-          <select value="{{ p.school }}" onChange="{{ setSchool }}" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:14.5px;background:#F8FAFE;color:#0F1B2D;cursor:pointer;">
-            <option value="">Select school</option>
-            <sc-for list="{{ schoolOpts }}" as="s" hint-placeholder-count="5"><option value="{{ s }}">{{ s }}</option></sc-for>
-          </select>
+          <div style="display:flex;align-items:center;gap:10px;width:100%;padding:11px 13px;border:1.5px solid #E6ECF6;border-radius:12px;background:#F8FAFE;"><img src="assets/sis-logo.png" alt="" style="height:26px;width:auto;display:block;flex-shrink:0;"><span style="font-size:14.5px;font-weight:700;color:#0F1B2D;">Sage International School</span></div>
         </div>
         <div><label style="display:block;font-size:13px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Class *</label>
           <select value="{{ p.klass }}" onChange="{{ setKlass }}" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:14.5px;background:#F8FAFE;color:#0F1B2D;cursor:pointer;">
@@ -687,8 +675,7 @@
   <sc-if value="{{ showSidebar }}" hint-placeholder-val="{{ true }}">
   <div style="width:264px;flex-shrink:0;background:#fff;border-right:1px solid #E6ECF6;height:100vh;position:sticky;top:0;display:flex;flex-direction:column;padding:22px 16px;">
     <div style="display:flex;align-items:center;gap:10px;padding:6px 8px 22px;">
-      <img src="assets/aiju-logo.png" alt="" style="height:34px;width:auto;">
-      <div style="line-height:1.1;"><div style="font-family:'Sora';font-weight:800;font-size:13.5px;color:#0F1B2D;">INFINITY BUDDY</div><div style="font-family:'JetBrains Mono';font-size:8px;letter-spacing:.16em;color:#8A99B5;">AI MASTERCLASS</div></div>
+      <dc-import name="CoBrand" size="28" fs="14" ink="#0F1B2D" muted="#8A99B5" label="BeIB" hint-size="180px,40px"></dc-import>
     </div>
     <div style="display:flex;flex-direction:column;gap:4px;">
       <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
@@ -711,8 +698,7 @@
     <!-- mobile top bar -->
     <sc-if value="{{ showBottomNav }}" hint-placeholder-val="{{ false }}">
     <div style="background:#fff;border-bottom:1px solid #E6ECF6;padding:12px 18px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:30;">
-      <img src="assets/aiju-logo.png" alt="" style="height:30px;width:auto;">
-      <div style="font-family:'Sora';font-weight:800;font-size:14px;color:#0F1B2D;">AI Masterclass</div>
+      <dc-import name="CoBrand" size="26" fs="13" ink="#0F1B2D" muted="#8A99B5" label="BeIB" hint-size="180px,40px"></dc-import>
       <div style="flex:1;"></div>
       <div style="display:flex;align-items:center;gap:6px;background:#fff7e6;border:1px solid #ffe0a3;padding:6px 11px;border-radius:999px;">{{ flameBig }}<span style="font-weight:800;font-size:13px;color:#b8730a;">{{ streakDays }}</span></div>
     </div>
@@ -1084,7 +1070,7 @@
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;">
                 <div><div style="font-size:11.5px;color:#8A99B5;font-weight:600;margin-bottom:3px;">Child's name</div><div style="font-weight:700;font-size:14.5px;color:#0F1B2D;">{{ pv.childName }}</div></div>
                 <div><div style="font-size:11.5px;color:#8A99B5;font-weight:600;margin-bottom:3px;">Age</div><div style="font-weight:700;font-size:14.5px;color:#0F1B2D;">{{ pv.childAge }} years</div></div>
-                <div style="grid-column:span 2;"><div style="font-size:11.5px;color:#8A99B5;font-weight:600;margin-bottom:3px;">School</div><div style="font-weight:700;font-size:14.5px;color:#0F1B2D;">{{ pv.school }}</div></div>
+                <div style="grid-column:span 2;"><div style="font-size:11.5px;color:#8A99B5;font-weight:600;margin-bottom:3px;">School</div><div style="display:flex;align-items:center;gap:8px;"><img src="assets/sis-logo.png" alt="" style="height:22px;width:auto;display:block;flex-shrink:0;"><div style="font-weight:700;font-size:14.5px;color:#0F1B2D;">{{ pv.school }}</div></div></div>
                 <div><div style="font-size:11.5px;color:#8A99B5;font-weight:600;margin-bottom:3px;">Class &amp; section</div><div style="font-weight:700;font-size:14.5px;color:#0F1B2D;">{{ pv.klass }} · {{ pv.section }}</div></div>
                 <div><div style="font-size:11.5px;color:#8A99B5;font-weight:600;margin-bottom:3px;">Roll number</div><div style="font-weight:700;font-size:14.5px;color:#0F1B2D;">{{ pv.roll }}</div></div>
                 <div><div style="font-size:11.5px;color:#8A99B5;font-weight:600;margin-bottom:3px;">Alternate email</div><div style="font-weight:700;font-size:14.5px;color:{{ altEmailColor }};">{{ altEmailDisp }}</div></div>
@@ -1275,8 +1261,7 @@
   <div onClick="{{ closeTeaserModal }}" style="position:fixed;inset:0;z-index:400;background:#050914e6;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .3s;">
     <div onClick="{{ stopProp }}" style="width:100%;max-width:900px;background:#0a1430;border-radius:22px;overflow:hidden;box-shadow:0 40px 100px -30px rgba(0,0,0,.7);border:1px solid #ffffff1f;animation:pop .4s cubic-bezier(.2,.8,.3,1) both;">
       <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid #ffffff14;">
-        <img src="assets/aiju-logo.png" alt="" style="height:30px;width:auto;">
-        <div style="font-family:'Sora';font-weight:800;font-size:14px;color:#fff;">AI Masterclass · Teaser</div>
+        <dc-import name="CoBrand" size="26" fs="13" ink="#fff" muted="#8fb6ff" hint-size="250px,40px"></dc-import>
         <div style="flex:1;"></div>
         <div onClick="{{ closeTeaserModal }}" class="btnp" style="width:34px;height:34px;border-radius:10px;background:#ffffff14;display:flex;align-items:center;justify-content:center;cursor:pointer;">{{ xIconW }}</div>
       </div>
@@ -1300,7 +1285,7 @@
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:900}}">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:900}}">
 const B='#1E74E6', GOLD='#F5A800', INK='#0F1B2D';
 const R=React;
 const svg=(paths,o={})=>R.createElement('svg',{width:o.s||18,height:o.s||18,viewBox:'0 0 24 24',fill:'none',stroke:o.c||'currentColor','stroke-width':o.w||2,'stroke-linecap':'round','stroke-linejoin':'round',style:o.style},paths.map((d,i)=>R.createElement('path',{key:i,d})));
@@ -1351,7 +1336,7 @@ class Component extends DCLogic {
     authMode:'register', authStep:'email', email:'', otp:['','','','',''], otpErr:'', sending:false,
     // session
     session:{authed:false, paid:false, profileDone:false},
-    profile:{phone:'',childName:'',childAge:'',school:'',klass:'',section:'',roll:'',interests:[],altEmail:'',altPhone:''},
+    profile:{phone:'',childName:'',childAge:'',school:'Sage International School',klass:'',section:'',roll:'',interests:[],altEmail:'',altPhone:''},
     // teaser
     teaserPlaying:false,
     // payment
@@ -1380,14 +1365,22 @@ class Component extends DCLogic {
     this._rz=()=>this.setState({vw:window.innerWidth});
     window.addEventListener('resize',this._rz);
     this._scrolled=false;
+    this._ticking=false;
     this._sc=()=>{
-      if(this.state.screen!=='landing') return;
-      const y=window.scrollY||document.documentElement.scrollTop||0;
-      const now=y>30;
-      if(now!==this._scrolled){ this._scrolled=now; this.setState({scrollY:y}); }
-      const orb=document.querySelector('[data-parallax="orb"]'); if(orb) orb.style.transform='translate3d(0,'+(y*0.28)+'px,0)';
-      const grid=document.querySelector('[data-parallax="grid"]'); if(grid) grid.style.transform='translate3d(0,'+(y*0.14)+'px,0)';
-      if(this._revealScan) this._revealScan();
+      if(this._ticking) return;
+      this._ticking=true;
+      requestAnimationFrame(()=>{
+        this._ticking=false;
+        if(this.state.screen!=='landing') return;
+        const y=window.scrollY||document.documentElement.scrollTop||0;
+        const now=y>30;
+        if(now!==this._scrolled){ this._scrolled=now; this.setState({scrollY:y}); }
+        if(!this._orb || !this._orb.isConnected) this._orb=document.querySelector('[data-parallax="orb"]');
+        if(!this._grid || !this._grid.isConnected) this._grid=document.querySelector('[data-parallax="grid"]');
+        if(this._orb) this._orb.style.transform='translate3d(0,'+(y*0.28)+'px,0)';
+        if(this._grid) this._grid.style.transform='translate3d(0,'+(y*0.14)+'px,0)';
+        if(this._revealScan) this._revealScan();
+      });
     };
     window.addEventListener('scroll',this._sc,{passive:true});
     this._revealScan=()=>{ const h=window.innerHeight||800; document.querySelectorAll('.reveal:not([data-in])').forEach(el=>{ if(el.getBoundingClientRect().top < h*0.9) el.setAttribute('data-in','1'); }); };
@@ -1438,7 +1431,7 @@ class Component extends DCLogic {
   }
   seedReturning(){
     this.setState(s=>({
-      profile:{...s.profile, phone:'9876543210', childName:'Aarav Sharma', childAge:'11', school:'Delhi Public School, R.K. Puram', klass:'Class 6', section:'B', roll:'24', interests:['Robots','Space','Art & Drawing','Games'], altEmail:'', altPhone:''},
+      profile:{...s.profile, phone:'9876543210', childName:'Aarav Sharma', childAge:'11', school:'Sage International School', klass:'Class 6', section:'B', roll:'24', interests:['Robots','Space','Art & Drawing','Games'], altEmail:'', altPhone:''},
       prog:{1:{video:100,material:100,readSec:340,asgScore:5,done:true}, 2:{video:55,material:40,readSec:120,asgScore:null,done:false}},
     }));
   }
@@ -1980,8 +1973,8 @@ const COURSE=[
 ];
 
 const INTERESTS=['Robots','Space','Art & Drawing','Games','Science','Music','Stories','Coding','Sports','Nature','Maths','Movies'];
-const SCHOOLS=['Delhi Public School, R.K. Puram','Kendriya Vidyalaya','St. Xavier\'s High School','Ryan International School'];
-const CLASSES=['Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Class 11','Class 12'];
+const SCHOOLS=['Sage International School'];
+const CLASSES=['KG 1','KG 2','Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Class 11','Class 12'];
 const AGES=['8','9','10','11','12','13','14','15','16','17'];
 
 const WT=[
