@@ -34,6 +34,15 @@
   @keyframes heroRise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
   @keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   @keyframes loadslide{0%{transform:translateX(-110%);}100%{transform:translateX(360%);}}
+  @keyframes flowpulseY{0%{top:0;opacity:0;}15%{opacity:1;}85%{opacity:1;}100%{top:calc(100% - 9px);opacity:0;}}
+  @keyframes wtpop{0%{transform:scale(.6) translateY(10px);opacity:0;}60%{transform:scale(1.1) translateY(-4px);}100%{transform:scale(1) translateY(0);opacity:1;}}
+  @keyframes confetti{0%{transform:translateY(-10px) rotate(0);opacity:0;}12%{opacity:1;}100%{transform:translateY(300px) rotate(320deg);opacity:0;}}
+  @keyframes pulseGlow{0%,100%{opacity:.55;transform:scale(1);}50%{opacity:.9;transform:scale(1.06);}}
+  @keyframes accOpen{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+  @keyframes streakPop{0%{transform:scale(.4);opacity:0;}60%{transform:scale(1.14);}100%{transform:scale(1);opacity:1;}}
+  @keyframes keyPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.14);}}
+  @keyframes boxGlow{0%,100%{box-shadow:0 0 0 0 rgba(245,168,0,.45);}50%{box-shadow:0 0 40px 6px rgba(245,168,0,.55);}}
+  @keyframes peekBubble{from{opacity:0;transform:translateY(-50%) translateX(6px) scale(.85);}to{opacity:1;transform:translateY(-50%) translateX(0) scale(1);}}
   .btnp{transition:transform .16s cubic-bezier(.2,.7,.3,1),box-shadow .2s,background .2s,color .2s,border-color .2s;}
   .btnp:active{transform:scale(.97);}
   .lift{transition:transform .2s,box-shadow .2s;}
@@ -73,7 +82,7 @@
             <h1 style="font-family:'Sora';font-weight:800;font-size:34px;line-height:1.04;letter-spacing:-.02em;color:#fff;margin:14px 0 14px;animation:heroRise .7s .05s both;">AI Se Dosti,<br><span style="background:linear-gradient(90deg,#4C9BFF,#F5A800);-webkit-background-clip:text;background-clip:text;color:transparent;">Aaj Se Shuru.</span></h1>
             <p style="font-size:15px;line-height:1.55;color:#b9c6e2;margin:0 auto 24px;max-width:320px;animation:heroRise .7s .16s both;">The AI Masterclass that prepares your child for a world run by AI, safely and simply, guided by AIJU.</p>
             <div style="display:flex;flex-direction:column;gap:12px;animation:heroRise .7s .26s both;">
-              <button onClick="{{ goRegister }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:16px;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 14px 34px -10px rgba(30,116,230,.7);display:flex;align-items:center;justify-content:center;gap:9px;">Enroll for ₹499 {{ arrowIcon }}</button>
+              <button onClick="{{ goRegister }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:16px;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 14px 34px -10px rgba(30,116,230,.7);display:flex;align-items:center;justify-content:center;gap:9px;">Enroll for ₹800 {{ arrowIcon }}</button>
               <button onClick="{{ openTeaserModal }}" class="btnp" style="width:100%;background:#ffffff12;border:1px solid #ffffff2e;color:#fff;padding:15px;border-radius:14px;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;">{{ playIconSm }} Watch teaser</button>
             </div>
             <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:22px;">
@@ -115,20 +124,34 @@
         <!-- curriculum -->
         <div id="sec-curriculum" style="background:#fff;border-top:1px solid #EEF2F9;border-bottom:1px solid #EEF2F9;padding:36px 20px;">
           <div style="width:44px;height:4px;border-radius:2px;background:#1E74E6;margin-bottom:16px;"></div>
-          <h2 style="font-family:'Sora';font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;color:#0F1B2D;margin:0 0 10px;">6 chapters. Zero jargon.</h2>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;color:#0F1B2D;margin:0 0 10px;">10 chapters. Zero jargon.</h2>
           <p style="font-size:14px;line-height:1.6;color:#5B6B85;margin:0 0 22px;">Each chapter blends a guided video, a study guide and a quick quiz, so learning sticks.</p>
-          <div style="display:flex;flex-direction:column;gap:14px;">
-            <sc-for list="{{ chapters }}" as="ch" hint-placeholder-count="6">
-              <div onClick="{{ goRegister }}" class="btnp" style="border:1px solid #E6ECF6;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 8px 24px -18px rgba(20,50,110,.2);cursor:pointer;display:flex;align-items:stretch;">
-                <div style="width:74px;flex-shrink:0;background:linear-gradient(150deg,{{ ch.c1 }},{{ ch.c2 }});position:relative;display:flex;align-items:center;justify-content:center;">
-                  <div style="position:absolute;inset:0;background-image:linear-gradient(#ffffff20 1px,transparent 1px),linear-gradient(90deg,#ffffff20 1px,transparent 1px);background-size:18px 18px;opacity:.5;"></div>
-                  <div style="position:relative;font-family:'Sora';font-weight:800;font-size:26px;color:#ffffffcc;">{{ ch.num }}</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ curriculumGroups }}" as="g" hint-placeholder-count="5">
+              <div style="border:1px solid #E6ECF6;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 8px 24px -18px rgba(20,50,110,.22);">
+                <div onClick="{{ g.toggle }}" class="btnp" style="display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;">
+                  <div style="width:46px;height:46px;border-radius:13px;background:{{ g.grad }};display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 8px 18px -8px rgba(0,0,0,.35);">{{ g.logoEl }}</div>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-family:'JetBrains Mono';font-size:9px;letter-spacing:.12em;color:#8A99B5;margin-bottom:2px;">CLASSES {{ g.range }}</div>
+                    <div style="font-family:'Sora';font-weight:800;font-size:16px;color:#0F1B2D;line-height:1.15;">{{ g.tool }}</div>
+                    <div style="font-size:11.5px;color:#8A99B5;font-weight:600;margin-top:1px;">2 classes · {{ g.dur }}</div>
+                  </div>
+                  <div style="width:30px;height:30px;border-radius:9px;background:#F4F7FC;display:flex;align-items:center;justify-content:center;flex-shrink:0;transform:{{ g.chevRot }};transition:transform .3s;">{{ chevDownIcon }}</div>
                 </div>
-                <div style="flex:1;min-width:0;padding:14px 16px;">
-                  <div style="font-family:'JetBrains Mono';font-size:9px;letter-spacing:.1em;color:#8A99B5;margin-bottom:4px;">{{ ch.tag }}</div>
-                  <h3 style="font-family:'Sora';font-weight:700;font-size:15.5px;color:#0F1B2D;margin:0 0 4px;line-height:1.25;">{{ ch.title }}</h3>
-                  <div style="display:flex;align-items:center;gap:12px;font-size:11.5px;color:#8A99B5;font-weight:600;"><span style="display:inline-flex;align-items:center;gap:4px;">{{ clockIcon }}{{ ch.dur }}</span><span style="display:inline-flex;align-items:center;gap:4px;">{{ quizIcon }}5 MCQ</span></div>
-                </div>
+                <sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}">
+                  <div style="padding:0 14px 14px;display:flex;flex-direction:column;gap:10px;animation:accOpen .35s ease both;">
+                    <sc-for list="{{ g.classes }}" as="c" hint-placeholder-count="2">
+                      <div onClick="{{ goRegister }}" class="btnp" style="display:flex;gap:12px;align-items:flex-start;background:#F8FAFE;border:1px solid #EEF2F9;border-radius:13px;padding:12px;cursor:pointer;">
+                        <div style="width:34px;height:34px;border-radius:10px;background:{{ g.grad }};color:#fff;font-family:'Sora';font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ c.num }}</div>
+                        <div style="flex:1;min-width:0;">
+                          <div style="font-family:'Sora';font-weight:700;font-size:14px;color:#0F1B2D;line-height:1.25;">{{ c.title }}</div>
+                          <div style="font-size:12px;color:#5B6B85;line-height:1.5;margin-top:3px;">{{ c.blurb }}</div>
+                          <div style="display:flex;gap:12px;margin-top:7px;font-size:11px;color:#8A99B5;font-weight:600;"><span style="display:inline-flex;align-items:center;gap:4px;">{{ clockIcon }}{{ c.dur }}</span><span style="display:inline-flex;align-items:center;gap:4px;">{{ quizIcon }}5 MCQ</span></div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
               </div>
             </sc-for>
           </div>
@@ -173,7 +196,7 @@
             <div style="position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#1E74E655,transparent 70%);"></div>
             <div style="position:relative;">
               <div style="display:inline-flex;align-items:center;gap:6px;background:#F5A80022;border:1px solid #F5A80055;color:#F5A800;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px;">LAUNCH OFFER</div>
-              <div style="display:flex;align-items:flex-start;justify-content:center;gap:3px;color:#fff;"><span style="font-family:'Sora';font-weight:700;font-size:24px;margin-top:8px;">₹</span><span style="font-family:'Sora';font-weight:800;font-size:64px;line-height:1;">499</span></div>
+              <div style="display:flex;align-items:flex-start;justify-content:center;gap:3px;color:#fff;"><span style="font-family:'Sora';font-weight:700;font-size:24px;margin-top:8px;">₹</span><span style="font-family:'Sora';font-weight:800;font-size:64px;line-height:1;">800</span></div>
               <div style="color:#8fb6ff;font-size:13px;margin:6px 0 22px;">one-time · 3 months full access</div>
               <div style="display:flex;flex-direction:column;gap:10px;text-align:left;margin-bottom:24px;">
                 <sc-for list="{{ priceIncludes }}" as="p" hint-placeholder-count="5"><div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#dbe6fb;font-weight:500;">{{ checkIconGold }}{{ p }}</div></sc-for>
@@ -225,16 +248,65 @@
           <img src="assets/mascot-1.png" alt="" style="height:120px;width:auto;filter:drop-shadow(0 18px 26px rgba(0,0,0,.4));animation:floaty 6s ease-in-out infinite;">
           <h2 style="font-family:'Sora';font-weight:800;font-size:28px;line-height:1.06;letter-spacing:-.02em;color:#fff;margin:6px 0 14px;">Let's begin the journey.</h2>
           <p style="font-size:14.5px;color:#b9c6e2;margin:0 auto 22px;max-width:280px;">Give your child a head start that lasts a lifetime.</p>
-          <button onClick="{{ goRegister }}" class="btnp" style="width:100%;background:#fff;border:none;color:#0a1430;padding:16px;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 16px 40px -14px rgba(0,0,0,.5);">Get Started · ₹499</button>
+          <button onClick="{{ goRegister }}" class="btnp" style="width:100%;background:#fff;border:none;color:#0a1430;padding:16px;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 16px 40px -14px rgba(0,0,0,.5);">Get Started · ₹800</button>
           <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 20px;margin:28px 0 18px;font-size:13px;">
             <a onClick="{{ goWhy }}" style="color:#9fb0d0;cursor:pointer;">Why AI</a>
             <a onClick="{{ goCurriculum }}" style="color:#9fb0d0;cursor:pointer;">Curriculum</a>
             <a onClick="{{ goPricing }}" style="color:#9fb0d0;cursor:pointer;">Pricing</a>
             <a onClick="{{ goFaq }}" style="color:#9fb0d0;cursor:pointer;">FAQ</a>
+            <a onClick="{{ goContact }}" style="color:#9fb0d0;cursor:pointer;">Contact us</a>
             <a onClick="{{ noop }}" style="color:#9fb0d0;cursor:pointer;">Terms &amp; Conditions</a>
             <a onClick="{{ noop }}" style="color:#9fb0d0;cursor:pointer;">Privacy Policy</a>
           </div>
-          <div style="border-top:1px solid #ffffff1a;padding-top:16px;font-size:12px;color:#6f7fa3;">© 2026 SIS × BeInfinityBuddy · Made in India</div>
+          <div style="border-top:1px solid #ffffff1a;padding-top:16px;font-size:12px;color:#6f7fa3;">© 2026 BeInfinityBuddy · Made in India</div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ===== CONTACT ===== -->
+      <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height:100%;background:#F4F7FC;animation:screenIn .4s ease both;">
+        <div style="background:#fff;border-bottom:1px solid #E6ECF6;padding:14px 16px;display:flex;align-items:center;gap:12px;">
+          <div onClick="{{ goLandingBtn }}" class="btnp" style="display:inline-flex;align-items:center;gap:6px;color:#5B6B85;font-weight:600;font-size:13px;cursor:pointer;">{{ backIcon }} Home</div>
+          <div style="flex:1;"></div>
+          <dc-import name="CoBrand" size="26" fs="12.5" label="BeIB" ink="#0F1B2D" muted="#8A99B5" hint-size="150px,34px"></dc-import>
+        </div>
+        <div style="padding:26px 18px 40px;">
+          <div style="width:44px;height:4px;border-radius:2px;background:#1E74E6;margin-bottom:14px;"></div>
+          <h1 style="font-family:'Sora';font-weight:800;font-size:28px;line-height:1.08;letter-spacing:-.02em;color:#0F1B2D;margin:0 0 10px;">Get in touch</h1>
+          <p style="font-size:14.5px;line-height:1.6;color:#5B6B85;margin:0 0 20px;">Questions about the course or your child's progress? Send us a message and our team replies within one working day.</p>
+          <a href="mailto:hello@beinfinitybuddy.com" style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #E6ECF6;border-radius:15px;padding:14px 16px;text-decoration:none;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);margin-bottom:22px;">
+            <div style="width:42px;height:42px;border-radius:12px;background:#eaf2ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ mailIconBig }}</div>
+            <div><div style="font-size:11.5px;color:#8A99B5;font-weight:600;">Email us</div><div style="font-family:'Sora';font-weight:700;font-size:14.5px;color:#0F1B2D;">hello@beinfinitybuddy.com</div></div>
+          </a>
+          <sc-if value="{{ contactForm }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 12px 34px -26px rgba(20,50,110,.4);">
+              <div style="font-family:'Sora';font-weight:800;font-size:18px;color:#0F1B2D;margin-bottom:16px;">Send a message</div>
+              <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:6px;">Your name</label>
+              <input value="{{ cName }}" onInput="{{ onCName }}" placeholder="e.g. Priya Sharma" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:15px;box-sizing:border-box;margin-bottom:14px;outline:none;background:#F8FAFE;color:#0F1B2D;">
+              <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:6px;">Mobile number</label>
+              <div style="display:flex;align-items:stretch;border:1.5px solid #E6ECF6;border-radius:12px;background:#F8FAFE;margin-bottom:14px;overflow:hidden;">
+                <div style="display:flex;align-items:center;gap:7px;padding:0 11px;border-right:1.5px solid #E6ECF6;background:#eef2f9;"><span style="width:21px;height:14px;border-radius:2px;overflow:hidden;display:inline-flex;flex-direction:column;box-shadow:0 0 0 1px rgba(0,0,0,.1);"><span style="flex:1;background:#FF9933;"></span><span style="flex:1;background:#fff;display:flex;align-items:center;justify-content:center;"><span style="width:5px;height:5px;border-radius:50%;border:1.2px solid #0a3d91;"></span></span><span style="flex:1;background:#138808;"></span></span><span style="font-family:'Sora';font-weight:700;font-size:14.5px;color:#0F1B2D;">+91</span></div>
+                <input value="{{ cPhone }}" onInput="{{ onCPhone }}" inputMode="numeric" maxLength="10" placeholder="98765 43210" style="flex:1;padding:13px;border:none;background:transparent;font-size:15px;color:#0F1B2D;outline:none;min-width:0;">
+              </div>
+              <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:6px;">Subject <span style="color:#8A99B5;font-weight:500;">(optional)</span></label>
+              <input value="{{ cSubject }}" onInput="{{ onCSubject }}" placeholder="What's this about?" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:15px;box-sizing:border-box;margin-bottom:14px;outline:none;background:#F8FAFE;color:#0F1B2D;">
+              <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:6px;">Message</label>
+              <textarea value="{{ cMsg }}" onInput="{{ onCMsg }}" placeholder="How can we help?" rows="4" style="width:100%;padding:13px;border:1.5px solid #E6ECF6;border-radius:12px;font-size:15px;box-sizing:border-box;margin-bottom:18px;outline:none;resize:vertical;font-family:inherit;background:#F8FAFE;color:#0F1B2D;"></textarea>
+              <button class="btnp" onClick="{{ submitContactBtn }}" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:15px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 30px -12px rgba(30,116,230,.6);">Send message</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ contactSent }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:34px 24px;text-align:center;box-shadow:0 12px 34px -26px rgba(20,50,110,.4);animation:pop .45s cubic-bezier(.2,.8,.3,1) both;">
+              <div style="width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,#1FA971,#37E0A0);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">{{ checkBig }}</div>
+              <h2 style="font-family:'Sora';font-weight:800;font-size:21px;color:#0F1B2D;margin:0 0 8px;">Message sent!</h2>
+              <p style="font-size:14px;line-height:1.6;color:#5B6B85;margin:0 auto 22px;">Thanks for reaching out. We'll reply to your email within one working day.</p>
+              <div style="display:flex;gap:10px;">
+                <button class="btnp" onClick="{{ resetContactBtn }}" style="flex:1;background:#F4F7FC;border:1.5px solid #E6ECF6;color:#1B2A41;padding:13px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;">Send another</button>
+                <button class="btnp" onClick="{{ goLandingBtn }}" style="flex:1;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:13px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;">Home</button>
+              </div>
+            </div>
+          </sc-if>
         </div>
       </div>
       </sc-if>
@@ -243,7 +315,7 @@
       <sc-if value="{{ isAuth }}" hint-placeholder-val="{{ false }}">
       <div style="min-height:100%;background:#F4F7FC;animation:screenIn .4s ease both;">
         <div style="position:relative;height:190px;overflow:hidden;background:radial-gradient(400px 300px at 70% 10%,#16305f,#0a1430 60%);">
-          <video src="assets/teaser.mp4" playsInline ref="{{ authVideoRef }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:{{ authVidOpacity }};transition:opacity 1s ease;"></video>
+          <video src="assets/teaser-old.mp4" playsInline ref="{{ authVideoRef }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:{{ authVidOpacity }};transition:opacity 1s ease;"></video>
           <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:radial-gradient(400px 300px at 70% 10%,#16305f,#0a1430 60%);opacity:{{ authVidPlaceholderOpacity }};transition:opacity .8s ease;pointer-events:none;">
             <img src="assets/mascot-4.png" alt="AIJU" style="height:96px;width:auto;filter:drop-shadow(0 16px 26px rgba(0,0,0,.5));animation:floaty 6s ease-in-out infinite;">
             <div style="width:110px;height:5px;border-radius:3px;background:#ffffff1f;overflow:hidden;"><div style="width:40%;height:100%;border-radius:3px;background:linear-gradient(90deg,#2A86F5,#37E0A0);animation:loadslide 1.3s ease-in-out infinite;"></div></div>
@@ -262,6 +334,12 @@
             <label style="display:block;font-size:12.5px;font-weight:600;color:#1B2A41;margin-bottom:7px;">Email address</label>
             <div style="position:relative;margin-bottom:6px;"><div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);">{{ gMail }}</div><input value="{{ email }}" onInput="{{ onEmail }}" inputmode="email" placeholder="you@example.com" style="width:100%;padding:14px 14px 14px 42px;border:1.5px solid #E6ECF6;border-radius:14px;font-size:15px;color:#0F1B2D;background:#fff;"></div>
             <sc-if value="{{ otpErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#E5484D;font-weight:600;margin-bottom:6px;">{{ otpErr }}</div></sc-if>
+            <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ true }}">
+              <label onClick="{{ toggleAccept }}" style="display:flex;align-items:flex-start;gap:10px;margin-top:14px;cursor:pointer;font-size:12.5px;color:#5B6B85;line-height:1.5;">
+                <span style="width:20px;height:20px;border-radius:6px;border:1.5px solid {{ acceptBorder }};background:{{ acceptBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .2s;">{{ acceptCheck }}</span>
+                <span>I accept the <a style="color:#1E74E6;font-weight:700;">Privacy Policy</a> and the <a style="color:#1E74E6;font-weight:700;">Terms of Service</a></span>
+              </label>
+            </sc-if>
             <button onClick="{{ sendOtpBtn }}" class="btnp" style="width:100%;margin-top:14px;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:15px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);display:flex;align-items:center;justify-content:center;gap:9px;"><sc-if value="{{ sending }}" hint-placeholder-val="{{ false }}"><span style="width:16px;height:16px;border:2px solid #ffffff66;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;"></span></sc-if>{{ sendLabel }}</button>
           </div>
           </sc-if>
@@ -297,7 +375,7 @@
           <div style="text-align:center;margin-bottom:18px;">
             <div style="display:inline-flex;align-items:center;gap:8px;background:#eaf2ff;color:#1E74E6;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:12px;">WELCOME TO AI MASTERCLASS</div>
             <h1 style="font-family:'Sora';font-weight:800;font-size:26px;line-height:1.1;letter-spacing:-.02em;color:#0F1B2D;margin:0 0 8px;">Here's a taste of what's inside</h1>
-            <p style="font-size:14px;color:#5B6B85;margin:0;">Watch the teaser, then unlock the full journey for ₹499.</p>
+            <p style="font-size:14px;color:#5B6B85;margin:0;">Watch the teaser, then unlock the full journey for ₹800.</p>
           </div>
           <div style="border-radius:18px;overflow:hidden;box-shadow:0 20px 50px -26px rgba(20,50,110,.45);border:1px solid #E6ECF6;background:#000;margin-bottom:28px;">
             <video src="assets/teaser.mp4" playsInline ref="{{ ctrlVideoRef }}" style="display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#000;"></video>
@@ -316,7 +394,7 @@
           </div>
         </div>
         <div style="position:sticky;bottom:0;z-index:10;background:#ffffffee;backdrop-filter:blur(12px);border-top:1px solid #E6ECF6;box-shadow:0 -10px 30px -18px rgba(20,50,110,.3);padding:12px 18px;display:flex;align-items:center;gap:12px;margin-top:auto;">
-          <div><div style="font-family:'Sora';font-weight:800;font-size:17px;color:#0F1B2D;">₹499</div><div style="font-size:10.5px;color:#8A99B5;">one-time · 3 months</div></div>
+          <div><div style="font-family:'Sora';font-weight:800;font-size:17px;color:#0F1B2D;">₹800</div><div style="font-size:10.5px;color:#8A99B5;">one-time · 3 months</div></div>
           <button onClick="{{ teaserContinue }}" class="btnp" style="flex:1;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:14.5px;cursor:pointer;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);display:flex;align-items:center;justify-content:center;gap:8px;">Continue {{ gArrowW }}</button>
         </div>
       </div>
@@ -333,8 +411,8 @@
           <div style="animation:fadeIn .3s;">
             <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 10px 30px -20px rgba(20,50,110,.25);margin-bottom:16px;">
               <div style="font-family:'JetBrains Mono';font-size:10px;letter-spacing:.14em;color:#8A99B5;margin-bottom:14px;">ORDER SUMMARY</div>
-              <div style="display:flex;gap:12px;align-items:center;padding-bottom:16px;border-bottom:1px solid #EEF2F9;"><div style="width:50px;height:50px;border-radius:13px;background:linear-gradient(135deg,#1E74E6,#0B4FB0);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/aiju-logo.png" style="height:26px;"></div><div><div style="font-family:'Sora';font-weight:700;font-size:15px;color:#0F1B2D;">AI Masterclass</div><div style="font-size:12px;color:#8A99B5;">6 chapters · 3 months</div></div></div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;"><span style="font-weight:700;color:#0F1B2D;">Total</span><span style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;">₹499</span></div>
+              <div style="display:flex;gap:12px;align-items:center;padding-bottom:16px;border-bottom:1px solid #EEF2F9;"><div style="width:50px;height:50px;border-radius:13px;background:linear-gradient(135deg,#1E74E6,#0B4FB0);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/aiju-logo.png" style="height:26px;"></div><div><div style="font-family:'Sora';font-weight:700;font-size:15px;color:#0F1B2D;">AI Masterclass</div><div style="font-size:12px;color:#8A99B5;">10 chapters · 3 months</div></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;"><span style="font-weight:700;color:#0F1B2D;">Total</span><span style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;">₹800</span></div>
               <div style="display:flex;align-items:center;gap:8px;margin-top:14px;background:#e6f6ef;border-radius:11px;padding:11px;font-size:12px;color:#0f7a52;font-weight:600;">{{ shieldSm }} 100% secure · powered by Razorpay</div>
             </div>
             <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 10px 30px -20px rgba(20,50,110,.25);">
@@ -355,7 +433,7 @@
             <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1FA971,#37E0A0);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:pop .5s cubic-bezier(.2,.8,.3,1) both;box-shadow:0 16px 36px -10px rgba(31,169,113,.5);">{{ checkBig }}</div>
             <h1 style="font-family:'Sora';font-weight:800;font-size:24px;color:#0F1B2D;margin:0 0 8px;">Payment successful!</h1>
             <p style="font-size:14px;color:#5B6B85;margin:0 0 18px;">Welcome to AI Masterclass. Your access is active for 3 months.</p>
-            <div style="background:#F8FAFE;border-radius:12px;padding:14px;text-align:left;margin-bottom:22px;"><div style="display:flex;justify-content:space-between;font-size:12.5px;color:#5B6B85;padding:4px 0;"><span>Order ID</span><span style="font-weight:700;color:#0F1B2D;font-family:'JetBrains Mono';">#AIJU-4417</span></div><div style="display:flex;justify-content:space-between;font-size:12.5px;color:#5B6B85;padding:4px 0;"><span>Amount</span><span style="font-weight:700;color:#0F1B2D;">₹499.00</span></div><div style="display:flex;justify-content:space-between;font-size:12.5px;color:#5B6B85;padding:4px 0;"><span>Valid till</span><span style="font-weight:700;color:#0F1B2D;">09 Oct 2026</span></div></div>
+            <div style="background:#F8FAFE;border-radius:12px;padding:14px;text-align:left;margin-bottom:22px;"><div style="display:flex;justify-content:space-between;font-size:12.5px;color:#5B6B85;padding:4px 0;"><span>Order ID</span><span style="font-weight:700;color:#0F1B2D;font-family:'JetBrains Mono';">#AIJU-4417</span></div><div style="display:flex;justify-content:space-between;font-size:12.5px;color:#5B6B85;padding:4px 0;"><span>Amount</span><span style="font-weight:700;color:#0F1B2D;">₹800.00</span></div><div style="display:flex;justify-content:space-between;font-size:12.5px;color:#5B6B85;padding:4px 0;"><span>Valid till</span><span style="font-weight:700;color:#0F1B2D;">09 Oct 2026</span></div></div>
             <button onClick="{{ paymentDone }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:15px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 30px -10px rgba(30,116,230,.6);display:flex;align-items:center;justify-content:center;gap:9px;">Complete your profile {{ gArrowW }}</button>
           </div>
           </sc-if>
@@ -403,17 +481,23 @@
       <div style="padding:18px 16px 26px;animation:screenIn .4s ease both;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
           <div style="flex:1;"><div style="font-size:13px;color:#8A99B5;font-weight:600;">Namaste,</div><h1 style="font-family:'Sora';font-weight:800;font-size:26px;color:#0F1B2D;margin:2px 0 0;letter-spacing:-.01em;">{{ greetName }}</h1></div>
-          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#1E74E6,#0B4FB0);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Sora';font-weight:800;font-size:17px;">{{ avatarInitial }}</div>
+          <div onClick="{{ sayHiBtn }}" style="position:relative;cursor:pointer;flex-shrink:0;">
+            <sc-if value="{{ peekOn }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;bottom:calc(100% + 7px);right:0;background:#0F1B2D;color:#fff;font-family:'Sora';font-weight:700;font-size:12.5px;padding:6px 11px;border-radius:11px;white-space:nowrap;box-shadow:0 10px 24px -8px rgba(0,0,0,.45);z-index:6;animation:fadeIn .3s both;">Hii!<div style="position:absolute;right:14px;bottom:-4px;transform:rotate(45deg);width:9px;height:9px;background:#0F1B2D;"></div></div>
+            </sc-if>
+            <img src="assets/mascot-2.png" alt="AIJU" style="position:absolute;top:50%;right:2px;width:52px;height:auto;pointer-events:none;z-index:1;transform:translateY(-50%) translateX({{ peekX }});opacity:{{ peekOpacity }};transition:transform .5s cubic-bezier(.2,.9,.3,1.3),opacity .35s;">
+            <div style="position:relative;z-index:2;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#1E74E6,#0B4FB0);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Sora';font-weight:800;font-size:17px;box-shadow:0 6px 16px -6px rgba(30,116,230,.7);">{{ avatarInitial }}</div>
+          </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-          <div style="grid-column:span 2;background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:18px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);display:flex;align-items:center;gap:14px;">
+          <div data-wt="progress" style="grid-column:span 2;background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:18px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);display:flex;align-items:center;gap:14px;">
             <div style="width:60px;height:60px;border-radius:50%;background:conic-gradient(#1E74E6 {{ overallDeg }}, #eaf0f9 0);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:800;font-size:14px;color:#0F1B2D;">{{ overallPct }}%</div></div>
             <div><div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;">Course progress</div><div style="font-size:12px;color:#8A99B5;margin-top:2px;">Keep it going!</div></div>
           </div>
-          <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:16px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);"><div style="width:36px;height:36px;border-radius:10px;background:#e6f6ef;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">{{ trophyIcon }}</div><div style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;line-height:1;">{{ doneCount }}<span style="font-size:13px;color:#8A99B5;">/6</span></div><div style="font-size:12px;color:#8A99B5;margin-top:3px;">Chapters done</div></div>
+          <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:16px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);"><div style="width:36px;height:36px;border-radius:10px;background:#e6f6ef;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">{{ trophyIcon }}</div><div style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;line-height:1;">{{ doneCount }}<span style="font-size:13px;color:#8A99B5;">/10</span></div><div style="font-size:12px;color:#8A99B5;margin-top:3px;">Chapters done</div></div>
           <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:16px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);"><div style="width:36px;height:36px;border-radius:10px;background:#fff7e6;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">{{ flameBig }}</div><div style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;line-height:1;">{{ streakDays }}<span style="font-size:13px;color:#8A99B5;"> days</span></div><div style="font-size:12px;color:#8A99B5;margin-top:3px;">Current streak</div></div>
         </div>
-        <div style="position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(140deg,#16305f,#0a1430);box-shadow:0 18px 44px -24px rgba(10,20,48,.6);margin-bottom:16px;">
+        <div data-wt="continue" style="position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(140deg,#16305f,#0a1430);box-shadow:0 18px 44px -24px rgba(10,20,48,.6);margin-bottom:16px;">
           <div style="position:absolute;inset:0;background-image:linear-gradient(#ffffff10 1px,transparent 1px),linear-gradient(90deg,#ffffff10 1px,transparent 1px);background-size:30px 30px;opacity:.5;mask-image:radial-gradient(300px 220px at 85% 20%,#000,transparent 75%);"></div>
           <img src="assets/mascot-4.png" alt="" style="position:absolute;right:-14px;bottom:-14px;height:140px;width:auto;opacity:.9;">
           <div style="position:relative;padding:22px;">
@@ -426,7 +510,7 @@
         <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);margin-bottom:16px;">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">{{ flameBig }}<div><div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;">Daily streak</div><div style="font-size:11.5px;color:#8A99B5;">Best: {{ streakBest }} days</div></div></div>
           <div style="display:flex;gap:7px;">
-            <sc-for list="{{ weekDays }}" as="w" hint-placeholder-count="7"><div style="flex:1;text-align:center;"><div style="aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;background:{{ w.bg }};border:{{ w.border }};margin-bottom:5px;">{{ w.mark }}</div><div style="font-size:10px;font-weight:700;color:{{ w.labelColor }};">{{ w.d }}</div></div></sc-for>
+            <sc-for list="{{ weekDays }}" as="w" hint-placeholder-count="7"><div style="flex:1;text-align:center;"><div style="aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;background:{{ w.bg }};border:{{ w.border }};margin-bottom:5px;overflow:hidden;animation:{{ w.anim }};">{{ w.mark }}</div><div style="font-size:10px;font-weight:700;color:{{ w.labelColor }};">{{ w.d }}</div></div></sc-for>
           </div>
         </div>
         <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);">
@@ -444,13 +528,13 @@
         <div style="position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(135deg,#16305f,#0a1430);box-shadow:0 18px 44px -26px rgba(10,20,48,.6);margin-bottom:20px;padding:22px;">
           <div style="position:absolute;inset:0;background-image:linear-gradient(#ffffff10 1px,transparent 1px),linear-gradient(90deg,#ffffff10 1px,transparent 1px);background-size:30px 30px;opacity:.5;mask-image:radial-gradient(300px 200px at 85% 10%,#000,transparent 75%);"></div>
           <div style="position:relative;display:flex;align-items:center;gap:16px;">
-            <div style="flex:1;"><div style="display:inline-flex;align-items:center;gap:6px;background:#ffffff14;border:1px solid #ffffff26;color:#8fb6ff;font-family:'JetBrains Mono';font-size:9.5px;letter-spacing:.1em;padding:5px 10px;border-radius:999px;margin-bottom:10px;">6 CHAPTERS</div><h1 style="font-family:'Sora';font-weight:800;font-size:20px;color:#fff;margin:0 0 10px;">Your AI journey</h1><div style="display:flex;gap:16px;"><div><div style="font-family:'Sora';font-weight:800;font-size:18px;color:#fff;">{{ courseHeroDone }}/6</div><div style="font-size:10.5px;color:#8fb6ff;">Done</div></div><div><div style="font-family:'Sora';font-weight:800;font-size:18px;color:#fff;">{{ courseTotalTime }}</div><div style="font-size:10.5px;color:#8fb6ff;">Content</div></div></div></div>
+            <div style="flex:1;"><div style="display:inline-flex;align-items:center;gap:6px;background:#ffffff14;border:1px solid #ffffff26;color:#8fb6ff;font-family:'JetBrains Mono';font-size:9.5px;letter-spacing:.1em;padding:5px 10px;border-radius:999px;margin-bottom:10px;">10 CHAPTERS</div><h1 style="font-family:'Sora';font-weight:800;font-size:20px;color:#fff;margin:0 0 10px;">Your AI journey</h1><div style="display:flex;gap:16px;"><div><div style="font-family:'Sora';font-weight:800;font-size:18px;color:#fff;">{{ courseHeroDone }}/10</div><div style="font-size:10.5px;color:#8fb6ff;">Done</div></div><div><div style="font-family:'Sora';font-weight:800;font-size:18px;color:#fff;">{{ courseTotalTime }}</div><div style="font-size:10.5px;color:#8fb6ff;">Content</div></div></div></div>
             <div style="width:76px;height:76px;border-radius:50%;background:conic-gradient(#37E0A0 {{ overallDeg }}, #ffffff1f 0);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:60px;height:60px;border-radius:50%;background:#0a1430;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div style="font-family:'Sora';font-weight:800;font-size:17px;color:#fff;">{{ overallPct }}%</div></div></div>
           </div>
         </div>
         <h2 style="font-family:'Sora';font-weight:800;font-size:17px;color:#0F1B2D;margin:0 0 14px;">Chapters &amp; materials</h2>
         <div style="display:flex;flex-direction:column;gap:10px;">
-          <sc-for list="{{ courseChapters }}" as="ch" hint-placeholder-count="6">
+          <sc-for list="{{ courseChapters }}" as="ch" hint-placeholder-count="10">
             <div style="background:{{ ch.rowBg }};border:1px solid #E6ECF6;border-radius:16px;overflow:hidden;box-shadow:0 6px 20px -18px rgba(20,50,110,.3);">
               <div onClick="{{ ch.toggle }}" class="btnp" style="padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;">
                 <div style="width:42px;height:42px;border-radius:12px;background:{{ ch.numBg }};display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:800;font-size:14px;color:{{ ch.numColor }};flex-shrink:0;">{{ ch.numContent }}</div>
@@ -482,7 +566,7 @@
           <p style="font-size:15px;line-height:1.65;color:#1B2A41;margin:0 0 22px;font-weight:500;">{{ matIntro }}</p>
           <div style="display:flex;flex-direction:column;gap:22px;">
             <sc-for list="{{ matSections }}" as="s" hint-placeholder-count="3">
-              <div><h3 style="font-family:'Sora';font-weight:700;font-size:16.5px;color:#0F1B2D;margin:0 0 10px;">{{ s.h }}</h3><div style="border-radius:13px;overflow:hidden;border:1px solid #E6ECF6;margin-bottom:12px;aspect-ratio:16/8;background-image:repeating-linear-gradient(135deg,#f4f7fc,#f4f7fc 12px,#eef3fb 12px,#eef3fb 24px);display:flex;align-items:center;justify-content:center;"><div style="font-family:'JetBrains Mono';font-size:11px;color:#9aa8c4;background:#ffffffcc;padding:5px 10px;border-radius:7px;text-align:center;">{{ s.cap }}</div></div><p style="font-size:14.5px;line-height:1.7;color:#3a4863;margin:0;">{{ s.p }}</p></div>
+              <div><h3 style="font-family:'Sora';font-weight:700;font-size:16.5px;color:#0F1B2D;margin:0 0 10px;">{{ s.h }}</h3>{{ s.graphicEl }}<p style="font-size:14.5px;line-height:1.7;color:#3a4863;margin:0;">{{ s.p }}</p></div>
             </sc-for>
           </div>
           <div style="margin-top:24px;position:relative;overflow:hidden;background:linear-gradient(135deg,#122a54,#0a1430);border-radius:18px;padding:22px;">
@@ -508,7 +592,7 @@
         <p style="font-size:15.5px;line-height:1.7;color:#1B2A41;margin:0 0 24px;font-weight:500;">{{ matIntro }}</p>
         <div style="display:flex;flex-direction:column;gap:24px;">
           <sc-for list="{{ matSections }}" as="s" hint-placeholder-count="3">
-            <div><h2 style="font-family:'Sora';font-weight:700;font-size:18px;color:#0F1B2D;margin:0 0 10px;">{{ s.h }}</h2><div style="border-radius:13px;overflow:hidden;border:1px solid #E6ECF6;margin-bottom:12px;aspect-ratio:16/8;background-image:repeating-linear-gradient(135deg,#f4f7fc,#f4f7fc 12px,#eef3fb 12px,#eef3fb 24px);display:flex;align-items:center;justify-content:center;"><div style="font-family:'JetBrains Mono';font-size:11px;color:#9aa8c4;background:#ffffffcc;padding:5px 10px;border-radius:7px;text-align:center;">{{ s.cap }}</div></div><p style="font-size:14.5px;line-height:1.7;color:#3a4863;margin:0;">{{ s.p }}</p></div>
+            <div><h2 style="font-family:'Sora';font-weight:700;font-size:18px;color:#0F1B2D;margin:0 0 10px;">{{ s.h }}</h2>{{ s.graphicEl }}<p style="font-size:14.5px;line-height:1.7;color:#3a4863;margin:0;">{{ s.p }}</p></div>
           </sc-for>
         </div>
         <div style="margin-top:26px;position:relative;overflow:hidden;background:linear-gradient(135deg,#122a54,#0a1430);border-radius:18px;padding:22px;">
@@ -571,6 +655,68 @@
       </div>
       </sc-if>
 
+      <!-- ===== BADGES ===== -->
+      <sc-if value="{{ isBadges }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:16px 16px 30px;animation:screenIn .4s ease both;">
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;">
+          <div style="flex:1;">
+            <div style="width:44px;height:4px;border-radius:2px;background:#F5A800;margin:0 0 14px;"></div>
+            <h1 style="font-family:'Sora';font-weight:800;font-size:26px;color:#0F1B2D;margin:0 0 8px;letter-spacing:-.01em;">Achievements</h1>
+            <p style="font-size:13.5px;line-height:1.55;color:#5B6B85;margin:0;">Master each AI tool to earn its badge and a golden key. Collect all 5 to unlock your reward.</p>
+          </div>
+          <button class="btnp" onClick="{{ demoAddKeyBtn }}" title="Demo: collect the next key" style="flex-shrink:0;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(180deg,#FDB92E,#EA8600);border:none;color:#0a1430;padding:9px 13px;border-radius:11px;font-weight:800;font-size:12.5px;cursor:pointer;box-shadow:0 8px 20px -8px rgba(245,168,0,.7);">{{ keyBtnIcon }} Add key</button>
+        </div>
+        <div style="background:linear-gradient(135deg,#122a54,#0a1430);border-radius:18px;padding:18px;display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+          <div style="width:40px;height:40px;border-radius:11px;background:#F5A80022;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ keyBigIcon }}</div>
+          <div style="flex:1;min-width:0;"><div style="font-family:'Sora';font-weight:800;font-size:16px;color:#fff;">{{ keysEarned }} of 5 keys</div><div style="font-size:11.5px;color:#8fb6ff;">One key per mastered tool.</div></div>
+          <div style="display:flex;gap:6px;"><sc-for list="{{ keyDots }}" as="k" hint-placeholder-count="5"><div style="width:12px;height:12px;border-radius:50%;background:{{ k.bg }};box-shadow:{{ k.bd }};transition:all .3s;"></div></sc-for></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+          <sc-for list="{{ badgeStages }}" as="b" hint-placeholder-count="5">
+            <div data-badge="{{ b.idx }}" style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:16px 12px;text-align:center;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);">
+              <div style="position:relative;width:72px;height:72px;margin:0 auto 10px;border-radius:50%;background:{{ b.ringBg }};display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -12px rgba(0,0,0,.35);">
+                {{ b.logoEl }}
+                <sc-if value="{{ b.keyShown }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;right:-6px;bottom:-6px;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 4px 12px rgba(245,168,0,.55);display:flex;align-items:center;justify-content:center;animation:keyPulse 1.6s ease-in-out infinite;">{{ keyBigIcon }}</div></sc-if>
+              </div>
+              <div style="font-family:'Sora';font-weight:800;font-size:14px;color:#0F1B2D;">{{ b.name }}</div>
+              <div style="margin-top:5px;font-size:11px;font-weight:700;color:{{ b.statusColor }};">{{ b.statusText }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div data-mysterybox style="border-radius:22px;padding:28px 20px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(160deg,#1c1236,#0a1430);border:1px solid #ffffff14;">
+          <sc-if value="{{ badgesLocked }}" hint-placeholder-val="{{ true }}">
+            <div style="position:relative;width:110px;height:92px;margin:0 auto 16px;">
+              <div style="position:absolute;left:8px;right:8px;top:28px;bottom:0;border-radius:12px;background:linear-gradient(160deg,#4a5673,#2c3350);box-shadow:0 16px 30px -14px rgba(0,0,0,.6);"></div>
+              <div style="position:absolute;left:0;right:0;top:14px;height:26px;border-radius:10px;background:linear-gradient(160deg,#5b6685,#39415f);"></div>
+              <div style="position:absolute;left:50%;top:44px;transform:translateX(-50%);width:38px;height:38px;border-radius:10px;background:#0a1430;display:flex;align-items:center;justify-content:center;">{{ lockBigIcon }}</div>
+            </div>
+            <h2 style="font-family:'Sora';font-weight:800;font-size:20px;color:#fff;margin:0 0 8px;">Mystery reward locked</h2>
+            <p style="font-size:13px;color:#8fb6ff;margin:0 auto 14px;line-height:1.5;">Finish all 5 tool stages to reveal your course badge & certificate.</p>
+            <div style="display:inline-flex;align-items:center;gap:8px;background:#ffffff12;border:1px solid #ffffff1f;padding:8px 14px;border-radius:999px;font-family:'JetBrains Mono';font-size:11.5px;color:#F5A800;font-weight:700;">{{ keysEarned }} / 5 KEYS</div>
+          </sc-if>
+          <sc-if value="{{ badgesNotOpened }}" hint-placeholder-val="{{ false }}">
+            <div style="position:relative;width:110px;height:100px;margin:0 auto 16px;border-radius:15px;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#F5A800,#C2410C);animation:boxGlow 2s ease-in-out infinite;">{{ giftIcon }}</div>
+            <h2 style="font-family:'Sora';font-weight:800;font-size:21px;color:#fff;margin:0 0 8px;">All 5 keys collected!</h2>
+            <p style="font-size:13px;color:#8fb6ff;margin:0 auto 18px;">Open your mystery reward to reveal your certificate.</p>
+            <button class="btnp" onClick="{{ openMysteryBtn }}" style="background:linear-gradient(180deg,#FDB92E,#EA8600);border:none;color:#0a1430;padding:14px 30px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 16px 34px -12px rgba(245,168,0,.7);">Open your reward</button>
+          </sc-if>
+          <sc-if value="{{ badgesOpened }}" hint-placeholder-val="{{ false }}">
+            <div style="animation:pop .5s cubic-bezier(.2,.8,.3,1) both;text-align:center;">
+              <div style="font-family:'JetBrains Mono';font-size:10px;letter-spacing:.18em;color:#F5A800;font-weight:700;margin-bottom:3px;">COURSE COMPLETION BADGE</div>
+              <div style="font-size:12px;color:#8fb6ff;margin-bottom:12px;">Awarded to <span style="color:#fff;font-weight:800;">{{ certLearner }}</span></div>
+              {{ badgeCoinEl }}
+              <div style="display:flex;gap:12px;justify-content:center;margin-top:22px;">
+              <button class="btnp" onClick="{{ shareLinkedInBtn }}" title="Share on LinkedIn" style="width:46px;height:46px;border-radius:50%;background:#ffffff12;border:1px solid #ffffff26;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,transform .16s;" style-hover="background:#ffffff22;transform:translateY(-2px);">{{ liEl }}</button>
+              <button class="btnp" onClick="{{ shareWhatsAppBtn }}" title="Share on WhatsApp" style="width:46px;height:46px;border-radius:50%;background:#ffffff12;border:1px solid #ffffff26;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,transform .16s;" style-hover="background:#ffffff22;transform:translateY(-2px);">{{ waEl }}</button>
+              <button class="btnp" onClick="{{ shareDownloadBtn }}" title="Download badge" style="width:46px;height:46px;border-radius:50%;background:#ffffff12;border:1px solid #ffffff26;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,transform .16s;" style-hover="background:#ffffff22;transform:translateY(-2px);">{{ dlIconD }}</button>
+              <button class="btnp" onClick="{{ shareCopyBtn }}" title="Copy link" style="width:46px;height:46px;border-radius:50%;background:#ffffff12;border:1px solid #ffffff26;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,transform .16s;" style-hover="background:#ffffff22;transform:translateY(-2px);">{{ copyLinkIcon }}</button>
+            </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
       <!-- ===== PROFILE ===== -->
       <sc-if value="{{ isProfileScreen }}" hint-placeholder-val="{{ false }}">
       <div style="padding:16px 16px 26px;animation:screenIn .4s ease both;">
@@ -614,7 +760,7 @@
         </div>
         <div style="background:#fff;border:1px solid #E6ECF6;border-radius:18px;padding:20px;box-shadow:0 8px 24px -20px rgba(20,50,110,.3);">
           <div style="font-family:'Sora';font-weight:800;font-size:15px;color:#0F1B2D;margin-bottom:2px;">Performance report</div><div style="font-size:11.5px;color:#8A99B5;margin-bottom:14px;">A snapshot of learning so far.</div>
-          <div style="display:flex;flex-direction:column;margin-bottom:16px;"><sc-for list="{{ reportRows }}" as="r" hint-placeholder-count="6"><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #F0F3F9;"><span style="font-size:13px;color:#5B6B85;">{{ r.label }}</span><span style="font-family:'Sora';font-weight:800;font-size:13.5px;color:#0F1B2D;">{{ r.val }}</span></div></sc-for></div>
+          <div style="display:flex;flex-direction:column;margin-bottom:16px;"><sc-for list="{{ reportRows }}" as="r" hint-placeholder-count="10"><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #F0F3F9;"><span style="font-size:13px;color:#5B6B85;">{{ r.label }}</span><span style="font-family:'Sora';font-weight:800;font-size:13.5px;color:#0F1B2D;">{{ r.val }}</span></div></sc-for></div>
           <button onClick="{{ downloadReportBtn }}" class="btnp" style="width:100%;background:#eaf2ff;border:none;color:#1E74E6;padding:13px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">{{ dlIcon }} Download full report</button>
         </div>
         <div onClick="{{ logoutBtn }}" class="btnp" style="text-align:center;margin-top:18px;color:#8A99B5;font-weight:700;font-size:13.5px;cursor:pointer;">Log out</div>
@@ -683,7 +829,7 @@
 
     <!-- BOTTOM TAB NAV -->
     <sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
-    <div style="flex-shrink:0;display:flex;background:#ffffff;border-top:1px solid #E6ECF6;padding:8px 4px 6px;position:relative;z-index:30;">
+    <div data-wt="bottomnav" style="flex-shrink:0;display:flex;background:#ffffff;border-top:1px solid #E6ECF6;padding:8px 4px 6px;position:relative;z-index:30;">
       <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
         <div onClick="{{ n.go }}" class="btnp" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 2px;cursor:pointer;color:{{ n.fg }};">{{ n.icon }}<span style="font-size:9.5px;font-weight:700;">{{ n.label }}</span></div>
       </sc-for>
@@ -711,7 +857,7 @@
           </div>
         </sc-for>
       </div>
-      <button onClick="{{ goRegister }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:15px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 28px -10px rgba(30,116,230,.6);margin-bottom:10px;">Enroll for ₹499</button>
+      <button onClick="{{ goRegister }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:15px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 28px -10px rgba(30,116,230,.6);margin-bottom:10px;">Enroll for ₹800</button>
       <button onClick="{{ goLogin }}" class="btnp" style="width:100%;background:#fff;border:1.5px solid #E6ECF6;color:#1B2A41;padding:13px;border-radius:13px;font-weight:800;font-size:14.5px;cursor:pointer;">Log in to your account</button>
     </div>
     </sc-if>
@@ -732,10 +878,11 @@
 
     <!-- ===== WALKTHROUGH ===== -->
     <sc-if value="{{ wtShow }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ wtModal }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;inset:0;z-index:88;background:#0a1430dd;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:22px;animation:fadeIn .3s;">
       <div style="width:100%;background:#fff;border-radius:24px;padding:28px 24px;text-align:center;box-shadow:0 30px 80px -30px rgba(0,0,0,.5);animation:pop .35s cubic-bezier(.2,.8,.3,1) both;">
-        <img src="assets/mascot-2.png" alt="AIJU" style="height:110px;width:auto;animation:floaty 5s ease-in-out infinite;">
-        <div style="font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.14em;color:#1E74E6;margin:8px 0 8px;">STEP {{ wtStep }} OF {{ wtTotal }}</div>
+        <img src="assets/mascot-2.png" alt="AIJU" style="display:none;">{{ wtMascotEl }}
+        <div style="font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.14em;color:{{ wtAccent }};margin:8px 0 8px;">STEP {{ wtStep }} OF {{ wtTotal }}</div>
         <h2 style="font-family:'Sora';font-weight:800;font-size:21px;color:#0F1B2D;margin:0 0 10px;">{{ wtTitle }}</h2>
         <p style="font-size:14px;line-height:1.55;color:#5B6B85;margin:0 0 20px;">{{ wtBody }}</p>
         <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:20px;">
@@ -743,8 +890,66 @@
         </div>
         <div style="display:flex;gap:10px;">
           <button onClick="{{ wtClose }}" class="btnp" style="flex:0 0 auto;background:#F4F7FC;border:none;color:#5B6B85;padding:14px 18px;border-radius:13px;font-weight:700;font-size:14px;cursor:pointer;">Skip</button>
-          <button onClick="{{ wtNext }}" class="btnp" style="flex:1;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 28px -10px rgba(30,116,230,.6);">{{ wtNextLabel }}</button>
+          <button onClick="{{ wtNext }}" class="btnp" style="flex:1;background:{{ wtAccent }};border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 28px -14px rgba(0,0,0,.5);">{{ wtNextLabel }}</button>
         </div>
+      </div>
+    </div>
+    </sc-if>
+    <sc-if value="{{ wtSpot }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ wtClose }}" style="position:fixed;inset:0;z-index:140;"></div>
+      <div style="{{ wtRingStyle }}"></div>
+      <div style="{{ wtTipStyle }}">
+        <div style="background:#fff;border-radius:18px;padding:18px;box-shadow:0 24px 60px -18px rgba(0,0,0,.55);">
+          <div style="font-family:'JetBrains Mono';font-size:10px;letter-spacing:.14em;color:{{ wtAccent }};margin-bottom:6px;">STEP {{ wtStep }} OF {{ wtTotal }}</div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:17px;color:#0F1B2D;margin:0 0 6px;">{{ wtTitle }}</h2>
+          <p style="font-size:13px;line-height:1.5;color:#5B6B85;margin:0 0 14px;">{{ wtBody }}</p>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;gap:5px;flex:1;"><sc-for list="{{ wtDots }}" as="d" hint-placeholder-count="4"><div style="width:{{ d.w }};height:6px;border-radius:4px;background:{{ d.bg }};transition:all .3s;"></div></sc-for></div>
+            <button onClick="{{ wtClose }}" class="btnp" style="background:#F4F7FC;border:none;color:#5B6B85;padding:9px 13px;border-radius:10px;font-weight:700;font-size:12.5px;cursor:pointer;">Skip</button>
+            <button onClick="{{ wtNext }}" class="btnp" style="background:{{ wtAccent }};border:none;color:#fff;padding:9px 16px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;">{{ wtNextLabel }}</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+    </sc-if>
+
+    <!-- ===== ASSIGNMENT RESULT MODAL ===== -->
+    <sc-if value="{{ asgModalShow }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:92;background:#0a1430e0;backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s;">
+      <div style="width:100%;background:#fff;border-radius:24px;padding:26px 22px;text-align:center;box-shadow:0 30px 80px -30px rgba(0,0,0,.6);animation:pop .4s cubic-bezier(.2,.8,.3,1) both;position:relative;overflow:hidden;">
+        <sc-if value="{{ asgModalCelebrate }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;background:radial-gradient(360px 200px at 50% -8%,#37E0A028,transparent 70%);"></div>
+          <div style="position:absolute;left:16%;top:6px;width:8px;height:13px;border-radius:2px;background:#F5A800;animation:confetti 1.9s linear infinite;"></div>
+          <div style="position:absolute;left:40%;top:6px;width:8px;height:13px;border-radius:2px;background:#1E74E6;animation:confetti 2.2s linear .3s infinite;"></div>
+          <div style="position:absolute;left:64%;top:6px;width:8px;height:13px;border-radius:2px;background:#1FA971;animation:confetti 2s linear .15s infinite;"></div>
+          <div style="position:absolute;left:82%;top:6px;width:8px;height:13px;border-radius:2px;background:#E5484D;animation:confetti 2.3s linear .45s infinite;"></div>
+          <div style="position:relative;">
+            <img src="assets/mascot-5.png" alt="AIJU" style="height:110px;width:auto;margin:0 auto 6px;display:block;animation:wtpop .55s cubic-bezier(.2,.8,.3,1) both, floaty 5s ease-in-out .6s infinite;">
+            <div style="display:inline-flex;align-items:center;gap:6px;background:#e6f6ef;color:#0f7a52;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.12em;padding:6px 12px;border-radius:999px;margin-bottom:10px;">{{ trophyIconSm }} PERFECT SCORE · 5/5</div>
+            <h2 style="font-family:'Sora';font-weight:800;font-size:22px;color:#0F1B2D;margin:0 0 8px;">Shabaash! Full marks!</h2>
+            <p style="font-size:14px;line-height:1.55;color:#5B6B85;margin:0 0 20px;">Tumne saare 5 sawaal sahi kiye! AIJU ko tumpe garv hai. Isi tarah aage badhte raho.</p>
+            <button onClick="{{ asgCloseModal }}" class="btnp" style="width:100%;background:linear-gradient(180deg,#2EC78A,#1FA971);border:none;color:#fff;padding:14px;border-radius:13px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(31,169,113,.6);">Aage badho {{ gArrowW }}</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ asgModalRevise }}" hint-placeholder-val="{{ true }}">
+          <img src="assets/mascot-4.png" alt="AIJU" style="height:100px;width:auto;margin:0 auto 6px;display:block;animation:wtpop .5s cubic-bezier(.2,.8,.3,1) both;">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:#fff5e2;color:#B26A00;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.12em;padding:6px 12px;border-radius:999px;margin-bottom:10px;">SCORE · {{ asgScore }}/5</div>
+          <h2 style="font-family:'Sora';font-weight:800;font-size:21px;color:#0F1B2D;margin:0 0 8px;">Chalo thoda revise karein!</h2>
+          <p style="font-size:13.5px;line-height:1.55;color:#5B6B85;margin:0 0 16px;">Koi baat nahi! In topics ko video mein dobara dekh lo, phir aasaani se 5/5 aayega:</p>
+          <div style="display:flex;flex-direction:column;gap:9px;text-align:left;margin-bottom:18px;">
+            <sc-for list="{{ asgReviseList }}" as="r" hint-placeholder-count="2">
+              <div onClick="{{ r.go }}" class="btnp" style="display:flex;align-items:center;gap:11px;background:#F8FAFE;border:1px solid #E6ECF6;border-radius:13px;padding:11px 12px;cursor:pointer;">
+                <div style="width:34px;height:34px;border-radius:10px;background:#eaf2ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ playIconBlue }}</div>
+                <div style="flex:1;min-width:0;"><div style="font-family:'Sora';font-weight:700;font-size:13.5px;color:#0F1B2D;line-height:1.25;">{{ r.topic }}</div><div style="font-size:11.5px;color:#8A99B5;">Video mein yahan se dekho</div></div>
+                <div style="font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;color:#1E74E6;background:#eaf2ff;padding:4px 8px;border-radius:7px;flex-shrink:0;">{{ r.tsLabel }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:9px;">
+            <button onClick="{{ asgCloseModal }}" class="btnp" style="flex:0 0 auto;background:#F4F7FC;border:none;color:#5B6B85;padding:13px 16px;border-radius:13px;font-weight:700;font-size:13.5px;cursor:pointer;">Baad mein</button>
+            <button onClick="{{ asgReviseFirstGo }}" class="btnp" style="flex:1;background:linear-gradient(180deg,#2A86F5,#1E74E6);border:none;color:#fff;padding:13px;border-radius:13px;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 12px 28px -12px rgba(30,116,230,.6);display:flex;align-items:center;justify-content:center;gap:7px;">{{ playIconWhite }} Ab revise karein</button>
+          </div>
+        </sc-if>
       </div>
     </div>
     </sc-if>
@@ -819,7 +1024,7 @@ class Component extends DCLogic {
   state={
     screen:'landing', booting:true, bootLeaving:false, menuOpen:false,
     faqOpen:{}, toast:null,
-    authMode:'register', authStep:'email', email:'', otp:['','','','',''], otpErr:'', sending:false,
+    authMode:'register', authStep:'email', email:'', otp:['','','','',''], otpErr:'', sending:false, acceptTerms:false,
     session:{authed:false, paid:false, profileDone:false},
     profile:{phone:'',childName:'',childAge:'',school:'Sage International School',klass:'',section:'',roll:'',interests:[],altEmail:'',altPhone:''},
     showTeaserModal:false, authVidReady:false,
@@ -827,15 +1032,21 @@ class Component extends DCLogic {
     activeCh:null, openCh:{},
     video:{playing:false, t:0, dur:0, chId:null, speed:1},
     asg:{chId:null, idx:0, answers:{}, submitted:false},
+    asgModal:{show:false, type:''},
     editProfile:false, editBuf:null,
     help:{category:'Technical issue', subject:'', msg:'', submitted:false, ticket:''},
     fb:{rating:0, msg:'', category:'Course content', submitted:false},
     wt:{show:false, step:0},
+    curOpen:0,
+    peek:false,
+    contact:{name:'', phone:'', subject:'', msg:'', submitted:false},
+    badges:{docked:[], unlocked:false, opened:false},
     prog:{},
     streak:{current:5, best:12, week:[true,true,true,true,true,false,false]},
     analytics:[],
   };
   componentDidMount(){
+    try{ ['assets/mascot-1.png','assets/mascot-2.png','assets/mascot-3.png','assets/mascot-4.png','assets/mascot-5.png'].forEach(s=>{ const im=new Image(); im.src=s; }); }catch(_){}
     this._lastY=0;
     this._navScroll=()=>{
       const bar=document.getElementById('m-landing-nav'); if(!bar) return;
@@ -854,7 +1065,21 @@ class Component extends DCLogic {
     },1000);
   }
   componentWillUnmount(){ if(this._tt)clearTimeout(this._tt); if(this._boot1)clearTimeout(this._boot1); if(this._boot2)clearTimeout(this._boot2); if(this._tick)clearInterval(this._tick); }
-  go(s){ this.setState({screen:s, menuOpen:false}); setTimeout(()=>{ const sc=document.querySelector('.mscreen'); if(sc) sc.scrollTop=0; },30); }
+  go(s){ this.setState({screen:s, menuOpen:false}); setTimeout(()=>{ const sc=document.querySelector('.mscreen'); if(sc) sc.scrollTop=0; },30); if(s==='home'){ if(this._hiT)clearTimeout(this._hiT); this._hiT=setTimeout(()=>this.sayHi(),700); } }
+  sayHi(){ if(this._hiT2)clearTimeout(this._hiT2); this.setState({peek:true}); this._hiT2=setTimeout(()=>this.setState({peek:false}),2800); }
+  toggleCur(i){ this.setState(s=>({curOpen: s.curOpen===i?-1:i})); }
+  setContact(k,v){ this.setState(s=>({contact:{...s.contact,[k]:v}})); }
+  submitContact(){ const c=this.state.contact; if(!c.name.trim()||!c.phone.trim()||!c.msg.trim()){ this.toast('Please fill in your name, mobile number and message'); return; } if(c.phone.length!==10){ this.toast('Please enter a valid 10-digit mobile number'); return; } this.setState(s=>({contact:{...s.contact, submitted:true}})); }
+  resetContact(){ this.setState({contact:{name:'',phone:'',subject:'',msg:'',submitted:false}}); }
+  toggleAccept(){ this.setState(s=>({acceptTerms:!s.acceptTerms})); }
+  stageEarned(i){ const a=this.state.prog[i*2+1], b=this.state.prog[i*2+2]; return !!(a&&a.done&&b&&b.done); }
+  openBadges(){ this.setState({badges:{docked:[], unlocked:false, opened:false}}); this.go('badges'); setTimeout(()=>this.runKeys(),480); }
+  runKeys(){ const earned=[0,1,2,3,4].filter(i=>this.stageEarned(i)); let n=0; const step=()=>{ if(n>=earned.length){ if(earned.length===5) setTimeout(()=>this.setState(s=>({badges:{...s.badges, unlocked:true}})),450); return; } const idx=earned[n]; this.flyOneKey(idx, ()=>{ this.setState(s=>({badges:{...s.badges, docked:s.badges.docked.includes(idx)?s.badges.docked:[...s.badges.docked, idx]}})); n++; setTimeout(step,320); }); }; step(); }
+  flyOneKey(idx, done){ try{ const badge=document.querySelector('[data-badge="'+idx+'"]'); const box=document.querySelector('[data-mysterybox]'); if(!badge||!box){ done(); return; } const br=badge.getBoundingClientRect(), xr=box.getBoundingClientRect(); const k=document.createElement('div'); k.innerHTML='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#F5A800" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="4.5"/><path d="M11 11l8 8"/><path d="M16 16l2-2"/></svg>'; k.style.cssText='position:fixed;z-index:400;pointer-events:none;left:'+(br.left+br.width/2-13)+'px;top:'+(br.top+br.height/2-13)+'px;filter:drop-shadow(0 6px 12px rgba(245,168,0,.6));transition:transform .75s cubic-bezier(.5,0,.35,1),opacity .75s;'; document.body.appendChild(k); const dx=(xr.left+xr.width/2)-(br.left+br.width/2), dy=(xr.top+xr.height/2)-(br.top+br.height/2); requestAnimationFrame(()=>requestAnimationFrame(()=>{ k.style.transform='translate('+dx+'px,'+dy+'px) rotate(400deg) scale(.55)'; k.style.opacity='.15'; })); setTimeout(()=>{ try{k.remove();}catch(_){} done(); }, 800); }catch(e){ done(); } }
+  openMystery(){ if(!this.state.badges.unlocked) return; this.setState(s=>({badges:{...s.badges, opened:true}})); }
+  demoAddKey(){ const next=[0,1,2,3,4].find(i=>!this.state.badges.docked.includes(i)); if(next==null){ this.toast('All 5 keys already collected!'); return; } this.flyOneKey(next, ()=>{ this.setState(s=>{ const docked=[...s.badges.docked, next]; return {badges:{...s.badges, docked, unlocked: docked.length>=5?true:s.badges.unlocked}}; }); }); }
+  wireCoin(el){ if(!el||el._wired)return; el._wired=1; let angle=0, dragging=false, lastX=0; const apply=()=>{ el.style.transform='rotateY('+angle+'deg)'; }; const down=(e)=>{ dragging=true; lastX=(e.touches?e.touches[0].clientX:e.clientX); }; const move=(e)=>{ if(!dragging)return; const x=(e.touches?e.touches[0].clientX:e.clientX); angle+=(x-lastX)*0.6; lastX=x; apply(); if(e.cancelable)e.preventDefault(); }; const up=()=>{ dragging=false; }; el.addEventListener('pointerdown',down); window.addEventListener('pointermove',move); window.addEventListener('pointerup',up); const tick=()=>{ if(!dragging){ angle+=0.35; apply(); } requestAnimationFrame(tick); }; tick(); }
+  shareCert(p){ this.toast('Shared your certificate to '+p); }
   toast(msg){ this.setState({toast:msg}); if(this._tt)clearTimeout(this._tt); this._tt=setTimeout(()=>this.setState({toast:null}),2600); }
   toggleFaq(i){ this.setState(s=>({faqOpen:{...s.faqOpen,[i]:!s.faqOpen[i]}})); }
   toggleMenu(){ this.setState(s=>({menuOpen:!s.menuOpen})); }
@@ -863,17 +1088,17 @@ class Component extends DCLogic {
 
   setAuthMode(m){ this.setState({authMode:m, authStep:'email', otp:['','','','',''], otpErr:''}); }
   setEmail(v){ this.setState({email:v}); }
-  sendOtp(){ const em=this.state.email.trim(); if(!/^\S+@\S+\.\S+$/.test(em)){ this.setState({otpErr:'Please enter a valid email address.'}); return; } this.setState({sending:true, otpErr:''}); this.track('otp_requested',{email:em}); setTimeout(()=>this.setState({sending:false, authStep:'otp'}),750); }
+  sendOtp(){ if(this.state.authMode==='register' && !this.state.acceptTerms){ this.toast('Please accept the Privacy Policy and Terms of Service to create an account'); return; } const em=this.state.email.trim(); if(!/^\S+@\S+\.\S+$/.test(em)){ this.setState({otpErr:'Please enter a valid email address.'}); return; } this.setState({sending:true, otpErr:''}); this.track('otp_requested',{email:em}); setTimeout(()=>this.setState({sending:false, authStep:'otp'}),750); }
   setOtp(i,v){ if(!/^\d?$/.test(v)) return; const otp=[...this.state.otp]; otp[i]=v; this.setState({otp, otpErr:''}); if(v && i<4){ const el=document.getElementById('motp-'+(i+1)); if(el) el.focus(); } }
   otpKey(i,e){ if(e.key==='Backspace' && !this.state.otp[i] && i>0){ const el=document.getElementById('motp-'+(i-1)); if(el) el.focus(); } }
   backToEmail(){ this.setState({authStep:'email', otp:['','','','','']}); }
   verifyOtp(){ const code=this.state.otp.join(''); if(code.length<5){ this.setState({otpErr:'Enter the 5-digit code (demo: 12345).'}); return; } this.track('otp_verified',{}); this.afterAuth(); }
-  social(p){ this.track('social_auth',{provider:p}); if(!this.state.email) this.setState({email:'aarav.parent@gmail.com'}); this.toast('Signed in with '+p); this.afterAuth(); }
+  social(p){ if(this.state.authMode==='register' && !this.state.acceptTerms){ this.toast('Please accept the Privacy Policy and Terms of Service to create an account'); return; } this.track('social_auth',{provider:p}); if(!this.state.email) this.setState({email:'aarav.parent@gmail.com'}); this.toast('Signed in with '+p); this.afterAuth(); }
   afterAuth(){
     if(this.state.authMode==='login'){ this.seedReturning(); this.setState({session:{authed:true,paid:true,profileDone:true}}, ()=>this.go('home')); }
     else { this.setState({session:{authed:true,paid:false,profileDone:false}}, ()=>this.go('teaser')); }
   }
-  seedReturning(){ this.setState(s=>({ profile:{...s.profile, phone:'9876543210', childName:'Aarav Sharma', childAge:'11', school:'Sage International School', klass:'Class 6', section:'B', roll:'24', interests:['Robots','Space','Art & Drawing','Games'], altEmail:'', altPhone:''}, prog:{1:{video:100,material:100,readSec:340,asgScore:5,done:true}, 2:{video:55,material:40,readSec:120,asgScore:null,done:false}} })); }
+  seedReturning(){ this.setState(s=>({ profile:{...s.profile, phone:'9876543210', childName:'Aarav Sharma', childAge:'11', school:'Sage International School', klass:'Class 6', section:'B', roll:'24', interests:['Robots','Space','Art & Drawing','Games'], altEmail:'', altPhone:''}, prog:{1:{video:100,material:100,readSec:340,asgScore:5,done:true}, 2:{video:40,material:20,readSec:80,asgScore:null,done:false}} })); }
 
   openTeaserModal(){ this.setState({showTeaserModal:true}); this.track('teaser_modal_open',{}); }
   closeTeaserModal(){ this.setState({showTeaserModal:false}); }
@@ -881,7 +1106,7 @@ class Component extends DCLogic {
 
   setPayMethod(m){ this.setState({payMethod:m}); }
   setUpi(v){ this.setState({upiId:v}); }
-  payNow(){ this.setState({payProcessing:true}); this.track('payment_started',{amount:499}); setTimeout(()=>{ this.setState(s=>({payProcessing:false, payStep:'success', session:{...s.session, paid:true}})); this.track('payment_success',{amount:499}); },1800); }
+  payNow(){ this.setState({payProcessing:true}); this.track('payment_started',{amount:800}); setTimeout(()=>{ this.setState(s=>({payProcessing:false, payStep:'success', session:{...s.session, paid:true}})); this.track('payment_success',{amount:800}); },1800); }
   paymentDone(){ this.toast('Confirmation email sent'); if(this.state.session.profileDone){ this.go('home'); } else { this.go('profile-complete'); } }
 
   setP(f,v){ this.setState(s=>({profile:{...s.profile,[f]:v}})); }
@@ -895,14 +1120,16 @@ class Component extends DCLogic {
   openVideo(chId){ this.track('video_open',{chId}); const c=COURSE.find(x=>x.num===chId); const dur=this.durSec(c.dur); const cur=(this.state.prog[chId]&&this.state.prog[chId].video)||0; this.setState({activeCh:chId, video:{playing:false, t:Math.round(dur*cur/100), dur, chId, speed:1}}); this.go('video'); }
   durSec(s){ const m=parseInt(s); return m*60; }
   openMaterial(chId){ this.track('material_open',{chId}); this.setState({activeCh:chId}); this.go('material'); }
-  openAssignment(chId){ this.track('assignment_open',{chId}); this.setState({asg:{chId, idx:0, answers:{}, submitted:false}}); this.go('assignment'); }
+  openAssignment(chId){ this.track('assignment_open',{chId}); this.setState({asg:{chId, idx:0, answers:{}, submitted:false}, asgModal:{show:false, type:''}}); this.go('assignment'); }
 
   pickAnswer(qi,oi){ this.setState(s=>({asg:{...s.asg, answers:{...s.asg.answers,[qi]:oi}}})); }
   asgNext(){ this.setState(s=>({asg:{...s.asg, idx:Math.min(4,s.asg.idx+1)}})); }
   asgPrev(){ this.setState(s=>({asg:{...s.asg, idx:Math.max(0,s.asg.idx-1)}})); }
   asgGoto(i){ this.setState(s=>({asg:{...s.asg, idx:i}})); }
-  submitAsg(){ const a=this.state.asg; const q=MCQ[a.chId]||MCQ[1]; if(!q.every((_,i)=>a.answers[i]!=null)){ this.toast('Please answer all 5 questions'); return; } let score=0; q.forEach((qq,i)=>{ if(a.answers[i]===qq.correct) score++; }); this.setState(s=>({asg:{...s.asg, submitted:true, score}})); this.setProg(a.chId,{asgScore:score}); this.track('assignment_submitted',{chId:a.chId, score}); const sc=document.querySelector('.mscreen'); if(sc)sc.scrollTop=0; }
-  retryAsg(){ this.setState(s=>({asg:{...s.asg, idx:0, answers:{}, submitted:false}})); }
+  submitAsg(){ const a=this.state.asg; const q=MCQ[a.chId]||MCQ[1]; if(!q.every((_,i)=>a.answers[i]!=null)){ this.toast('Please answer all 5 questions'); return; } let score=0; q.forEach((qq,i)=>{ if(a.answers[i]===qq.correct) score++; }); this.setState(s=>({asg:{...s.asg, submitted:true, score}, asgModal:{show:true, type: score>=5?'celebrate':'revise'}})); this.setProg(a.chId,{asgScore:score}); this.track('assignment_submitted',{chId:a.chId, score}); const sc=document.querySelector('.mscreen'); if(sc)sc.scrollTop=0; }
+  retryAsg(){ this.setState(s=>({asg:{...s.asg, idx:0, answers:{}, submitted:false}, asgModal:{show:false, type:''}})); }
+  closeAsgModal(){ this.setState({asgModal:{show:false, type:''}}); }
+  reviseAt(ts){ const chId=this.state.asg.chId||this.state.activeCh; this.setState({asgModal:{show:false, type:''}}); this.openVideo(chId); setTimeout(()=>{ try{ if(this._lessonVideo){ this._lessonVideo.currentTime=ts; const p=this._lessonVideo.play(); if(p&&p.catch)p.catch(()=>{}); } }catch(_){} }, 140); }
 
   setProg(chId,patch){ this.setState(s=>{ const cur=s.prog[chId]||{video:0,material:0,readSec:0,asgScore:null,done:false}; const nx={...cur,...patch}; if((nx.video>=90)&&(nx.material>=90)&&(nx.asgScore!=null)) nx.done=true; return {prog:{...s.prog,[chId]:nx}}; }); }
 
@@ -920,17 +1147,19 @@ class Component extends DCLogic {
   setRating(r){ this.setState(s=>({fb:{...s.fb, rating:r}})); }
   submitFb(){ if(!this.state.fb.rating){ this.toast('Please pick a rating'); return; } this.setState(s=>({fb:{...s.fb, submitted:true}})); this.track('feedback_submitted',{rating:this.state.fb.rating}); }
 
-  startWt(){ this.setState({wt:{show:true, step:0}}); }
-  wtNext(){ this.setState(s=>{ if(s.wt.step>=WT.length-1) return {wt:{show:false,step:0}}; return {wt:{show:true, step:s.wt.step+1}}; }); }
-  wtClose(){ this.setState({wt:{show:false,step:0}}); }
+  startWt(){ this.setState({wt:{show:true, step:0, rect:null}}); }
+  wtTargetSel(step){ if(step===1) return '[data-wt="continue"]'; if(step===2) return '[data-wt="progress"]'; if(step===3) return '[data-wt="bottomnav"]'; return null; }
+  measureWt(){ const sel=this.wtTargetSel(this.state.wt.step); let rect=null; if(sel){ const el=document.querySelector(sel); if(el){ const r=el.getBoundingClientRect(); rect={top:r.top,left:r.left,width:r.width,height:r.height}; } } this.setState(s=>({wt:{...s.wt, rect}})); }
+  wtNext(){ this.setState(s=>{ if(s.wt.step>=WT.length-1) return {wt:{show:false,step:0,rect:null}}; return {wt:{show:true, step:s.wt.step+1, rect:null}}; }); setTimeout(()=>this.measureWt(),60); }
+  wtClose(){ this.setState({wt:{show:false,step:0,rect:null}}); }
 
   renderVals(){
     const st=this.state;
     const faqs=[
-      {q:'Who is AI Masterclass for?',a:'Students from class 4 to 12, and the parents who want to guide them. No coding or prior AI knowledge needed.'},
-      {q:'How long do we get access?',a:'A one-time payment of ₹499 gives full access to every chapter, video, study guide and quiz for 3 months.'},
+      {q:'Who is AI Masterclass for?',a:'Students from class KG1 to 12, and the parents who want to guide them. No coding or prior AI knowledge needed.'},
+      {q:'How long do we get access?',a:'A one-time payment of ₹800 gives full access to every chapter, video, study guide and quiz for 3 months.'},
       {q:'Is it safe for my child?',a:'Yes. Every lesson is age-appropriate, moderated, and focuses on safe, responsible use of AI. Parents can track all progress.'},
-      {q:'What will my child learn?',a:'Practical AI skills: writing great prompts, using ChatGPT/Gemini/Claude safely, creating with AI and thinking critically.'},
+      {q:'What will my child learn?',a:'Practical AI skills: writing great prompts, using ChatGPT, Gemini, NotebookLM, Grok & Canva safely, creating with AI and thinking critically.'},
       {q:'How do I pay?',a:'Securely via UPI through Razorpay. It takes under a minute, and you get an instant email confirmation.'},
     ].map((f,i)=>({...f,open:!!st.faqOpen[i],openClass:st.faqOpen[i]?'open':'',toggle:()=>this.toggleFaq(i),rot:st.faqOpen[i]?'rotate(45deg)':'none'}));
 
@@ -953,14 +1182,23 @@ class Component extends DCLogic {
       menuXIcon: I('x',{s:18,c:'#5B6B85'}),
       menuItems:[
         {label:'Why AI', desc:'Why it matters now', icon:I('spark',{s:18,c:B}), go:()=>this.scrollToSection('sec-why')},
-        {label:'Curriculum', desc:'6 chapters, zero jargon', icon:I('book',{s:18,c:B}), go:()=>this.scrollToSection('sec-curriculum')},
-        {label:'Pricing', desc:'One-time ₹499', icon:I('bolt',{s:18,c:B}), go:()=>this.scrollToSection('sec-pricing')},
+        {label:'Curriculum', desc:'10 chapters, zero jargon', icon:I('book',{s:18,c:B}), go:()=>this.scrollToSection('sec-curriculum')},
+        {label:'Pricing', desc:'One-time ₹800', icon:I('bolt',{s:18,c:B}), go:()=>this.scrollToSection('sec-pricing')},
         {label:'FAQ', desc:'Good to know', icon:I('life',{s:18,c:B}), go:()=>this.scrollToSection('sec-faq')},
+        {label:'Contact us', desc:'Get in touch', icon:svg(['M4 6h16v12H4z','M4 7l8 6 8-6'],{s:18,c:B}), go:()=>this.go('contact')},
       ].map(m=>({...m, chev:I('chev',{s:15,c:'#C7D2E6'})})),
       noop:()=>{},
       // nav actions
       goRegister:()=>{ this.setAuthMode('register'); this.go('auth'); },
       goLogin:()=>{ this.setAuthMode('login'); this.go('auth'); },
+      chevDownIcon: I('chevd',{s:20,c:'#8A99B5'}),
+      curriculumGroups: (function(){ var names={CHATGPT:'ChatGPT', GEMINI:'Google Gemini', NOTEBOOKLM:'NotebookLM', GROK:'Grok', 'CANVA AI':'Canva AI'}; var g=[]; for(var i=0;i<COURSE.length;i+=2){ var a=COURSE[i], b=COURSE[i+1]; var key=a.tag.split(' \u00b7 ')[0]; var gi=i/2; var open=this.state.curOpen===gi; g.push({ idx:gi, tool:names[key]||key, grad:'linear-gradient(135deg,'+a.c1+','+a.c2+')', dur:(parseInt(a.dur)+parseInt(b.dur))+' min', range:String(a.num).padStart(2,'0')+'\u2013'+String(b.num).padStart(2,'0'), open:open, chevRot: open?'rotate(180deg)':'none', toggle:(function(x){return ()=>this.toggleCur(x);}).call(this,gi), logoEl:React.createElement('img',{src:a.logo,alt:'',style:{width:'34px',height:'34px',borderRadius:'9px',background:'#fff',padding:'5px',boxSizing:'border-box',objectFit:'contain'}}), classes:[a,b].map(function(c){return {num:String(c.num).padStart(2,'0'), title:c.title, blurb:c.blurb, dur:c.dur};}) }); } return g; }).call(this),
+      isContact: st.screen==='contact', goContact:()=>this.go('contact'), goLandingBtn:()=>this.go('landing'),
+      contactForm: !st.contact.submitted, contactSent: st.contact.submitted,
+      cName: st.contact.name, cPhone: st.contact.phone, cSubject: st.contact.subject, cMsg: st.contact.msg,
+      onCName:(e)=>this.setContact('name',e.target.value), onCPhone:(e)=>this.setContact('phone',e.target.value.replace(/\D/g,'').slice(0,10)), onCSubject:(e)=>this.setContact('subject',e.target.value), onCMsg:(e)=>this.setContact('msg',e.target.value),
+      submitContactBtn:()=>this.submitContact(), resetContactBtn:()=>this.resetContact(),
+      mailIconBig: svg(['M4 6h16v12H4z','M4 7l8 6 8-6'],{s:22,c:'#1E74E6'}), checkBig: svg(['M20 6L9 17l-5-5'],{s:32,c:'#fff',w:3}),
       goWhy:()=>this.scrollToSection('sec-why'), goCurriculum:()=>this.scrollToSection('sec-curriculum'), goPricing:()=>this.scrollToSection('sec-pricing'), goFaq:()=>this.scrollToSection('sec-faq'),
       openTeaserModal:()=>this.openTeaserModal(), closeTeaserModal:()=>this.closeTeaserModal(), showTeaserModal: st.showTeaserModal,
       stopProp:(e)=>{ if(e&&e.stopPropagation)e.stopPropagation(); },
@@ -975,10 +1213,10 @@ class Component extends DCLogic {
       heroChips:[{icon:I('spark',{s:13,c:'#8fb6ff'}),label:'Beginner friendly'},{icon:I('shield',{s:13,c:'#8fb6ff'}),label:'Safe & guided'},{icon:I('clock',{s:13,c:'#8fb6ff'}),label:'Learn at your pace'},{icon:I('heart',{s:13,c:'#8fb6ff'}),label:'3 months access'}],
       parentPoints:['See every lesson your child completes','Track real progress, not screen time','Downloadable performance reports'],
       studentPoints:['Daily streaks that build a habit','Fun quizzes after every chapter','AIJU explains anything, anytime'],
-      chapters: COURSE.map(c=>({num:String(c.num).padStart(2,'0'),title:c.title,tag:c.tag,dur:c.dur,c1:c.c1,c2:c.c2})),
+      chapters: COURSE.map(c=>({num:String(c.num).padStart(2,'0'),title:c.title,tag:c.tag,dur:c.dur,c1:c.c1,c2:c.c2,logo:c.logo,logoEl:React.createElement('img',{src:c.logo,alt:'',style:{position:'relative',width:'34px',height:'34px',borderRadius:'9px',background:'#fff',padding:'5px',boxSizing:'border-box',objectFit:'contain',boxShadow:'0 4px 12px rgba(0,0,0,.28)'}})})),
       aijuFeatures:[{icon:I('compass',{s:18,c:B}),title:'Guides',desc:'Walks you through every step'},{icon:I('spark',{s:18,c:B}),title:'Explains',desc:'Big ideas in simple words'},{icon:I('bell',{s:18,c:B}),title:'Reminds',desc:'Nudges you to keep your streak'},{icon:I('heart',{s:18,c:B}),title:'Encourages',desc:'Celebrates every small win'}],
-      steps:[{n:'1',title:'Sign up in seconds',desc:'Email OTP, Google or Apple, whatever is fastest.'},{n:'2',title:'Watch the teaser',desc:'See what your child will learn before you pay.'},{n:'3',title:'Pay ₹499 once',desc:'Secure UPI via Razorpay. Instant access.'},{n:'4',title:'Start learning',desc:'Complete the profile and dive into Chapter 1.'}],
-      priceIncludes:['All 6 chapters, video + guide + quiz','Progress tracking & daily streaks','Downloadable performance reports','AIJU as your personal guide','Help & support anytime'],
+      steps:[{n:'1',title:'Sign up in seconds',desc:'Email OTP, Google or Apple, whatever is fastest.'},{n:'2',title:'Watch the teaser',desc:'See what your child will learn before you pay.'},{n:'3',title:'Pay ₹800 once',desc:'Secure UPI via Razorpay. Instant access.'},{n:'4',title:'Start learning',desc:'Complete the profile and dive into Chapter 1.'}],
+      priceIncludes:['All 10 chapters, video + guide + quiz','Progress tracking & daily streaks','Downloadable performance reports','AIJU as your personal guide','Help & support anytime'],
       testimonials:[
         {stars:'★★★★★',quote:'Mujhe khud AI theek se samajh nahi aata tha. Ab beta jo seekhta aur banata hai wo mujhe dikhata hai, isse mujhe bhi AI samajhne mein madad mili hai.',name:'Sunita Verma',role:'Parent of Aarav, Class 6',initial:'S',c1:'#1E74E6',c2:'#4C9BFF'},
         {stars:'★★★★★',quote:'Har din ki report se pata chal jaata hai beti ne kya seekha. Bina kuch kahe wo roz khud padhne baith jaati hai.',name:'Rakesh Gupta',role:'Parent of Diya, Class 5',initial:'R',c1:'#F5A800',c2:'#FDB92E'},
@@ -987,6 +1225,11 @@ class Component extends DCLogic {
       faqs,
       // walkthrough
       wtShow: st.wt.show, wtStep: st.wt.step+1, wtTotal: WT.length,
+      wtModal: st.wt.show && !st.wt.rect, wtSpot: st.wt.show && !!st.wt.rect,
+      wtRingStyle: (function(){ var r=st.wt.rect; if(!r) return 'display:none;'; var acc=WT[st.wt.step]?WT[st.wt.step].accent:'#F5A800'; return 'position:fixed;top:'+(r.top-7)+'px;left:'+(r.left-7)+'px;width:'+(r.width+14)+'px;height:'+(r.height+14)+'px;border:3px solid '+acc+';border-radius:16px;box-shadow:0 0 0 9999px rgba(10,20,48,.72);z-index:141;pointer-events:none;transition:all .35s cubic-bezier(.3,.8,.3,1);'; })(),
+      wtTipStyle: (function(){ var r=st.wt.rect; if(!r) return 'display:none;'; var vw=window.innerWidth, vh=window.innerHeight; var W=Math.min(300, vw-32); var left=Math.max(14, Math.min(r.left, vw-W-14)); var top; if(r.top > vh*0.5){ top=Math.max(14, r.top-198); } else { top=Math.min(vh-198, r.top+r.height+14); } return 'position:fixed;z-index:142;width:'+W+'px;left:'+left+'px;top:'+top+'px;animation:pop .35s cubic-bezier(.2,.8,.3,1) both;'; })(),
+      wtAccent: WT[st.wt.step]?WT[st.wt.step].accent:'#1E74E6',
+      wtMascotEl: (function(){ var w=WT[st.wt.step]; if(!w) return null; return React.createElement('div',{key:st.wt.step, style:{position:'relative',display:'inline-block',animation:'wtpop .55s cubic-bezier(.2,.8,.3,1) both'}}, React.createElement('div',{style:{position:'absolute',inset:'-16px',borderRadius:'50%',background:'radial-gradient(circle,'+w.accent+'33,transparent 68%)',animation:'pulseGlow 3s ease-in-out infinite'}}), React.createElement('img',{src:w.mascot, alt:'AIJU', style:{position:'relative',height:'110px',width:'auto',display:'block',animation:'floaty 5s ease-in-out .5s infinite'}})); })(),
       wtTitle: WT[st.wt.step]?WT[st.wt.step].title:'', wtBody: WT[st.wt.step]?WT[st.wt.step].body:'',
       wtDots: WT.map((w,i)=>({w:i===st.wt.step?'20px':'7px', bg:i===st.wt.step?'#1E74E6':'#dbe3ef'})),
       wtNext:()=>this.wtNext(), wtClose:()=>this.wtClose(), wtNextLabel: st.wt.step>=WT.length-1?'Got it!':'Next',
@@ -994,6 +1237,23 @@ class Component extends DCLogic {
       toast: st.toast, toastCheck: I('check',{s:12,c:'#0F1B2D',w:3}),
       // ---- AUTH ----
       isRegister: st.authMode==='register', isLoginMode: st.authMode==='login',
+      toggleAccept:()=>this.toggleAccept(), acceptBg: st.acceptTerms?'#1E74E6':'#fff', acceptBorder: st.acceptTerms?'#1E74E6':'#C7D2E6', acceptCheck: st.acceptTerms?svg(['M20 6L9 17l-5-5'],{s:12,c:'#fff',w:3}):null,
+      isBadges: st.screen==='badges',
+      badgeStages: (function(){ var e=React.createElement; var names={CHATGPT:'ChatGPT',GEMINI:'Gemini',NOTEBOOKLM:'NotebookLM',GROK:'Grok','CANVA AI':'Canva'}; var chip={width:'44px',height:'44px',borderRadius:'12px',background:'#fff',padding:'6px',boxSizing:'border-box',display:'flex',alignItems:'center',justifyContent:'center'}; var full={width:'100%',height:'100%',objectFit:'contain'}; var grey={width:'100%',height:'100%',objectFit:'contain',filter:'grayscale(1) opacity(.42)'}; function mkLogo(src,lvl){ if(lvl>=2) return e('div',{style:chip}, e('img',{src,alt:'',style:full})); if(lvl<=0) return e('div',{style:chip}, e('img',{src,alt:'',style:grey})); return e('div',{style:chip}, e('div',{style:{position:'relative',width:'100%',height:'100%'}}, e('img',{src,alt:'',style:Object.assign({position:'absolute',inset:0},grey)}), e('img',{src,alt:'',style:Object.assign({position:'absolute',inset:0,clipPath:'inset(0 0 0 50%)'},full)}))); } var arr=[]; for(var i=0;i<COURSE.length;i+=2){ var a=COURSE[i],b=COURSE[i+1]; var key=a.tag.split(' \u00b7 ')[0]; var si=i/2; var pa=st.prog[a.num], pb=st.prog[b.num]; var chDone=(pa&&pa.done?1:0)+(pb&&pb.done?1:0); var docked=st.badges.docked.includes(si); var lvl=docked?2:chDone; var earned=lvl>=2; arr.push({ idx:si, name:names[key]||key, ringBg: earned?('linear-gradient(135deg,'+a.c1+','+a.c2+')'):(lvl===1?'#dbe7fb':'#eef2f9'), statusText: earned?'Earned':(lvl===1?'50% \u00b7 1 of 2':'Locked'), statusColor: earned?'#1FA971':(lvl===1?'#1E74E6':'#8A99B5'), logoEl: mkLogo(a.logo,lvl), keyShown: docked }); } return arr; })(),
+      keysEarned: st.badges.docked.length,
+      keyDots: [0,1,2,3,4].map(i=>{ var f=st.badges.docked.includes(i); return { bg: f?'#F5A800':'#ffffff26', bd: f?'0 0 10px rgba(245,168,0,.85)':'none' }; }),
+      badgesLocked: !st.badges.unlocked, badgesNotOpened: st.badges.unlocked && !st.badges.opened, badgesOpened: st.badges.opened,
+      openMysteryBtn:()=>this.openMystery(), certLearner: (st.profile.childName||'Your Child'),
+      demoAddKeyBtn:()=>this.demoAddKey(), keyBtnIcon: svg(['M14 4a5.5 5.5 0 100 11 5.5 5.5 0 000-11z','M10.2 12.8l-6.2 6.2','M6 17l2 2','M8 15l2 2'],{s:14,c:'#0a1430',w:2.4}),
+      badgeCoinEl: (function(){ var e=React.createElement; var N=30, D=24; var layers=[]; for(var i=0;i<N;i++){ var z=(i/(N-1)*2-1)*D; var isFront=i===N-1, isBack=i===0; var br=isFront?1:(isBack?1:0.5); var st={position:'absolute',left:0,top:0,width:'100%',height:'100%',objectFit:'contain',pointerEvents:'none',userSelect:'none',WebkitUserSelect:'none',transform:'translateZ('+z.toFixed(2)+'px)'+(isBack?' rotateY(180deg)':''),filter:'brightness('+br+')'}; layers.push(e('img',{key:i,src:'assets/completion-badge.png',alt:'AI Mastermind completion badge',style:st,draggable:false})); } return e('div',{style:{perspective:'900px',width:'100%',maxWidth:'240px',margin:'0 auto',aspectRatio:'1'}}, e('div',{ref:(el)=>this.wireCoin(el), style:{position:'relative',width:'100%',height:'100%',transformStyle:'preserve-3d',cursor:'grab',touchAction:'pan-y',userSelect:'none',WebkitUserSelect:'none',WebkitTapHighlightColor:'transparent',outline:'none',filter:'drop-shadow(0 20px 34px rgba(0,0,0,.5))'}}, layers)); }).call(this),
+      keyBigIcon: svg(['M14 4a5.5 5.5 0 100 11 5.5 5.5 0 000-11z','M10.2 12.8l-6.2 6.2','M6 17l2 2','M8 15l2 2'],{s:20,c:'#F5A800',w:2.3}),
+      lockBigIcon: svg(['M6 10V8a6 6 0 0112 0v2','M5 10h14v11H5z','M12 15v2'],{s:24,c:'#8fb6ff',w:2}),
+      giftIcon: svg(['M20 12v9H4v-9','M2 7h20v5H2z','M12 22V7','M12 7S9.5 3 7.5 4.2C5.8 5.2 6.8 7 8 7z','M12 7s2.5-4 4.5-2.8C18.2 5.2 17.2 7 16 7z'],{s:28,c:'#fff',w:2}),
+      trophyBig: I('trophy',{s:34,c:'#fff'}),
+      shareLinkedInBtn:()=>this.shareCert('LinkedIn'), shareWhatsAppBtn:()=>this.shareCert('WhatsApp'), shareDownloadBtn:()=>this.shareCert('your device'), shareCopyBtn:()=>this.shareCert('clipboard'),
+      liEl: React.createElement('svg',{viewBox:'0 0 24 24',width:19,height:19},React.createElement('path',{fill:'#4A9EEA',d:'M4.98 3.5A2.5 2.5 0 002.5 6 2.5 2.5 0 005 8.5 2.5 2.5 0 007.5 6 2.5 2.5 0 005 3.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.8-2.05 3.7-2.05 3.96 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.26-.02-2.9-1.76-2.9-1.77 0-2.04 1.38-2.04 2.8V21h-4z'})),
+      waEl: svg(['M12 3a9 9 0 00-7.7 13.6L3 21l4.5-1.2A9 9 0 1012 3z'],{s:19,c:'#37D279',w:1.7}),
+      dlIconD: I('download',{s:18,c:'#c9d6ef'}), copyLinkIcon: I('clip',{s:18,c:'#c9d6ef'}),
       authEmailStep: st.authStep==='email', authOtpStep: st.authStep==='otp',
       authTitle: st.authMode==='register'?'Create your account':'Welcome back',
       authSub: st.authMode==='register'?'Start your AI journey with AIJU today.':'Log in to continue learning.',
@@ -1028,7 +1288,7 @@ class Component extends DCLogic {
       payMethod: st.payMethod, isUpi: st.payMethod==='upi',
       setUpiM:()=>this.setPayMethod('upi'), setCardM:()=>this.setPayMethod('card'), setNbM:()=>this.setPayMethod('netbanking'),
       upiId: st.upiId, onUpi:(e)=>this.setUpi(e.target.value), payProcessing: st.payProcessing,
-      payBtnLabel: st.payProcessing?'Processing…':'Pay ₹499 securely', payNow:()=>this.payNow(), paymentDone:()=>this.paymentDone(),
+      payBtnLabel: st.payProcessing?'Processing…':'Pay ₹800 securely', payNow:()=>this.payNow(), paymentDone:()=>this.paymentDone(),
       upiBorder: st.payMethod==='upi'?'#1E74E6':'#E6ECF6', upiBg: st.payMethod==='upi'?'#eaf2ff':'#fff', upiDot: st.payMethod==='upi'?'#1E74E6':'#C7D2E6', upiDotFill: st.payMethod==='upi'?'#1E74E6':'transparent',
       cardBorder: st.payMethod==='card'?'#1E74E6':'#E6ECF6', cardBg: st.payMethod==='card'?'#eaf2ff':'#fff', cardDot: st.payMethod==='card'?'#1E74E6':'#C7D2E6', cardDotFill: st.payMethod==='card'?'#1E74E6':'transparent',
       nbBorder: st.payMethod==='netbanking'?'#1E74E6':'#E6ECF6', nbBg: st.payMethod==='netbanking'?'#eaf2ff':'#fff', nbDot: st.payMethod==='netbanking'?'#1E74E6':'#C7D2E6', nbDotFill: st.payMethod==='netbanking'?'#1E74E6':'transparent',
@@ -1050,21 +1310,22 @@ class Component extends DCLogic {
       saveShadow: this.profileValid()?'0 14px 34px -10px rgba(30,116,230,.6)':'none',
       saveOpacity: this.profileValid()?'1':'.85',
       // ==== screen flags (templates appended later) ====
-      isApp: ['home','course','video','material','assignment','profile','help','feedback'].includes(st.screen),
+      isApp: ['home','course','video','material','assignment','profile','help','feedback','badges'].includes(st.screen),
       isAuth: st.screen==='auth', isTeaser: st.screen==='teaser', isPayment: st.screen==='payment', isProfileComplete: st.screen==='profile-complete',
       isHome: st.screen==='home', isCourse: st.screen==='course', isVideo: st.screen==='video', isMaterial: st.screen==='material', isAssignment: st.screen==='assignment', isProfileScreen: st.screen==='profile', isHelp: st.screen==='help', isFeedback: st.screen==='feedback',
       // bottom nav
-      navItems: [{id:'home',label:'Home',icon:'grid'},{id:'course',label:'Course',icon:'book'},{id:'profile',label:'Profile',icon:'user'},{id:'help',label:'Help',icon:'life'},{id:'feedback',label:'Feedback',icon:'chat'}].map(n=>{ const on=st.screen===n.id||(n.id==='course'&&['video','material','assignment'].includes(st.screen)); return {label:n.label, go:()=>this.go(n.id), icon:I(n.icon,{s:21,c:on?'#1E74E6':'#8A99B5'}), fg:on?'#1E74E6':'#8A99B5'}; }),
+      navItems: [{id:'home',label:'Home',icon:'grid'},{id:'course',label:'Course',icon:'book'},{id:'badges',label:'Badges',icon:'trophy'},{id:'profile',label:'Profile',icon:'user'},{id:'help',label:'Help',icon:'life'},{id:'feedback',label:'Feedback',icon:'chat'}].map(n=>{ const on=st.screen===n.id||(n.id==='course'&&['video','material','assignment'].includes(st.screen)); return {label:n.label, go: n.id==='badges'?(()=>this.openBadges()):(()=>this.go(n.id)), icon:I(n.icon,{s:21,c:on?'#1E74E6':'#8A99B5'}), fg:on?'#1E74E6':'#8A99B5'}; }),
       // shared computed for app screens
       cv, overallPct:overall, overallDeg:(overall*3.6)+'deg', nextCh, streakDays:st.streak.current, streakBest:st.streak.best,
       greetName:(st.profile.childName||'Learner').split(' ')[0], avatarInitial:(st.profile.childName||'L').charAt(0).toUpperCase(),
+      peekOn: st.peek, peekX: st.peek?'-44px':'6px', peekOpacity: st.peek?'1':'0', sayHiBtn:()=>this.sayHi(),
       logoutBtn:()=>{ this.setState({session:{authed:false,paid:false,profileDone:false}}); this.go('landing'); },
       // ---- HOME ----
       nextChPad: String(nextCh.num).padStart(2,'0'),
       openCourseBtn:()=>this.openCourse(),
       resumeNext:()=>{ const c=nextCh; if((st.prog[c.num]&&st.prog[c.num].video>=100)){ this.openMaterial(c.num); } else { this.openVideo(c.num); } },
       doneCount: cv.filter(c=>c.done).length, inProgressCount: cv.filter(c=>!c.done && c.pct>0).length,
-      weekDays: ['M','T','W','T','F','S','S'].map((d,i)=>{ const on=st.streak.week[i]; const today=i===4; return {d, bg:on?'linear-gradient(140deg,#1E74E6,#0B4FB0)':'#F4F7FC', border:today&&!on?'2px solid #1E74E6':'1px solid #E6ECF6', mark:on?I('check',{s:14,c:'#fff',w:3}):(today?R.createElement('span',{style:{width:7,height:7,borderRadius:'50%',background:'#1E74E6'}}):null), labelColor:on?'#1E74E6':'#8A99B5'}; }),
+      weekDays: ['M','T','W','T','F','S','S'].map((d,i)=>{ const on=st.streak.week[i]; const today=i===4; const mascots=['assets/mascot-2.png','assets/mascot-3.png','assets/mascot-4.png']; const showMascot=on&&(i===1||i===3); const mk= showMascot?R.createElement('img',{src:mascots[i%mascots.length],alt:'',style:{width:'84%',height:'84%',objectFit:'contain',filter:'drop-shadow(0 3px 5px rgba(0,0,0,.3))'}}):(on?I('check',{s:14,c:'#fff',w:3}):(today?R.createElement('span',{style:{width:7,height:7,borderRadius:'50%',background:'#1E74E6'}}):null)); return {d, bg:on?(showMascot?'linear-gradient(140deg,#FDB92E,#EA8600)':'linear-gradient(140deg,#1E74E6,#0B4FB0)'):'#F4F7FC', border:today&&!on?'2px solid #1E74E6':'1px solid #E6ECF6', mark:mk, labelColor:on?'#1E74E6':'#8A99B5', anim:'streakPop .45s cubic-bezier(.2,.8,.3,1) '+(i*0.06)+'s both'}; }),
       trophyIcon: I('trophy',{s:18,c:'#1FA971'}), targetIcon: I('target',{s:18,c:'#1E74E6'}), flameBig: I('flame',{s:20,c:'#F5A800'}),
       resumeIcon: svg(['M8 5l12 7-12 7V5z'],{s:14,c:'#0a1430',w:0,style:{fill:'#0a1430'}}),
       bookIconW: I('book',{s:22,c:'#fff'}), chevBlue: I('chev',{s:15,c:'#1E74E6'}), pulseIcon: I('bolt',{s:15,c:'#fff'}),
@@ -1091,14 +1352,14 @@ class Component extends DCLogic {
         };
       }),
       // ---- VIDEO ----
-      vidChPad: String(st.video.chId||1).padStart(2,'0'), vidTag:(COURSE[(st.video.chId||1)-1]||COURSE[0]).tag, vidTitle:(COURSE[(st.video.chId||1)-1]||COURSE[0]).title,
-      lessonVideoRef:(el)=>{ if(!el||el._wired)return; el._wired=1; try{el.controls=true;el.playsInline=true;}catch(_){} el.addEventListener('timeupdate',()=>{ if(el.duration){ const chId=this.state.video.chId||this.state.activeCh; const pct=Math.round(el.currentTime/el.duration*100); const prev=(this.state.prog[chId]&&this.state.prog[chId].video)||0; if(pct>prev) this.setProg(chId,{video:pct}); } }); el.addEventListener('ended',()=>{ const chId=this.state.video.chId||this.state.activeCh; this.setProg(chId,{video:100}); }); },
+      vidChPad: String(st.video.chId||1).padStart(2,'0'), vidTag:(COURSE[(st.video.chId||1)-1]||COURSE[0]).tag, vidTitle:(COURSE[(st.video.chId||1)-1]||COURSE[0]).full,
+      lessonVideoRef:(el)=>{ if(!el||el._wired)return; el._wired=1; this._lessonVideo=el; try{el.controls=true;el.playsInline=true;}catch(_){} el.addEventListener('timeupdate',()=>{ if(el.duration){ const chId=this.state.video.chId||this.state.activeCh; const pct=Math.round(el.currentTime/el.duration*100); const prev=(this.state.prog[chId]&&this.state.prog[chId].video)||0; if(pct>prev) this.setProg(chId,{video:pct}); } }); el.addEventListener('ended',()=>{ const chId=this.state.video.chId||this.state.activeCh; this.setProg(chId,{video:100}); }); },
       matToAssignment:()=>this.openAssignment(st.activeCh),
       keyIcon: I('bolt',{s:13,c:'#F5A800'}), keyIconGold: I('bolt',{s:17,c:'#F5A800'}),
       // ---- MATERIAL ----
-      matTitle:(COURSE[(st.activeCh||1)-1]||COURSE[0]).title, matChPad: String(st.activeCh||1).padStart(2,'0'),
+      matTitle:(COURSE[(st.activeCh||1)-1]||COURSE[0]).full, matChPad: String(st.activeCh||1).padStart(2,'0'),
       matIntro:(MATERIAL[st.activeCh]||MATERIAL[1]).intro, matRead:(MATERIAL[st.activeCh]||MATERIAL[1]).read,
-      matSections:(MATERIAL[st.activeCh]||MATERIAL[1]).sections.map(s=>({h:s.h,p:s.p,cap:s.img})),
+      matSections:(function(){ var e=React.createElement; var chNum=(st.activeCh||1); var c=(COURSE[chNum-1]||COURSE[0]); var grad='linear-gradient(135deg,'+c.c1+','+c.c2+')'; var imgs=['assets/activities.png','assets/games.png','assets/stories.png','assets/mascot-5.png','assets/chapter1-thumb.png']; var chip=function(t){return e('div',{style:{background:'#ffffffef',borderRadius:'11px',padding:'10px 14px',fontFamily:"'Sora'",fontWeight:700,fontSize:'13px',color:'#0F1B2D',boxShadow:'0 5px 14px rgba(0,0,0,.16)',textAlign:'center'}},t);}; var vconn=function(d){return e('div',{style:{width:'3px',height:'20px',background:'#ffffff5c',position:'relative',borderRadius:'2px'}}, e('span',{style:{position:'absolute',left:'50%',width:'9px',height:'9px',borderRadius:'50%',background:'#fff',boxShadow:'0 0 10px #fff',transform:'translateX(-50%)',animation:'flowpulseY 1.8s linear infinite'+(d?' .9s':'')}}));}; var logoBadge=function(){return e('img',{src:c.logo,alt:'',style:{position:'absolute',right:'12px',top:'12px',width:'32px',height:'32px',borderRadius:'8px',background:'#fff',padding:'5px',boxSizing:'border-box',objectFit:'contain',boxShadow:'0 4px 12px rgba(0,0,0,.28)',zIndex:2}});}; var gridOv=function(){return e('div',{style:{position:'absolute',inset:0,backgroundImage:'linear-gradient(#ffffff14 1px,transparent 1px),linear-gradient(90deg,#ffffff14 1px,transparent 1px)',backgroundSize:'20px 20px',opacity:.6}});}; var flowG=function(f){return e('div',{style:{borderRadius:'13px',border:'1px solid #E6ECF6',marginBottom:'12px',background:grad,padding:'16px',position:'relative',overflow:'hidden'}}, gridOv(), logoBadge(), e('div',{style:{position:'relative',display:'flex',flexDirection:'column',alignItems:'center',gap:0}}, chip(f[0]), vconn(0), chip(f[1]), vconn(1), chip(f[2])));}; var stepsG=function(f){return e('div',{style:{borderRadius:'13px',border:'1px solid #E6ECF6',marginBottom:'12px',background:grad,padding:'16px',position:'relative',overflow:'hidden'}}, gridOv(), logoBadge(), e('div',{style:{position:'relative',display:'flex',flexDirection:'column',gap:'9px'}}, f.map(function(t,i){return e('div',{key:i,style:{display:'flex',alignItems:'center',gap:'11px',background:'#ffffffe8',borderRadius:'11px',padding:'11px 13px',boxShadow:'0 5px 14px rgba(0,0,0,.15)'}}, e('div',{style:{width:'26px',height:'26px',borderRadius:'8px',background:grad,color:'#fff',fontFamily:"'Sora'",fontWeight:800,fontSize:'12px',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}, String(i+1)), e('div',{style:{fontFamily:"'Sora'",fontWeight:700,fontSize:'13.5px',color:'#0F1B2D'}}, t));})));}; var imageG=function(){var src=imgs[(chNum-1)%imgs.length]; return e('div',{style:{borderRadius:'13px',overflow:'hidden',border:'1px solid #E6ECF6',marginBottom:'12px',position:'relative',aspectRatio:'16/8',background:'linear-gradient(160deg,#eaf2ff,#f4f7fc)'}}, e('img',{src:src,alt:'',style:{width:'100%',height:'100%',objectFit:'contain',display:'block'}}), logoBadge());}; return (MATERIAL[chNum]||MATERIAL[1]).sections.map(function(s,idx){ var k=idx%3; var g=k===0?flowG(s.flow):(k===1?imageG():stepsG(s.flow)); return {h:s.h,p:s.p,graphicEl:g}; }); })(),
       matKeys:(MATERIAL[st.activeCh]||MATERIAL[1]).keys,
       matReadTime:(()=>{ const rs=(st.prog[st.activeCh]&&st.prog[st.activeCh].readSec)||0; return Math.floor(rs/60)+'m '+(rs%60)+'s'; })(),
       markReadBtn:()=>{ this.setProg(st.activeCh,{material:100}); this.track('material_completed',{chId:st.activeCh}); this.toast('Study material marked complete'); },
@@ -1116,6 +1377,10 @@ class Component extends DCLogic {
       asgShowNext: st.asg.idx<4, asgShowSubmit: st.asg.idx===4, asgPrevOpacity: st.asg.idx===0?'.4':'1',
       asgNextBtn:()=>this.asgNext(), asgPrevBtn:()=>this.asgPrev(), submitAsgBtn:()=>this.submitAsg(), retryAsgBtn:()=>this.retryAsg(), asgBackCourse:()=>this.openCourse(),
       asgScore: st.asg.score, asgScoreDeg:((st.asg.score||0)/5*360)+'deg',
+      asgModalShow: st.asgModal.show, asgModalCelebrate: st.asgModal.type==='celebrate', asgModalRevise: st.asgModal.type==='revise', asgCloseModal:()=>this.closeAsgModal(),
+      asgReviseList: (function(){ var a=st.asg; var q=MCQ[a.chId]||MCQ[1]; return q.map((qq,i)=>({qq,i})).filter(x=>a.answers[x.i]!==x.qq.correct).map(x=>({topic:x.qq.topic, tsLabel:(function(sec){var mm=Math.floor(sec/60),ss=sec%60;return mm+':'+String(ss).padStart(2,'0');})(x.qq.ts), go:()=>this.reviseAt(x.qq.ts)})); }).call(this),
+      asgReviseFirstGo: (function(){ var a=st.asg; var q=MCQ[a.chId]||MCQ[1]; var first=q.map((qq,i)=>({qq,i})).find(x=>a.answers[x.i]!==x.qq.correct); var ts=first?first.qq.ts:0; return ()=>this.reviseAt(ts); }).call(this),
+      playIconBlue: I('play',{s:16,c:'#1E74E6',w:0,style:{fill:'#1E74E6'}}), playIconWhite: I('play',{s:15,c:'#fff',w:0,style:{fill:'#fff'}}), trophyIconSm: I('trophy',{s:13,c:'#0f7a52'}),
       asgResultTitle:(st.asg.score||0)>=4?'Brilliant work!':((st.asg.score||0)>=3?'Well done!':'Good try!'),
       asgResultMsg:(st.asg.score||0)>=3?'You\'ve got a solid grasp of this chapter. Keep it going!':'Review the study material and give it another go.',
       asgReview: aq.map((qq,i)=>{ const chosen=st.asg.answers[i]; const right=chosen===qq.correct; return {n:i+1, q:qq.q, opts:qq.opts.map((o,oi)=>({text:o, bc:oi===qq.correct?'#1FA971':(oi===chosen?'#E5484D':'#E6ECF6'), bg:oi===qq.correct?'#e6f6ef':(oi===chosen?'#fdecec':'#fff'), fg:oi===qq.correct?'#0f7a52':(oi===chosen?'#b02a2e':'#5B6B85'), badge:oi===qq.correct?I('check',{s:12,c:'#1FA971',w:3}):(oi===chosen?I('x',{s:12,c:'#E5484D',w:3}):null)})), mark: right?I('checkc',{s:18,c:'#1FA971'}):I('x',{s:16,c:'#E5484D',w:2.5}) }; }),
@@ -1142,7 +1407,7 @@ class Component extends DCLogic {
       editAltEmail:(e)=>this.setEdit('altEmail',e.target.value),
       editAltPhone:(e)=>this.setEdit('altPhone',e.target.value),
       editInterestOpts: INTERESTS.map(x=>{ const on=(st.editBuf||st.profile).interests.includes(x); return {label:x, toggle:()=>this.toggleEditInterest(x), bc:on?'#1E74E6':'#E6ECF6', bg:on?'#eaf2ff':'#F8FAFE', fg:on?'#1E74E6':'#5B6B85', tick:on?I('check',{s:11,c:'#1E74E6',w:3}):null}; }),
-      reportRows:[{label:'Chapters completed',val:cv.filter(c=>c.done).length+' / 6'},{label:'Overall progress',val:overall+'%'},{label:'Current streak',val:st.streak.current+' days'},{label:'Total watch time',val:'42 min'},{label:'Total reading time',val:'18 min'},{label:'Avg. quiz score',val:'4.2 / 5'}],
+      reportRows:[{label:'Chapters completed',val:cv.filter(c=>c.done).length+' / 10'},{label:'Overall progress',val:overall+'%'},{label:'Current streak',val:st.streak.current+' days'},{label:'Total watch time',val:'42 min'},{label:'Total reading time',val:'18 min'},{label:'Avg. quiz score',val:'4.2 / 5'}],
       profInterestChips: st.profile.interests.map(x=>({label:x})),
       // ---- HELP ----
       helpCategory: st.help.category, onHelpCategory:(e)=>this.setHelp('category',e.target.value),
@@ -1165,78 +1430,156 @@ class Component extends DCLogic {
 }
 
 const COURSE=[
-  {num:1,title:'ChatGPT Se Pehli Mulaqat',tag:'AI FOR EVERYONE',dur:'14 min',c1:'#1E74E6',c2:'#0B4FB0',blurb:'What AI really is, and your very first, safe conversation with ChatGPT.'},
-  {num:2,title:'Prompt Likhna Seekho',tag:'PROMPTING 101',dur:'12 min',c1:'#7C3AED',c2:'#4C1D95',blurb:'The simple recipe for asking AI questions that get brilliant answers.'},
-  {num:3,title:'AI Se Padhai, Smart Tarike Se',tag:'STUDY SMARTER',dur:'15 min',c1:'#0EA5A5',c2:'#0F766E',blurb:'Use AI as a study buddy: summaries, doubts and revision made easy.'},
-  {num:4,title:'AI Art & Imagination',tag:'CREATE WITH AI',dur:'13 min',c1:'#F5A800',c2:'#C2410C',blurb:'Turn ideas into images and stories, and learn where creativity meets AI.'},
-  {num:5,title:'Safe & Smart AI',tag:'STAY SAFE',dur:'11 min',c1:'#E5484D',c2:'#991B1B',blurb:'Privacy, misinformation and the golden rules of using AI responsibly.'},
-  {num:6,title:'AI Tools Ki Duniya',tag:'TOOLS TOUR',dur:'16 min',c1:'#2563EB',c2:'#1E3A8A',blurb:'A guided tour of Gemini, Claude and Perplexity, and when to use each.'},
+  {num:1,title:'ChatGPT Se Pehli Dosti',full:'ChatGPT Ki Neenv — AI Se Pehli Mulaqat',tag:'CHATGPT · PART 1',dur:'14 min',c1:'#10A37F',c2:'#0B7A5E',logo:'assets/logo-chatgpt.svg',blurb:'AI kya hai aur ChatGPT se apni pehli safe baat-cheet.'},
+  {num:2,title:'ChatGPT: Tumhara AI Coach',full:'ChatGPT Advanced — Personal AI Coach Aur Safe Learning',tag:'CHATGPT · PART 2',dur:'13 min',c1:'#0FA37F',c2:'#0A6E55',logo:'assets/logo-chatgpt.svg',blurb:'ChatGPT ko apna padhai coach banao, safe tarike se.'},
+  {num:3,title:'Gemini Ka Powerhouse',full:'Google Gemini Part 1 — Google Ka Powerhouse',tag:'GEMINI · PART 1',dur:'15 min',c1:'#4796E3',c2:'#7C3AED',logo:'assets/logo-gemini.svg',blurb:'Google ka powerful AI — search se aage ki duniya.'},
+  {num:4,title:'Gemini: Gems & Photo Padhai',full:'Google Gemini Part 2 — Advanced Gemini (Gems + Photo Se Padhai)',tag:'GEMINI · PART 2',dur:'14 min',c1:'#5A73E0',c2:'#8B3AD6',logo:'assets/logo-gemini.svg',blurb:'Apne Gems banao aur photo se seedha padhai karo.'},
+  {num:5,title:'Apni Kitaab Ka AI',full:'NotebookLM Part 1 — Apni Kitaab Ka AI',tag:'NOTEBOOKLM · PART 1',dur:'12 min',c1:'#1A73E8',c2:'#1E40AF',logo:'assets/logo-notebooklm.svg',blurb:'Apni notes aur kitaab ko AI se samjho.'},
+  {num:6,title:'Board Exam Command Centre',full:'NotebookLM Part 2 — Board Exam Command Centre',tag:'NOTEBOOKLM · PART 2',dur:'13 min',c1:'#1565D8',c2:'#1E3A8A',logo:'assets/logo-notebooklm.svg',blurb:'Board exams ki taiyari ka smart command centre.'},
+  {num:7,title:'Grok: Real-Time Research',full:'Grok Part 1 — Real-Time Research Aur Fun Learning',tag:'GROK · PART 1',dur:'12 min',c1:'#3F4657',c2:'#0B0B0F',logo:'assets/logo-grok.svg',blurb:'Real-time research aur mazedaar tarike se seekho.'},
+  {num:8,title:'Grok: Images & Fake News',full:'Grok Part 2 — Image Generation Aur Fake News Detection',tag:'GROK · PART 2',dur:'13 min',c1:'#4A5266',c2:'#111318',logo:'assets/logo-grok.svg',blurb:'Images banao aur fake news pehchanna seekho.'},
+  {num:9,title:'Canva: Magic Studio',full:'Canva AI Part 1 — School Projects Ka Magic Studio',tag:'CANVA AI · PART 1',dur:'14 min',c1:'#12B5C9',c2:'#7D2AE8',logo:'assets/logo-canva.svg',blurb:'School projects ko Canva AI se magical banao.'},
+  {num:10,title:'Canva: Photo & Video',full:'Canva AI Part 2 — Photo Editing Aur Video Creation',tag:'CANVA AI · PART 2',dur:'15 min',c1:'#00C4CC',c2:'#8B2AE8',logo:'assets/logo-canva.svg',blurb:'Photo editing aur video banana seekho.'},
 ];
+
 const INTERESTS=['Robots','Space','Art & Drawing','Games','Science','Music','Stories','Coding','Sports','Nature','Maths','Movies'];
 const SCHOOLS=['Sage International School'];
 const CLASSES=['KG 1','KG 2','Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Class 11','Class 12'];
 const AGES=['8','9','10','11','12','13','14','15','16','17'];
+
 const WT=[
-  {title:'Your daily streak', body:'Log in and learn a little every day to grow your streak. AIJU will cheer you on!'},
-  {title:'Pick up where you left off', body:'Your home always takes you straight to your next lesson, no searching needed.'},
-  {title:'Track your journey', body:'Watch your course progress climb as you finish videos, guides and quizzes.'},
-  {title:'Everything in one place', body:'Jump to your course, profile, help and feedback from the bottom bar anytime.'},
+  {sel:'streak', title:'Your daily streak', body:'Log in and learn a little every day to grow your streak. AIJU will cheer you on!', mascot:'assets/mascot-2.png', accent:'#F5A800'},
+  {sel:'continue', title:'Pick up where you left off', body:'This card always takes you straight to your next lesson, no searching needed.', mascot:'assets/mascot-3.png', accent:'#1E74E6'},
+  {sel:'progress', title:'Track your journey', body:'Watch your course progress climb as you finish videos, guides and quizzes.', mascot:'assets/mascot-4.png', accent:'#1FA971'},
+  {sel:'nav', title:'Everything in one place', body:'Jump to your course, profile, help and feedback anytime from here.', mascot:'assets/mascot-1.png', accent:'#7C3AED'},
 ];
+
 const MCQ={
   1:[
-    {q:'What does "AI" stand for?', opts:['Automatic Internet','Artificial Intelligence','Advanced Information','Applied Innovation'], correct:1},
-    {q:'ChatGPT is best described as a…', opts:['Search engine like a library index','Conversational AI you can chat with','Video game','Calculator'], correct:1},
-    {q:'What is the safest first step when using ChatGPT?', opts:['Share your home address','Ask a simple, clear question','Believe every answer fully','Use it without a parent nearby'], correct:1},
-    {q:'AI answers are…', opts:['Always 100% correct','Sometimes wrong and worth checking','Written by a human each time','Never useful for study'], correct:1},
-    {q:'A good reason to learn AI early is to…', opts:['Copy homework faster','Use it wisely and safely','Avoid reading books','Skip school'], correct:1},
+    {q:'What does "AI" stand for?', opts:['Automatic Internet','Artificial Intelligence','Advanced Information','Applied Innovation'], correct:1, topic:'AI aakhir hai kya?', ts:40},
+    {q:'ChatGPT is best described as a…', opts:['Search engine like a library index','Conversational AI you can chat with','Video game','Calculator'], correct:1, topic:'Meet ChatGPT', ts:130},
+    {q:'What is the safest first step when using ChatGPT?', opts:['Share your home address','Ask a simple, clear question','Believe every answer fully','Use it without a parent nearby'], correct:1, topic:'Pehli safe baat-cheet', ts:240},
+    {q:'AI answers are…', opts:['Always 100% correct','Sometimes wrong and worth checking','Written by a human each time','Never useful for study'], correct:1, topic:'Jawab verify karna', ts:340},
+    {q:'A good reason to learn AI early is to…', opts:['Copy homework faster','Use it wisely and safely','Avoid reading books','Skip school'], correct:1, topic:'AI safely seekhna', ts:430},
   ],
   2:[
-    {q:'A "prompt" is…', opts:['The AI\'s answer','The instruction you give the AI','A type of computer','An error message'], correct:1},
-    {q:'Which prompt is clearer?', opts:['"stuff about space"','"Explain the solar system to a 10-year-old in 3 points"','"space???"','"tell me everything"'], correct:1},
-    {q:'Adding context to a prompt usually makes answers…', opts:['Worse','More relevant and useful','Longer but useless','Disappear'], correct:1},
-    {q:'If an answer is not what you wanted, you should…', opts:['Give up','Refine your prompt and try again','Blame the AI','Type in ALL CAPS'], correct:1},
-    {q:'Asking the AI to "act as a teacher" is an example of…', opts:['A role in your prompt','A password','A bug','A game cheat'], correct:0},
+    {q:'A "prompt" is…', opts:["The AI's answer",'The instruction you give the AI','A type of computer','An error message'], correct:1, topic:'ChatGPT tumhara coach', ts:40},
+    {q:'Which prompt is clearer?', opts:['"stuff about space"','"Explain the solar system to a 10-year-old in 3 points"','"space???"','"tell me everything"'], correct:1, topic:'Achhe prompts', ts:130},
+    {q:'Custom instructions let ChatGPT…', opts:['Forget everything','Remember your preferences','Stop working','Cost money'], correct:1, topic:'Custom instructions', ts:240},
+    {q:'If an answer is not what you wanted, you should…', opts:['Give up','Refine your prompt and try again','Blame the AI','Type in ALL CAPS'], correct:1, topic:'Coach ki tarah use', ts:340},
+    {q:'Using ChatGPT as a coach means…', opts:['Letting it do all the work','Learning step-by-step with it','Never checking answers','Ignoring your teacher'], correct:1, topic:'Safe & smart use', ts:430},
   ],
   3:[
-    {q:'A great study use of AI is to…', opts:['Write your exam for you','Summarise a chapter into key points','Do nothing','Delete your notes'], correct:1},
-    {q:'When AI explains a doubt, you should…', opts:['Memorise blindly','Understand and verify it','Ignore it','Print it out only'], correct:1},
-    {q:'AI can help create…', opts:['Practice questions','Only pictures','Nothing for study','Just games'], correct:0},
-    {q:'The best mindset with an AI study buddy is…', opts:['Let it think for me','Use it to learn, not to cheat','Trust it blindly','Use it once'], correct:1},
-    {q:'To revise fast, ask AI for…', opts:['A long boring essay','A short quiz or flashcards','Random facts','Its opinion only'], correct:1},
+    {q:'Gemini is made by…', opts:['Apple','Google','xAI','Canva'], correct:1, topic:'Gemini kya hai', ts:40},
+    {q:'Gemini can understand…', opts:['Only numbers','Text and images','Only Hindi','Nothing'], correct:1, topic:'Gemini kya hai', ts:130},
+    {q:'A big advantage of Gemini is…', opts:['It is always offline','It connects to fresh web info','It only plays music','It deletes files'], correct:1, topic:'Search se aage', ts:240},
+    {q:'Gemini helps in daily life by…', opts:['Doing nothing','Turning ideas into useful answers','Breaking your phone','Hiding information'], correct:1, topic:'Roz ki madad', ts:340},
+    {q:'The smartest way to use Gemini is to…', opts:['Believe everything blindly','Ask clearly and verify','Never ask questions','Use it once'], correct:1, topic:'Roz ki madad', ts:430},
   ],
   4:[
-    {q:'AI image tools turn ____ into pictures.', opts:['Money','Text descriptions','Sounds only','Nothing'], correct:1},
-    {q:'When creating AI art, imagination is…', opts:['Useless','Your most powerful tool','Not allowed','A mistake'], correct:1},
-    {q:'AI-made images should be…', opts:['Passed off as your own','Credited honestly when shared','Hidden forever','Sold secretly'], correct:1},
-    {q:'A detailed art prompt gives you…', opts:['Random results','More control over the result','An error','A refund'], correct:1},
-    {q:'Creativity + AI works best when you…', opts:['Copy others','Add your own ideas','Do nothing','Only use presets'], correct:1},
+    {q:'A Gemini "Gem" is…', opts:['A costly diamond','A custom AI you set up for a task','A game','A password'], correct:1, topic:'Gems kya hote hain', ts:40},
+    {q:'Why create your own Gem?', opts:['To reuse it for a regular task','To waste time','To delete data','No reason'], correct:0, topic:'Gems kya hote hain', ts:130},
+    {q:'Photo se padhai means…', opts:['Deleting photos','Learning from a picture of your work','Only taking selfies','Nothing'], correct:1, topic:'Photo se padhai', ts:240},
+    {q:'If you photograph a homework question, Gemini can…', opts:['Ignore it','Explain a step-by-step solution','Print money','Turn off'], correct:1, topic:'Homework helper', ts:340},
+    {q:'The goal of photo learning is to…', opts:['Copy answers blindly','Understand and learn','Cheat in exams','Skip studying'], correct:1, topic:'Homework helper', ts:430},
   ],
   5:[
-    {q:'You should never share with AI your…', opts:['Favourite colour','Home address & passwords','Favourite subject','A maths question'], correct:1},
-    {q:'"Misinformation" means…', opts:['Correct facts','False or misleading information','A type of AI','A safe website'], correct:1},
-    {q:'If AI says something that sounds wrong, you should…', opts:['Believe it anyway','Check it with a trusted source','Share it fast','Panic'], correct:1},
-    {q:'A golden rule of safe AI use is…', opts:['Use it alone secretly','Keep a parent or teacher informed','Never ask questions','Share everything'], correct:1},
-    {q:'Being kind and responsible online is…', opts:['Optional','Always important','Only for adults','A waste of time'], correct:1},
+    {q:'NotebookLM answers questions using…', opts:['Random websites','The notes and sources YOU give it','Only games','Nothing'], correct:1, topic:'NotebookLM kya hai', ts:40},
+    {q:'Why is source-based answering helpful?', opts:['It makes things up','Answers stay tied to your material','It is slower','It is unsafe'], correct:1, topic:'Apne source se jawab', ts:130},
+    {q:'NotebookLM is great for…', opts:['Summarising your chapters','Cooking food','Playing music','Nothing'], correct:0, topic:'Summary & notes', ts:240},
+    {q:'To revise a big chapter fast, ask for…', opts:['A long boring essay','A short summary or notes','Random facts','Its opinion only'], correct:1, topic:'Summary & notes', ts:340},
+    {q:'The best mindset with NotebookLM is…', opts:['Let it think for me','Use it to understand my own notes','Trust it blindly','Use it once'], correct:1, topic:'Apni kitaab ka AI', ts:430},
   ],
   6:[
-    {q:'Gemini, Claude and Perplexity are all…', opts:['Games','AI tools','Schools','Robots at home'], correct:1},
-    {q:'Perplexity is especially good at…', opts:['Cooking','Answering with sources you can check','Playing music','Drawing only'], correct:1},
-    {q:'Trying different AI tools helps you…', opts:['Waste time','Find the best one for each task','Get confused only','Break your device'], correct:1},
-    {q:'The right tool depends on…', opts:['The colour you like','What you are trying to do','The time of day','Nothing'], correct:1},
-    {q:'The smartest AI user is one who…', opts:['Uses only one tool ever','Knows which tool fits the job','Never learns','Avoids all tools'], correct:1},
+    {q:'A "command centre" for exams means…', opts:['One place with all your notes organised','A video game','A new phone','A random app'], correct:0, topic:'Exam command centre', ts:40},
+    {q:'Organising notes topic-wise helps you…', opts:['Get confused','Revise faster','Lose notes','Waste time'], correct:1, topic:'Exam command centre', ts:130},
+    {q:'An audio overview lets you…', opts:['Only read','Listen and learn like a podcast','Draw pictures','Do nothing'], correct:1, topic:'Audio overview', ts:240},
+    {q:'To build confidence, focus on…', opts:['Only easy topics','Your weak topics with practice','No topics','Random topics'], correct:1, topic:'Smart revision', ts:340},
+    {q:'A smart board-exam habit is…', opts:['Cramming last minute only','Regular organised revision','Ignoring notes','Guessing'], correct:1, topic:'Smart revision', ts:430},
+  ],
+  7:[
+    {q:'Grok is an AI made by…', opts:['Google','xAI','Microsoft','Apple'], correct:1, topic:'Grok kya hai', ts:40},
+    {q:'Grok is especially good at…', opts:['Old information only','Real-time, up-to-date info','Playing offline','Nothing'], correct:1, topic:'Real-time research', ts:130},
+    {q:'Real-time research helps you get…', opts:['The latest information','A broken device','Less knowledge','Nothing'], correct:0, topic:'Real-time research', ts:240},
+    {q:'Learning with Grok is fun because it…', opts:['Is boring','Explains in a simple, fun way','Only speaks English','Is very hard'], correct:1, topic:'Fun learning', ts:340},
+    {q:'Before believing any AI answer, you should…', opts:['Accept it blindly','Cross-check the source','Delete it','Share it fast'], correct:1, topic:'Fun learning', ts:430},
+  ],
+  8:[
+    {q:'To make an image with Grok you need…', opts:['A clear text description','Money','A camera','Nothing'], correct:0, topic:'Image banao', ts:40},
+    {q:'"Fake news" means…', opts:['True facts','False or misleading information','An AI tool','A safe website'], correct:1, topic:'Fake news pehchano', ts:130},
+    {q:'The best way to spot fake news is to…', opts:['Believe it at once','Cross-check with a trusted source','Share it fast','Ignore it'], correct:1, topic:'Fake news pehchano', ts:240},
+    {q:'AI-made images should be…', opts:['Passed off as your own','Credited honestly when shared','Hidden forever','Sold secretly'], correct:1, topic:'Responsible use', ts:340},
+    {q:'The most important rule with AI images is to…', opts:['Be responsible and honest','Fool everyone','Hide them','Do nothing'], correct:0, topic:'Responsible use', ts:430},
+  ],
+  9:[
+    {q:'Canva AI is mainly used to…', opts:['Make beautiful designs','Cook food','Sing songs','Nothing'], correct:0, topic:'Canva AI kya hai', ts:40},
+    {q:'Magic Studio can…', opts:['Turn text into a design','Charge your phone','Turn off the internet','Nothing'], correct:0, topic:'Magic Studio', ts:130},
+    {q:'The best start for a school project is to…', opts:['Stare at a blank page','Pick a topic and a template','Do nothing','Copy someone'], correct:1, topic:'School projects', ts:240},
+    {q:'In Canva, your design can be…', opts:['Never changed','Easily edited','Edited only once','Edited for money'], correct:1, topic:'Magic Studio', ts:340},
+    {q:'A great project is one that is…', opts:['Clear and well presented','Full of random text','Messy','Empty'], correct:0, topic:'School projects', ts:430},
+  ],
+  10:[
+    {q:'With Canva AI you can edit a photo by…', opts:['Removing or cleaning the background','Deleting it','Doing nothing','Only printing'], correct:0, topic:'Photo editing', ts:40},
+    {q:'To make a video in Canva you…', opts:['Join clips and add transitions','Cannot make videos','Use only one photo','Use only text'], correct:0, topic:'Video banao', ts:130},
+    {q:'AI transitions make a video…', opts:['Smooth and polished','Broken','Silent','Blank'], correct:0, topic:'Video banao', ts:240},
+    {q:'Once your design is ready, you should…', opts:['Export and share it','Delete it','Hide it','Forget it'], correct:0, topic:'Share & present', ts:340},
+    {q:'Creativity plus AI works best when you…', opts:['Add your own ideas','Copy everything','Think nothing','Only use presets'], correct:0, topic:'Share & present', ts:430},
   ],
 };
+
+function _sec(h,p,f1,f2,f3){ return {h,p,flow:[f1,f2,f3]}; }
 const MATERIAL={
-  1:{ read:'6 min read', intro:'Before you type your very first message to ChatGPT, let\'s understand what you are actually talking to, and how to make the most of it, safely.',
-    sections:[
-      {h:'So… what exactly is AI?',img:'concept illustration, friendly robot brain',p:'AI, or Artificial Intelligence, is a computer program that learns from huge amounts of information and then helps you with tasks: answering questions, writing, drawing and more. It is not alive and does not "know" things the way you do; it makes very smart guesses based on patterns.'},
-      {h:'Meet ChatGPT',img:'ChatGPT chat screen',p:'ChatGPT is a conversational AI. You can talk to it in plain language, just like texting a friend, and it replies. Ask it to explain a topic, help with a story, or answer a doubt. The clearer your question, the better its answer.'},
-      {h:'Your first safe conversation',img:'student and AIJU chatting',p:'Start simple, like "Explain what a rainbow is in 3 short points." Always keep a parent or teacher in the loop, and never share private details like your address, school ID or passwords.'},
-    ],
-    keys:['AI = a smart pattern-matching helper, not a living brain.','ChatGPT is conversational: talk to it in plain language.','Clear questions get clear answers.','Never share private information with any AI.','Always double-check important answers.'],
-  },
+  1:{read:'6 min read',intro:"ChatGPT ko apna pehla AI dost banane se pehle, samajhte hain ki AI hai kya, aur usse safely baat kaise ki jaati hai.",sections:[
+    _sec('AI aakhir hai kya?','AI ek computer program hai jo bahut saari jaankari se seekhta hai aur phir tumhari madad karta hai. Ye zinda nahi hai; ye patterns dekhkar smart guess lagata hai.','Data','Pattern seekho','Smart jawab'),
+    _sec('Meet ChatGPT','ChatGPT ek conversational AI hai, matlab tum isse aam bhasha mein baat kar sakte ho, bilkul dost ko text karne jaise. Jitna clear sawaal, utna behtar jawab.','Sawaal likho','ChatGPT sochta hai','Jawab milta hai'),
+    _sec('Pehli safe baat-cheet','Kuch simple se shuru karo, jaise "Rainbow kaise banta hai, 3 points mein batao." Parent ya teacher ko saath rakho aur kabhi address ya password share mat karo.','Simple sawaal','Jawab padho','Verify karo')],
+    keys:['AI = smart pattern-matching helper, zinda dimaag nahi.','ChatGPT se aam bhasha mein baat karo.','Clear sawaal = clear jawab.','Private jaankari kabhi share mat karo.','Zaroori jawab hamesha double-check karo.']},
+  2:{read:'5 min read',intro:"ChatGPT sirf sawaal-jawab tak seemit nahi, ye tumhara personal padhai coach ban sakta hai. Aao advanced tarike seekhein, safely.",sections:[
+    _sec('ChatGPT tumhara coach','Kisi bhi topic ko batao aur ChatGPT tumhe step-by-step plan de sakta hai, phir practice bhi karva sakta hai.','Topic batao','Step-by-step plan','Practice'),
+    _sec('Custom instructions','Ek baar apni pasand set kar do, ChatGPT usse yaad rakhega aur har jawab tumhare liye personalised dega.','Pasand set karo','ChatGPT yaad rakhta','Personalised jawab'),
+    _sec('Safe & smart use','Sochkar sawaal poochho, jawab ko jaancho, aur AI ko madad ke liye use karo, cheating ke liye nahi.','Sochkar poochho','Jawab jaancho','Sahi istemaal')],
+    keys:['ChatGPT ko coach ki tarah use karo, shortcut ki tarah nahi.','Custom instructions se jawab personalised hote hain.','Har jawab ko samjho, blindly copy mat karo.','Parent ya teacher ko loop mein rakho.','AI seekhne ke liye hai, cheating ke liye nahi.']},
+  3:{read:'6 min read',intro:"Google Gemini ek powerful AI hai jo text aur images dono samajhta hai. Chalo dekhte hain ye search se aage kaise le jaata hai.",sections:[
+    _sec('Gemini kya hai','Gemini Google ka AI hai jo tumhare sawaal ka turant, samajhdaar jawab deta hai, chahe wo text ho ya photo.','Google AI','Text + image','Turant jawab'),
+    _sec('Search se aage','Simple search sirf links deta hai; Gemini directly samjhata hai aur latest web se juda rehta hai.','Sawaal poochho','Web se juda','Latest jaankari'),
+    _sec('Roz ki madad','Idea do aur Gemini use ek useful jawab ya plan mein badal deta hai, homework se lekar projects tak.','Idea do','Gemini banata','Kaam aasaan')],
+    keys:['Gemini text aur image dono samajhta hai.','Ye latest web jaankari se juda rehta hai.','Clear sawaal poochho aur jawab verify karo.','Homework aur projects mein madad leta hai.','AI ko samajhkar use karo, blindly nahi.']},
+  4:{read:'5 min read',intro:"Ab Gemini ke advanced features, apne Gems banao aur photo se seedhi padhai karo.",sections:[
+    _sec('Gems kya hote hain','Gem ek custom AI hai jo tum kisi regular kaam ke liye set karte ho aur baar-baar use karte ho.','Gem banao','Kaam set karo','Baar-baar use'),
+    _sec('Photo se padhai','Apni kitaab ya sawaal ki photo dikhao, Gemini usse padhkar simple tarike se samjha deta hai.','Photo kheencho','Gemini padhta','Samjhata hai'),
+    _sec('Homework helper','Question ki photo lo aur step-by-step hal samjho, taaki tum khud seekh sako.','Question ki photo','Step-by-step hal','Seekho')],
+    keys:['Gems = apne kaam ke liye custom AI.','Photo se seedha padhai ki jaa sakti hai.','Step-by-step hal se samajhna aasaan.','Seekhne par dhyaan do, copy par nahi.','Gemini ko apna study partner banao.']},
+  5:{read:'5 min read',intro:"NotebookLM ek khaas AI hai jo sirf tumhari di hui notes aur kitaabon se jawab deta hai. Ye tumhari apni kitaab ka AI hai.",sections:[
+    _sec('NotebookLM kya hai','Tum apni notes upload karte ho, NotebookLM unhe padhta hai aur sirf usi content se jawab deta hai.','Notes upload','AI padhta','Source-based jawab'),
+    _sec('Apne source se jawab','Kyunki jawab tumhare source se aate hain, wo tumhare syllabus ke saath tike rehte hain.','Kitaab do','Sawaal poochho','Sahi jawab'),
+    _sec('Summary & notes','Poora chapter do aur turant summary aur short notes paao, revision ke liye taiyaar.','Chapter do','Auto summary','Revision ready')],
+    keys:['NotebookLM sirf tumhari notes se jawab deta hai.','Jawab tumhare syllabus se jude rehte hain.','Bade chapters ki summary turant banao.','Revision ke liye short notes maango.','Apni samajh badhane ke liye use karo.']},
+  6:{read:'5 min read',intro:"Board exams ke liye NotebookLM ko apna command centre banao, saari notes ek jagah, organised aur revision-ready.",sections:[
+    _sec('Exam command centre','Saari subjects ki notes ek hi jagah rakho aur topic-wise organise karke fast revision karo.','Notes ek jagah','Topic-wise sort','Fast revision'),
+    _sec('Audio overview','Apni notes se ek audio overview banao aur podcast ki tarah sunkar bhi revision karo.','Notes do','Audio banao','Sunkar seekho'),
+    _sec('Smart revision','Apne weak topics pehchano, practice sawaal maango aur confidence badhao.','Weak topic','Practice Q','Confidence')],
+    keys:['Saari notes ek organised jagah par rakho.','Topic-wise sorting se revision fast hoti hai.','Audio overview se sunkar bhi seekho.','Weak topics par practice karo.','Regular revision se confidence aata hai.']},
+  7:{read:'5 min read',intro:"Grok xAI ka AI hai jo real-time jaankari aur mazedaar tarike se seekhne ke liye jaana jaata hai.",sections:[
+    _sec('Grok kya hai','Grok ek AI hai jo taaza (real-time) jaankari deta hai aur baat ko fun tarike se samjhata hai.','xAI ka AI','Real-time data','Fun jawab'),
+    _sec('Real-time research','Aaj ka sawaal poocho aur Grok latest info deta hai, bas source hamesha cross-check karo.','Aaj ka sawaal','Latest info','Source jaancho'),
+    _sec('Fun learning','Mazedaar sawaal poochho, Grok simple example se samjhata hai, jisse cheezein yaad rehti hain.','Mazedaar sawaal','Grok samjhata','Yaad rehta')],
+    keys:['Grok xAI ka AI hai.','Iski khaasiyat real-time jaankari hai.','Har jawab ka source cross-check karo.','Fun learning se cheezein yaad rehti hain.','AI ko samajhkar aur safely use karo.']},
+  8:{read:'5 min read',intro:"Grok se images banana aur fake news pehchanna, dono seekho, responsibly.",sections:[
+    _sec('Image banao','Ek achha text description likho aur Grok usse ek tasveer bana deta hai.','Idea likho','Grok banata','Tasveer taiyaar'),
+    _sec('Fake news pehchano','Kisi bhi khabar ko turant maanne ke bajaye trusted source se cross-check karo.','News dekho','Cross-check','Sach ya jhooth'),
+    _sec('Responsible use','AI se bani images ko imaandari se credit do aur soch-samajhkar share karo.','Sochkar share','Source jaancho','Safe raho')],
+    keys:['Achha description = achhi AI image.','Fake news ko hamesha cross-check karo.','AI images ko imaandari se credit do.','Soch-samajhkar hi share karo.','Responsible aur safe raho.']},
+  9:{read:'5 min read',intro:"Canva AI tumhare school projects ko ek magic studio mein badal deta hai, sundar aur asaan.",sections:[
+    _sec('Canva AI kya hai','Canva ek design tool hai jo AI ki madad se turant sundar designs banane deta hai.','Design tool','AI se turant','Sundar projects'),
+    _sec('Magic Studio','Sirf text likho aur Magic Studio use ek design mein badal deta hai, jise tum edit bhi kar sakte ho.','Text likho','AI design banata','Edit karo'),
+    _sec('School projects','Topic chuno, template plus AI use karo aur ek clear, sundar project present karo.','Topic chuno','Template + AI','Present karo')],
+    keys:['Canva AI se designs turant bante hain.','Magic Studio text ko design mein badalta hai.','Har design aasaani se edit hota hai.','Template plus AI se project fast banta hai.','Clear aur sundar presentation par dhyaan do.']},
+  10:{read:'5 min read',intro:"Canva AI ke saath photo editing aur video creation seekho, aur apni creativity duniya ko dikhao.",sections:[
+    _sec('Photo editing','Photo upload karo aur AI se background hataao ya saaf karo, ek perfect pic ke liye.','Photo upload','AI se saaf','Perfect pic'),
+    _sec('Video banao','Clips jodo, AI transitions add karo aur ek ready-to-share video banao.','Clips jodo','AI transitions','Ready video'),
+    _sec('Share & present','Design taiyaar hone par export karo aur apni creativity duniya ko dikhao.','Design done','Export karo','Duniya ko dikhao')],
+    keys:['AI se photo ka background aasaani se hatao.','Clips + AI transitions se smooth video banao.','Apne ideas add karke design ko khaas banao.','Taiyaar design ko export aur share karo.','Creativity plus AI = best results.']},
 };
-['2','3','4','5','6'].forEach(k=>{ const c=COURSE[+k-1]; MATERIAL[k]={read:'5 min read',intro:'A quick, friendly guide to the key ideas from "'+c.title+'". Read along with the video for the best results.',sections:[{h:'The big idea',img:'concept illustration',p:'This chapter builds on what you learned before. Watch the video first, then use this guide to lock in the main points and try the examples yourself.'},{h:'Why it matters',img:'real-world example',p:'Everything here connects to how you\'ll actually use AI in daily life, for school, creativity and curiosity. Go slow, and ask AIJU if anything is unclear.'}],keys:['Watch the video, then read this guide.','Try each idea yourself as you go.','Take the quiz to check your understanding.','Ask AIJU whenever you\'re stuck.']}; });
 </script>
 </body>
 </html>
